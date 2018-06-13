@@ -1,7 +1,6 @@
 import React from 'react'
-
 const Banner = (props) => (
-    <section id="banner" className="major">
+    <section id="banner" className={props.bannerClass}>
         <div className="inner">
             <header className="major">
                 <h1>Summer In The Woods</h1>

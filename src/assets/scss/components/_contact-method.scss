@@ -20,11 +20,5 @@
 		h3 {
 			margin: 0 0 (_size(element-margin) * 0.25) 0;
 		}
-        .e-mail {
-        	&:before {
-            content: attr("gmail.com") "\0040" attr("summerinthewoods");
-            unicode-bidi: bidi-override;
-            direction: rtl;
-        	}
-        }
+
 	}

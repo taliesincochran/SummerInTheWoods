@@ -1,11 +1,12 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { Link, withPrefix } from 'gatsby-link'
-import '../assets/scss/main.scss'
-import Header from '../components/Header'
-import Menu from '../components/Menu'
-import Contact from '../components/Contact'
-import Footer from '../components/Footer'
+import React from 'react';
+import Helmet from 'react-helmet';
+import { Link, withPrefix } from 'gatsby-link';
+import PropTypes from 'prop-types';
+import '../assets/scss/main.scss';
+import Header from '../components/Header';
+import Menu from '../components/Menu';
+import Contact from '../components/Contact';
+import Footer from '../components/Footer';
 
 class Template extends React.Component {
 
@@ -57,7 +58,7 @@ class Template extends React.Component {
 }
 
 Template.propTypes = {
-    children: React.PropTypes.func
+    children: PropTypes.func
 }
 
 export default Template

@@ -23,6 +23,7 @@ const Contact = (props) => (
                         </div>
                         <div className="gotcha">
                             <input type="text" name="_gotcha" className="gotcha" />
+                            <input type="hidden" name="_next" value="/" />
                         </div>
                         <div className="field">
                             <label htmlFor="message">Message</label>

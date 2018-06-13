@@ -48,7 +48,7 @@ const Contact = (props) => (
                         <div className="contact-method">
                             <span className="icon alt fa-phone"></span>
                             <h3>Phone</h3>
-                            <a href="tel:&#40;&#50;&#49;&#48;&#41;&#55;&#52;&#52;&#45;&#50;&#52;&#57;&#57;">&#40;&#50;&#49;&#48;&#41;&#55;&#52;&#52;&#45;&#50;&#52;&#57;&#57;</a>
+                            <a href="tel:0000000000">(000) 000-0000</a>
                         </div>
                     </section>
                     <section>

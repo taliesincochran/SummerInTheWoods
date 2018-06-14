@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: "Summer In The <Woods></Woods>",
+    title: "Summer In The Woods",
     author: "Taliesin Cochran",
     description: "A Summer Camp in Carrboro, NC"
   },

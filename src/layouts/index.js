@@ -46,7 +46,7 @@ class Template extends React.Component {
                 <div id="wrapper">
                     <Header onToggleMenu={this.handleToggleMenu} />
                     {children()}
-                    <Footer />
+                    <Footer pathname={this.props.location.pathname} />
                 </div>
                 <Menu onToggleMenu={this.handleToggleMenu} />
             </div>

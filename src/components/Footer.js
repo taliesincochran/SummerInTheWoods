@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import PropTypes from 'prop-types';
 
-const Footer = (props) => (
+const Footer = (props) => {
+    console.log(props.pathname);
+    return(
     <footer id="footer">
         <div className="inner">
             <ul className="icons">
@@ -29,8 +30,6 @@ const Footer = (props) => (
             </ul>
         </div>
     </footer>
-)
-Footer.propTypes = {
-    pathname: PropTypes.string
-}
+)}
+
 export default Footer

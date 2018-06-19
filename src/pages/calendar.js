@@ -34,9 +34,16 @@ class Calendar extends React.Component {
 						center: 'Available Dates',
 						right: 'month,basicWeek,basicDay'
 					}}
+				weekends = {false}
+				defaultView = {'month'}
 				defaultDate={'2018-06-05'}
+				showNonCurrentDates={true}
 				navLinks = {true}
 				events = {this.state.events}
+				eventColor = {'red'}
+				eventBackgroundColor = {'blue'}
+				className={'button'}
+				
 				/>
 			</div>
 		);

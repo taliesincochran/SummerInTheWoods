@@ -28,7 +28,27 @@
 		}
 
 		td {
+			width: (100%/8); 
+			color: black;
+			font-weight: bold;
 			padding: 0.75em 0.75em;
+			background-color: lightgray;
+
+			div{
+				&.fc-bg{
+					height:0px;
+				}
+			}
+			&:nth-child(2n){
+				background-color: gray;
+			}
+			&.fc-event-container {
+				background: blue;
+				border-width: 5px;
+				border-color: green;
+			}
+
+
 		}
 
 		th {

@@ -20,18 +20,19 @@ const Navigation = (props) => {
 const NavigationAuth = (props) => {
   console.log('nav props', props);
   return(
-  props.email=="tdcochran2@gmail.com"?
+  props.email=="tdcochran2@gmail.com" || "mdsch.jackie@gmail.com" || "lernerandrew@gmail.com"?
   (<ul className="links">
-      <li><Link onClick={props.onToggleMenu} to={routes.ADMIN}>Admin Login</Link></li>
+      <li><Link onClick={props.onToggleMenu} to={routes.ADMIN}>Admin</Link></li>
       <li><Link onClick={props.onToggleMenu} to={routes.LANDING}>Landing</Link></li>
       <li><Link onClick={props.onToggleMenu} to={routes.HOME}>Home</Link></li>
-      <li><Link onClick={props.onToggleMenu} to={routes.ACCOUNT}>Account</Link></li>
+      <li><Link onClick={props.onToggleMenu} to={routes.SIGN_UP}>Sign Up New User</Link></li>
+      <li><Link onClick={props.onToggleMenu} to={routes.PASSWORD_FORGET}>Account</Link></li>
       <li><SignOutButton /></li>
     </ul>):
   (<ul className="links">
-      <li><Link onClick={props.onToggleMenu} to={routes.LANDING}>Landing</Link></li>
       <li><Link onClick={props.onToggleMenu} to={routes.HOME}>Home</Link></li>
       <li><Link onClick={props.onToggleMenu} to={routes.ACCOUNT}>Account</Link></li>
+      <li><Link onClick={props.onToggleMenu} to={routes.PASSWORD_FORGET}>Account</Link></li>
       <li><SignOutButton /></li>
     </ul>)
     )

@@ -1,12 +1,17 @@
 module.exports = {
   siteMetadata: {
-    title: "Summer In The Woods",
-    author: "Taliesin Cochran",
-    description: "A Summer Camp in Carrboro, NC"
+    title: `Gatsby Firebase Authentication`,
+    author: `Taliesin Cochran`,
+    description: "A Montessori Inspired Summer Camp in Carrboro, NC"
   },
   pathPrefix: '/',
   plugins: [
-    {
+  	`gatsby-plugin-react-helmet`, 
+  	`gatsby-plugin-react-next`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    `gatsby-plugin-sass`,
+  	{
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/src/posts`,
@@ -34,9 +39,5 @@ module.exports = {
         ],
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
-    `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-sass`
   ],
 }

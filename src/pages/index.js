@@ -12,8 +12,8 @@ import pic12 from '../assets/images/pic12.jpg';
 
 class HomeIndex extends React.Component {
     render() {
-        const siteTitle = this.props.data.site.siteMetadata.title
-        const siteDescription = this.props.data.site.siteMetadata.description
+        const siteTitle = "Summer In The Woods"
+        const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"
         console.log("index props", this.props)
         return (
             <div>

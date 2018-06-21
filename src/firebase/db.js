@@ -9,6 +9,15 @@ export const doCreateUser = (id, username, email) =>
   });
 
 export const onceGetUsers = () =>
-  db.ref('users').once('value');
+  db.ref('users'/$).once('value');
+
+export const getOneUser = uid => 
+	db.ref(`users/${uid}`).once('value')
+
+export const getText = () => 
+	db.ref('text').once('value')
+
+export const getAdmin = () => 
+	db.ref('adminlist/').once('value')
 
 // Other db APIs ...

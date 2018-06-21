@@ -9,20 +9,30 @@ import Footer from '../components/Footer'
 import Menu from '../components/Menu'
 import PropTypes from 'prop-types'
 import { Link, withPrefix } from 'gatsby-link'
+import { db } from '../firebase';
+
+
+// const CLIENT = {
+//   sandbox: process.env.PAYPAL_CLIENT_ID_SANDBOX,
+//   production: process.env.PAYPAL_CLIENT_ID_PRODUCTION,
+// };
+
 class TemplateWrapper extends Component {
-      constructor(props) {
+    constructor(props) {
         super(props)
         this.state = {
             isMenuVisible: false,
-            loading: 'is-loading'
+            loading: 'is-loading',
+            admin: ''
         }
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
-      }
-        componentDidMount () {
+    }
+    componentDidMount () {
         this.timeoutId = setTimeout(() => {
             this.setState({loading: ''});
         }, 100);
-      }
+        db.getAdmin().then(snapshot=> this.setState({admin: snapshot.val()}))
+    }
 
     componentWillUnmount () {
         if (this.timeoutId) {
@@ -49,7 +59,7 @@ class TemplateWrapper extends Component {
                     <Footer pathname={this.props.location.pathname}/>
                 </div>
                 <Menu onToggleMenu={this.handleToggleMenu}>
-                    <Navigation onToggleMenu={this.handleToggleMenu}/>
+                    <Navigation onToggleMenu={this.handleToggleMenu}  admin={this.state.admin}/>
                 </Menu>
             </div>
         );

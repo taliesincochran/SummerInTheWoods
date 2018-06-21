@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "author": "Robin Wieruch <wrobin@gmx.net>",
   "dependencies": {
+    "dotenv": "^6.0.0",
     "firebase": "^5.0.4",
-    "gatsby": "^1.9.266",
+    "fs": "0.0.1-security",
+    "gatsby": "^1.9.273",
     "gatsby-link": "^1.6.44",
     "gatsby-plugin-google-analytics": "^1.0.31",
     "gatsby-plugin-react-helmet": "^2.0.11",
@@ -19,6 +21,7 @@
     "gatsby-transformer-sharp": "^1.6.27",
     "lodash": "^4.17.10",
     "prop-types": "^15.6.2",
+    "react-async-script-loader": "^0.3.0",
     "react-helmet": "^5.2.0"
   },
   "keywords": [

@@ -5,3 +5,4 @@ export const HOME = '/';
 export const ACCOUNT = '/account';
 export const CONTACT = '/contact';
 export const ADMIN = '/admin';
+export const PASSWORD_CHANGE = '/password-change'

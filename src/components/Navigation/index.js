@@ -18,9 +18,9 @@ const Navigation = (props) => {
 }
 
 const NavigationAuth = (props) => {
-  console.log('nav props', props);
+  console.log('nav props', props.email, props.email === ("tdcochran2@gmail.com" || "mdsch.jackie@gmail.com" || "lernerandrew@gmail.com" || 'viskaslietuvai@gmail.com' || "tripsrmeplus11@gmail.com"));
   return(
-  props.email ==  "tdcochran2@gmail.com" || "mdsch.jackie@gmail.com" || "lernerandrew@gmail.com" || 'viskaslietuvai@gmail.com' || "tripsrmeplus11@gmail.com"?
+  props.email ==  ("tdcochran2@gmail.com" || "mdsch.jackie@gmail.com" || "lernerandrew@gmail.com" || 'viskaslietuvai@gmail.com' || "tripsrmeplus11@gmail.com")?
   (<ul className="links">
       <li><Link onClick={props.onToggleMenu} to={routes.ADMIN}>Admin</Link></li>
       <li><Link onClick={props.onToggleMenu} to={routes.HOME}>Home</Link></li>

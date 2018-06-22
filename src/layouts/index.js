@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import '../assets/scss/main.scss';
-import Navigation from '../components/Navigation';
+import Navigation from '../components/Navigation/';
 import withAuthentication from '../components/Session/withAuthentication';
-import Header from '../components/Header'
+import Header from '../components/Header/'
 import './index.css';
-import Footer from '../components/Footer'
-import Menu from '../components/Menu'
+import Footer from '../components/Footer/'
+import Menu from '../components/Menu/'
 import PropTypes from 'prop-types'
 import { Link, withPrefix } from 'gatsby-link'
 import { db } from '../firebase';
@@ -23,7 +23,7 @@ class TemplateWrapper extends Component {
         this.state = {
             isMenuVisible: false,
             loading: 'is-loading',
-            admin: ''
+            auth: null
         }
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
     }
@@ -31,7 +31,7 @@ class TemplateWrapper extends Component {
         this.timeoutId = setTimeout(() => {
             this.setState({loading: ''});
         }, 100);
-        db.getAdmin().then(snapshot=> this.setState({admin: snapshot.val()}))
+        db.getAdmin().then(snapshot=> this.setState({auth: snapshot.val()}))
     }
 
     componentWillUnmount () {
@@ -56,10 +56,10 @@ class TemplateWrapper extends Component {
                     <Header onToggleMenu={this.handleToggleMenu} />
                     {children()}
                     <hr/>
-                    <Footer pathname={this.props.location.pathname}/>
+                    <Footer pathname={this.props.location.pathname} auth={this.state.auth}/>
                 </div>
                 <Menu onToggleMenu={this.handleToggleMenu}>
-                    <Navigation onToggleMenu={this.handleToggleMenu}  admin={this.state.admin}/>
+                    <Navigation onToggleMenu={this.handleToggleMenu} auth={this.state.auth}/>
                 </Menu>
             </div>
         );

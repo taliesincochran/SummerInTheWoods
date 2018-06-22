@@ -1,15 +1,14 @@
 import React from 'react';
 import Link from 'gatsby-link';
-
+import SignOut from '../SignOut'
 const Footer = (props) => {
-    console.log(props.pathname);
+    console.log(props.pathname, props.auth);
     return(
     <footer id="footer">
         <div className="inner">
             <ul className="icons">
                 {/*<li><a href="#" className="icon alt fa-twitter"><span className="label">Twitter</span></a></li>*/}
                 <li><a href="https://www.facebook.com/freeplayisparamount/" className="icon alt fa-facebook"><span className="label">Facebook</span></a></li>
-                <li><a href="#" className="icon alt fa-facebook-messenger"><span className="label">Facebook Messenger</span></a></li>
                 {props.pathname=="/contact"?"":(
                     <li><Link to="/contact" className="button">Contact</Link></li>
                 )}
@@ -17,12 +16,15 @@ const Footer = (props) => {
                     <li><Link to="/" className="button">Home</Link></li>
                 )}
     
-                {/*
-                //To Do
-                
-                <li><Link to="/availability" className="button">Availability</Link></li>
-                <li><Link to="/login" className="button">Parent Login</Link></li>
-                */}
+                {props.pathname=="/calendar"?"":(             
+                    <li><Link to="/calendar" className="button">Availability</Link></li>
+                )}
+                {props.auth == null && props.pathname !=="/signin"?
+                    <li><Link to="/signin" className="button">Parent Login</Link></li>
+                :""}
+                {props.auth !== null?<SignOut/>:''
+
+                }
 
             </ul>
             <ul className="copyright">

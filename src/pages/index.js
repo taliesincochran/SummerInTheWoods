@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'gatsby-link';
 import Helmet from 'react-helmet';
-import Banner from '../components/Banner';
-import BannerLanding from '../components/BannerLanding';
+import Banner from '../components/Banner/';
+import BannerLanding from '../components/BannerLanding/';
 import { db } from '../firebase'
 import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
@@ -23,7 +23,6 @@ class HomeIndex extends React.Component {
         })
     }
     render() {
-        console.log(process.env.ADMIN)
         console.log('index pages state', this.state)
         const siteTitle = "Summer In The Woods"
         const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"

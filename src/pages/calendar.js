@@ -2,12 +2,12 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
 
-const Admin = (props) => {
+const Calendar = (props) => {
     return(
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>
-                <meta name="description" content="Contact Page" />
+                <meta name="description" content="Availability" />
             </Helmet>
             <BannerLanding bannerClass="contactBanner" />
             <div id="main">
@@ -19,4 +19,4 @@ const Admin = (props) => {
     )
 }
 
-export default Admin
+export default Calendar

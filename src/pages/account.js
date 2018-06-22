@@ -1,6 +1,9 @@
 import React from 'react';
 import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
+import Helmet from 'react-helmet';
+import BannerLanding from '../components/BannerLanding/'
+
 
 class AccountPage extends React.Component {
 	constructor(props) {
@@ -15,6 +18,22 @@ class AccountPage extends React.Component {
 		console.log(this.state);
 	}
 	render() {
-		<div />
+	    return(
+	        <div>
+	            <Helmet>
+	                <title>Summer In The Woods</title>
+	                <meta name="description" content="Contact Page" />
+	            </Helmet>
+	            <BannerLanding bannerClass="contactBanner" />
+	            <div id="main">
+	                <div className="inner">
+	                    To Do
+	                </div>
+	            </div>
+	        </div>
+	    )
 	}
 }
+
+export default AccountPage
+

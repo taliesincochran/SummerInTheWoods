@@ -7,6 +7,15 @@ import '../assets/scss/calendar/styles.css';
 import '../assets/scss/calendar/toolbar.css';
 import '../assets/scss/calendar/month.css';
 import '../assets/scss/calendar/event.css';
+import '../assets/scss/calendar/agenda.css';
+import '../assets/scss/calendar/time-column.css';
+import '../assets/scss/calendar/time-grid.css';
+// import '../assets/scss/calendar/reset.css';
+// import '../assets/scss/calendar/variables.css';
+// import '../assets/scss/calendar/styles.css';
+// import '../assets/scss/calendar/toolbar.css';
+// import '../assets/scss/calendar/month.css';
+// import '../assets/scss/calendar/event.css';
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(Moment));
 
 
@@ -126,6 +135,7 @@ const events = [
       defaultView={BigCalendar.Views.MONTH}
       scrollToTime={new Date(1970, 1, 1, 6)}
       defaultDate={new Date(2015, 3, 12)}
+      height = {800}
       onSelectEvent={event => {
         console.log(event);
         alert(event.title);

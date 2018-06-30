@@ -7,6 +7,12 @@ module.exports = {
   pathPrefix: '/',
   plugins: [
     {
+      resolve: `gatsby-plugin-less`,
+      options: {
+        strictMath: true,
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/src/posts`,
@@ -18,6 +24,12 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/assets/images`,
+      },
+    },
+    {
+   resolve: `gatsby-plugin-less`,
+   options: {
+     strictMath: true,
       },
     },
     {

@@ -130,40 +130,40 @@ class Application extends React.Component {
                                     </div>
                                     <div className="3u 6u$(small) float-left">
                                         <p>Year</p>
-                                        {this.state.yearsArray.length == 2?
+                                        {this.props.location.state.yearsArray.length > 1?
                                             <div>
                                                 <input 
                                                     type="checkbox"
                                                     name="year1"
-                                                    value={this.state.yearsArray[0]}
+                                                    value={this.props.location.state.yearsArray[0]}
                                                     onChange={this.handleYearSelect} 
-                                                    checked={this.state.chosenYear == this.state.yearsArray[0]}
+                                                    checked={this.state.chosenYear == this.props.location.state.yearsArray[0]}
                                                 />            
                                                 <label htmlFor="year1" 
                                                     className='float-left'
-                                                    value={this.state.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(this.state.yearsArray[0])}
+                                                    value={this.props.location.state.yearsArray[0]}
+                                                    onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])}
                                                 >
-                                                    {this.state.yearsArray[0]}
+                                                    {this.props.location.state.yearsArray[0]}
                                                 </label>
                                                 <input 
                                                     type="checkbox" 
                                                     name="year2"
-                                                    value={this.state.yearsArray[1]}
-                                                    checked={this.state.chosenYear == this.state.yearsArray[1]} 
+                                                    value={this.props.location.state.yearsArray[1]}
+                                                    checked={this.state.chosenYear == this.props.location.state.yearsArray[1]} 
                                                     onClick={this.handleYearSelect}
                                                 />            
                                                 <label 
                                                     htmlFor="year2" 
                                                     className='float-left'
-                                                    value={this.state.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(this.state.yearsArray[1])} 
+                                                    value={this.props.location.state.yearsArray[0]}
+                                                    onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[1])} 
                                                 >
-                                                    {this.state.yearsArray[1]}
+                                                    {this.props.location.state.yearsArray[1]}
                                                 </label>
                                             </div>
                                         :
-                                        <p>{this.state.yearsArray[0]}</p>}
+                                        <p>{this.props.location.state.yearsArray[0]}</p>}
                                     </div>                               
                                 </form>
                             </section>

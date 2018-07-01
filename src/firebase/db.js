@@ -21,3 +21,5 @@ export const getAdmin = () =>
 	db.ref('adminlist/').once('value')
 
 // Other db APIs ...
+export const getWeeks = () =>
+	db.ref('campTimes/year').once('value')

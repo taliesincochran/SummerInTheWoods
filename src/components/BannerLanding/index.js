@@ -7,11 +7,9 @@ const BannerLanding = (props) => (
                 <h1>Summer In The Woods</h1>
             </header>
             <div className="content">
-                <p>a summer camp where free play is paramount 
-                    <br />
-                    where mud, dirt, water and art are our curriculum 
-                    <br />
-                    and most of all, where children can be children!
+                <p>We are excited to offer a summer camp where free play is paramount, <br/>
+                   where mud, dirt, water, and art are our curriculum, and most of all, <br />
+                   where children can be children! We would love for your child to join us!
                 </p>
             </div>
         </div>

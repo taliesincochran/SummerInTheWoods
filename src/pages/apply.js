@@ -3,7 +3,7 @@ import Helmet from 'react-helmet'
 // import Moment from 'react-moment'
 import { db } from '../firebase'
 import BannerLanding from '../components/BannerLanding/'
-import Radio from '../components/Radio'
+import CampTimes from '../components/CampTimes'
 
 class Application extends React.Component {
     constructor(props) {
@@ -165,71 +165,6 @@ class Application extends React.Component {
                                         :
                                         <p>{this.state.yearsArray[0]}</p>}
                                     </div>                               
-                                    {/*{(this.state.yearsArray.length == 2 && this.state.chosenYear == this.props.location.state.yearsArray[0])?
-                                        console.log(this.state, 'esonutehosnateuh')
-                                        this.props.location.state.campTimes[0].map((week) => {
-                                            
-                                            {(week.available - week.pending) > 0?
-                                                (
-                                                <div>
-                                                    <p>{week.start} - {week.end} Available: {week.available} Pending: {week.pending}</p>
-                                                    <input 
-                                                        type="checkbox"
-                                                        onChange={this.handleChange} 
-                                                        checked={this.state.week1 == 5}
-                                                    />            
-                                                    <label htmlFor="year1" 
-                                                        className='float-left'
-                                                        onClick={() => this.handleWeekSelect(selectedWeek, 5)}
-                                                    >
-                                                        5 day
-                                                    </label>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        checked={this.state.week1 == 3}
-                                                    />            
-                                                    <label 
-                                                        htmlFor="year2" 
-                                                        className='float-left'
-                                                        onClick={() => this.handleWeekSelect(selectedWeek, 3)}
-                                                    >
-                                                        3 day
-                                                    </label>
-                                                </div>
-                                            )
-                                            :
-                                            (
-                                                <div>
-                                                    <p>{week.start} - {week.end} Available: {week.available} Pending: {week.pending}</p>
-                                                    <input 
-                                                        disabled
-                                                        type="checkbox"
-                                                        onChange={this.handleChange} 
-                                                        checked={false}
-                                                    />            
-                                                    <label htmlFor="year1" 
-                                                        className='float-left'
-                                                    >
-                                                        5 day
-                                                    </label>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="year2"
-                                                        onChange={this.handleChange}
-                                                        checked={false}
-                                                    />            
-                                                    <label 
-                                                        htmlFor="year2" 
-                                                        className='float-left'
-                                                    >
-                                                        3 day
-                                                    </label>
-                                                </div>
-                                            )
-                                            }
-
-                                        })
-                                    :'todo'} */}
                                 </form>
                             </section>
                         </div>

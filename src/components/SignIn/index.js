@@ -14,7 +14,6 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
-  complete: false
 };
 
 class SignInForm extends Component {
@@ -37,7 +36,7 @@ class SignInForm extends Component {
     auth.doSignInWithEmailAndPassword(email, password)
       .then((obj) => {
         console.log('signIn object', obj);
-        this.setState(() => ({ ...INITIAL_STATE, auth: obj, complete: true}));
+        this.setState(() => ({ ...INITIAL_STATE }));
         history.push(routes.HOME);
       })
       .catch(error => {
@@ -58,7 +57,6 @@ class SignInForm extends Component {
       password === '' ||
       email === '';
 
-      console.log("sign in state: ", this.state.auth?this.state.auth.user.uid:null)
     return (
       <form onSubmit={this.onSubmit}>
         <input

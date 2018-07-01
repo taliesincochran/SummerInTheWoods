@@ -1,30 +1,19 @@
 import React from 'react';
 import Link from 'gatsby-link';
 import SignOut from '../SignOut'
+import LinkArray from '../../constants/linkArray'
+import Navigation from '../Navigation'
+import * as routes from '../../constants/routes';
+
 const Footer = (props) => {
-    console.log(props.pathname, props.auth);
+    console.log("Footer props", props);
     return(
     <footer id="footer">
         <div className="inner">
             <ul className="icons">
-                {/*<li><a href="#" className="icon alt fa-twitter"><span className="label">Twitter</span></a></li>*/}
                 <li><a href="https://www.facebook.com/freeplayisparamount/" className="icon alt fa-facebook"><span className="label">Facebook</span></a></li>
-                {props.pathname=="/contact"?"":(
-                    <li><Link to="/contact" className="button">Contact</Link></li>
-                )}
-                {props.pathname=="/"?"":(
-                    <li><Link to="/" className="button">Home</Link></li>
-                )}
-    
-                {props.pathname=="/calendar"?"":(             
-                    <li><Link to="/calendar" className="button">Availability</Link></li>
-                )}
-                {props.auth == null && props.pathname !=="/signin"?
-                    <li><Link to="/signin" className="button">Parent Login</Link></li>
-                :""}
-                {props.auth !== null?<SignOut/>:''
-
-                }
+                <li><a href="#" className="icon alt fa-instagram"><span className="label">Instagram</span></a></li>
+                <Navigation button={true} pathname={props.pathname} state={props.state} />
 
             </ul>
             <ul className="copyright">

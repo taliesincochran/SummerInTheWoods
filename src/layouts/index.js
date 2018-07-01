@@ -3,11 +3,11 @@ import Helmet from 'react-helmet';
 import '../assets/scss/main.scss';
 import Navigation from '../components/Navigation/';
 import withAuthentication from '../components/Session/withAuthentication';
-import Header from '../components/Header/'
-import Footer from '../components/Footer/'
-import Menu from '../components/Menu/'
-import PropTypes from 'prop-types'
-import { Link, withPrefix } from 'gatsby-link'
+import Header from '../components/Header/';
+import Footer from '../components/Footer/';
+import Menu from '../components/Menu/';
+import PropTypes from 'prop-types';
+import { Link, withPrefix } from 'gatsby-link';
 import { db } from '../firebase';
 import { auth } from '../firebase';
 
@@ -156,8 +156,8 @@ class TemplateWrapper extends Component {
             </div>
         );
     }
-}
+};
 TemplateWrapper.propTypes = {
     children: PropTypes.func
-}
-export default withAuthentication(TemplateWrapper)
+};
+export default withAuthentication(TemplateWrapper);

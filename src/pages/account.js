@@ -1,4 +1,6 @@
 import React from 'react';
+import Helmet from 'react-helmet';
+import Banner from '../components/Banner'
 import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
 import Helmet from 'react-helmet';
@@ -35,5 +37,7 @@ class AccountPage extends React.Component {
 	}
 }
 
+
 export default AccountPage
+
 

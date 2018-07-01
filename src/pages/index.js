@@ -3,7 +3,7 @@ import Link from 'gatsby-link';
 import Helmet from 'react-helmet';
 import Banner from '../components/Banner';
 import BannerLanding from '../components/BannerLanding';
-
+import { db } from '../firebase'
 import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
@@ -11,10 +11,23 @@ import pic12 from '../assets/images/pic12.jpg';
 
 
 class HomeIndex extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            textObj: {}
+        }
+      }
+    componentDidMount() {
+        db.getText().then(snapshot=> {
+            this.setState({textObj: snapshot.val()})
+        })
+    }
     render() {
-        const siteTitle = this.props.data.site.siteMetadata.title
-        const siteDescription = this.props.data.site.siteMetadata.description
-        console.log("index props", this.props)
+        console.log(process.env.ADMIN)
+        console.log('index pages state', this.state)
+        const siteTitle = "Summer In The Woods"
+        const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"
+        console.log("index pages props", this.props)
         return (
             <div>
                 <Helmet>
@@ -22,7 +35,9 @@ class HomeIndex extends React.Component {
                     <meta name="description" content={siteDescription} />
                 </Helmet>
 
-                <BannerLanding bannerClass="indexBanner" />
+                <BannerLanding 
+                    bannerClass="indexBanner" 
+                    />
 
                 <div id="main">
                     <section id="one">
@@ -30,9 +45,7 @@ class HomeIndex extends React.Component {
                             <header className="major">
                                 <h2>Our Philosophy</h2>
                             </header>
-                            <p>We draw inspiration from Montessori and Reggio Emilia philosophies 
-                            <br/>and our program is based outdoors with an emphasis on unstructured, 
-                            <br/>child-led play. </p>
+                            <p>We draw inspiration from Montessori and Reggio Emilia philosophies and our program is based outdoors with an emphasis on unstructured, child-led play.</p>
                         </div>
                     </section>
                     <section id="two" className="spotlights">

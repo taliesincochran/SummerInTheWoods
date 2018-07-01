@@ -64,6 +64,13 @@ const linkArray = [
     admin: true,
     auth: true,
     nonAuth:true
+  },
+  {
+    path: routes.Calendar,
+    text: 'Calendar',
+    admin: true,
+    auth: true,
+    nonAuth: true
   }
 ]
 export default linkArray

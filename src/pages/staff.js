@@ -2,12 +2,12 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
 
-const Admin = (props) => {
+const Staff = (props) => {
     return(
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>
-                <meta name="description" content="Admin Page" />
+                <meta name="description" content="About Us" />
             </Helmet>
             <BannerLanding bannerClass="contactBanner" />
             <div id="main">
@@ -19,4 +19,4 @@ const Admin = (props) => {
     )
 }
 
-export default Admin
+export default Staff

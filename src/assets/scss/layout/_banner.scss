@@ -11,7 +11,8 @@
 		@include vendor('display', 'flex');
 		@include padding(4em, 0, (2em, 0, 0, 0));
 		background-attachment: fixed;
-		background-position: bottom;
+		// background-position: 0px -120px; pic1
+		background-position: 0px -233px;
 		background-repeat: no-repeat;
 		background-size: cover;
 		border-bottom: 0 !important;
@@ -130,10 +131,15 @@
 
 		@include breakpoint(large) {
 			background-attachment: scroll;
+			// background-position: 0px -87px; pic1
+			background-position: 0px -136px;
 		}
 
 		@include breakpoint(small) {
 			@include padding(3em, 0, (2em, 0, 0, 0));
+			// background-position: 0px -34px; pic1
+			// background-position: 0px -233px;
+			background-position: 0px -6px;
 			height: auto;
 			margin-bottom: -2.75em;
 			max-height: none;
@@ -164,7 +170,8 @@
 
 		@include breakpoint(xsmall) {
 			@include padding(4em, 0, (2em, 0, 0, 0));
-
+			// background-positoin: -28px -18px; pic1
+			background-position: 0px 0px;
 			> .inner {
 				.content {
 					p {

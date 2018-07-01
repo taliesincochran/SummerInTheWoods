@@ -1,12 +1,11 @@
 import React from 'react';
-import Helmet from 'react-helmet';
-import Banner from '../components/Banner'
 import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
+import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
 
 
-class AccountPage extends React.Component {
+class AdminParentAccounts extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -23,7 +22,7 @@ class AccountPage extends React.Component {
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
-	                <meta name="description" content="Account Page" />
+	                <meta name="description" content="Contact Page" />
 	            </Helmet>
 	            <BannerLanding bannerClass="contactBanner" />
 	            <div id="main">
@@ -36,6 +35,4 @@ class AccountPage extends React.Component {
 	}
 }
 
-
-export default AccountPage;
-
+export default AdminParentAccounts

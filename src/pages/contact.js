@@ -1,6 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import BannerLanding from '../components/BannerLanding'
+import BannerLanding from '../components/BannerLanding/'
 
 const Contact = (props) => {
     const gotchaStyle = {

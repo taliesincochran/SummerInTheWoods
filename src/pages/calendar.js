@@ -138,7 +138,7 @@ const events = [
       height = {800}
       onSelectEvent={event => {
         console.log(event);
-        alert(event.title);
+        console.log(props);
       }
       }
       onSelectSlot={slotInfo =>

@@ -21,5 +21,5 @@ class AccountPage extends React.Component {
 	}
 }
 
-export default Account;
+export default AccountPage;
 

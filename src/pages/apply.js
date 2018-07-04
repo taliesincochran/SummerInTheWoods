@@ -64,9 +64,9 @@ class Application extends React.Component {
     getCost = () => { 
     {/*
         let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8];
-        let threeDayArray = weekArray.filter(value => value==="threeDay")
+        let threeDayArray = weekArray.filter(value => value===3)
         let threeDayCost = 120 * threeDayArray.length
-        let fiveDayArray = weekArray.filter(value => value==="fiveDay")
+        let fiveDayArray = weekArray.filter(value => value===5)
         let fiveDayCost = 0;
         if(fiveDayArray.length>5) {
             fiveDayCost = 135 * fiveDayArray.length

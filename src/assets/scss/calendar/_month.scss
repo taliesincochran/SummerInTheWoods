@@ -1,5 +1,5 @@
 @import './_variables.scss';
-
+@import './_monthevent.scss';
 
 .rbc-row {
   display: flex;
@@ -8,9 +8,10 @@
 
 .rbc-row-segment {
   padding: 0 1px 1px 1px;
-
+  line-height: 5.5em;
   .rbc-event-content {
-    &:extend(.rbc-ellipsis);
+    @extend .rbc-ellipsis;
+    background-color: green;
   }
 }
 
@@ -20,7 +21,7 @@
 
 
 .rbc-show-more {
-  &:extend(.rbc-ellipsis);
+  @extend .rbc-ellipsis;
   background-color: rgba(255, 255, 255, 0.3);
   z-index: $event-zindex;
   font-weight: bold;
@@ -82,7 +83,7 @@
 }
 
 .rbc-row-bg {
-  &:extend(.rbc-abs-full);
+  @extend .rbc-abs-full;
   display: flex;
   flex-direction: row;
   flex: 1 0 0;

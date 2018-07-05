@@ -1,7 +1,17 @@
 @import './_variables.scss';
 @import './_reset.scss';
-
-
+@import './_toolbar.scss';
+@import './_event.scss';
+@import './_month.scss';
+@import './_agenda.scss';
+@import './_time-grid.scss';
+@import './_monthevent.scss';
+.available {
+  background-color: green;
+}
+.no-vacancy {
+  background-color: red;
+}
 .rbc-calendar {
   box-sizing: border-box;
   height: 100%;
@@ -16,21 +26,7 @@
   box-sizing: inherit;
 }
 
-.rbc-abs-full {
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 
-.rbc-ellipsis {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 .rbc-rtl {
   direction: rtl;
@@ -86,8 +82,3 @@
 }
 
 
-@import './_toolbar.scss';
-@import './_event.scss';
-@import './_month.scss';
-@import './_agenda.scss';
-@import './_time-grid.scss';

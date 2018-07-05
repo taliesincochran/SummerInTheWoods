@@ -27,6 +27,7 @@ class TemplateWrapper extends Component {
             month: '',
             year:'',
             yearsArray: [],
+            rawCampTimes: [],
             campTimes: [],
             localTimezoneOffset: 4
         }
@@ -67,6 +68,7 @@ class TemplateWrapper extends Component {
             let campTimes = yearsArray.map(year => rawCampTimes[year])
             let data = {
                 campTimes,
+                rawCampTimes,
                 date,
                 month,
                 year,
@@ -78,6 +80,7 @@ class TemplateWrapper extends Component {
             return(data);
         }).then(data=> {
                 let { campTimes,
+                    rawCampTimes,
                     date,
                     month,
                     year,
@@ -85,7 +88,7 @@ class TemplateWrapper extends Component {
                     localTimezoneOffset,
                     chosenYear
                 } = data
-            this.setState({localTimezoneOffset, campTimes, yearsArray, chosenYear, month, year, date});
+            this.setState({localTimezoneOffset, rawCampTimes, campTimes, yearsArray, chosenYear, month, year, date});
         })
     }
     componentWillUnmount () {

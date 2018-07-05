@@ -1,4 +1,5 @@
 @import './_variables.scss';
+@import './_monthevent.scss';
 
 @mixin rbc-event($title: $event-bg){
   padding: $event-padding;
@@ -6,6 +7,7 @@
   border-radius: $event-border-radius;
   color: $event-color;
   cursor: pointer;
+  height: 100%;
 
   .rbc-slot-selecting & {
     cursor: inherit;
@@ -16,7 +18,12 @@
     background-color: darken($event-bg, 10%);
   }
 }
-
+.rbc-ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 
 [title= "Conference"] {
@@ -30,8 +37,8 @@
 
 
 .rbc-event-label {
-  &:extend(.rbc-ellipsis);
   font-size: 80%;
+  @extend .rbc-ellipsis;
 }
 
 .rbc-event-overlaps {

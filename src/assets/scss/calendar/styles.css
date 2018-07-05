@@ -16,6 +16,12 @@ button.rbc-input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
+.available {
+  background-color: green;
+}
+.no-vacancy {
+  background-color: red;
+}
 .rbc-calendar {
   box-sizing: border-box;
   height: 800px;
@@ -90,12 +96,18 @@ button.rbc-input::-moz-focus-inner {
 .rbc-today {
   background-color: #eaf6ff;
 }
+.rbc-event-content {
+  background-color: red;
+  height: 40px;
+  border-radius: 10px;
+}
 .rbc-toolbar {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   font-size: 16px;
 }
+
 .rbc-toolbar .rbc-toolbar-label {
   flex-grow: 1;
   padding: 0 10px;
@@ -240,6 +252,7 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-row-segment {
   padding: 0 1px 1px 1px;
+  line-height: 5.5em;
 }
 .rbc-selected-cell {
   background-color: rgba(0, 0, 0, 0.1);
@@ -437,6 +450,7 @@ button.rbc-input::-moz-focus-inner {
   flex: 1 1 0;
   word-wrap: break-word;
   line-height: 1;
+  font-size: 3em;
   height: 100%;
   min-height: 1em;
 }

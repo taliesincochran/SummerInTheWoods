@@ -30,13 +30,6 @@ const linkArray = [
     admin: true
   },
   {
-    path: routes.PASSWORD_CHANGE,
-    text: "Change Password",
-    admin: true,
-    auth: true,
-    nonAuth:true
-  },
-  {
     path: routes.ACCOUNT,
     text: "Your Account",
     auth: true
@@ -66,7 +59,7 @@ const linkArray = [
     nonAuth:true
   },
   {
-    path: routes.Calendar,
+    path: routes.CALENDAR,
     text: 'Calendar',
     admin: true,
     auth: true,

@@ -19,7 +19,7 @@ const NavigationAuth = (props) => {
                       state={props.state} 
                       handleChange={props.handleChange} 
                       handleYearChange={props.handleYearChange}
-                      onClick={props.onToggleMenu}
+                      onToggleMenu={props.onToggleMenu}
                     />:'')}
                 <li><SignOut button={props.button}/></li>
               </ul>):
@@ -35,7 +35,7 @@ const NavigationAuth = (props) => {
                         state={props.state} 
                         handleChange={props.handleChange} 
                         handleYearChange={props.handleYearChange}
-                        onClick={props.onToggleMenu}
+                        onToggleMenu={props.onToggleMenu}
                       />:'')}
                   <li><SignOut button={props.button}/></li>
               </ul>

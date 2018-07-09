@@ -11,23 +11,35 @@ class AdminCalendarEditor extends React.Component {
 		this.state = {
 			username: '',
 			email: '',
-			userObject: {}
+			campTimes: this.props.location.state.rawCampTimes
 		}
 	}
 	componentDidMount() {
 		console.log(this.state);
+		let yearArray = [];
+	    let year = this.props.location.state.year;
+    	let months = ["June", "July", "August"];
+    	let dates = months.map((month, i)=> new Date(year, i + 5, 1))
+    	let views = []
+    	for(var i = 0; i<months.length; i++) {
+        	let month = months[i];
+        	let date = dates[i];
+        	views.push({month,date})
+    	}
 	}
-	render() {
+	render() {		
 	    return(
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
-	                <meta name="description" content="Contact Page" />
+	                <meta name="description" content="Admin Calendar Page" />
 	            </Helmet>
 	            <BannerLanding bannerClass="contactBanner" />
 	            <div id="main">
 	                <div className="inner">
-	                    To Do
+	                    {views.map(view=>
+	                        <Selectable {...props} title={view.month} defaultDate={view.date} />                        
+	                    )}
 	                </div>
 	            </div>
 	        </div>

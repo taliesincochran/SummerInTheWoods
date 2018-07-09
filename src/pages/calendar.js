@@ -23,7 +23,7 @@ const Calendar = (props) => {
             <div id="main">
                 <div className="inner">
                     {views.map(view=>
-                        <Selectable {...props} title={view.month} defaultDate={view.date} />                        
+                        <Selectable {...props} i={0} title={view.month} defaultDate={view.date} />                        
                     )}
                 </div>
             </div>

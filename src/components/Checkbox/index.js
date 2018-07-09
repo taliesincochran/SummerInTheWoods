@@ -7,7 +7,7 @@ const Input = props =>
             name={props.name}
             value={props.value}
             onChange={props.handleWeekSelect}
-            checked={props.checked}
+            checked={props.isChecked}
         />
         :
         <input
@@ -15,7 +15,7 @@ const Input = props =>
             name={props.name}
             value={props.value}
             onChange={props.handleWeekSelect}
-            checked={props.checked}
+            checked={props.isChecked}
         />
 
 const Checkbox = props => 
@@ -24,14 +24,14 @@ const Checkbox = props =>
             name={props.name}
             value={props.value}
             onChange={props.onChange}
-            checked={props.checked}
+            isChecked={props.isChecked}
             labelStyle={props.labelStyle}
         />
         <label
             className={props.className}
             htmlFor={props.name}
             value={props.value}
-            onClick={props.onClick}
+            onClick={props.onClickLabel}
             style={props.labelStyle}
         >
         {props.text}

@@ -4,6 +4,8 @@ import Helmet from 'react-helmet'
 import { db } from '../firebase'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
+import Selectable from '../components/Selectable'
+import YearSelect from '../components/YearSelect'
 class Application extends React.Component {
     constructor(props) {
         super(props);
@@ -38,11 +40,18 @@ class Application extends React.Component {
         this.getWeeks =  this.getWeeks.bind(this)
     }
     componentDidMount() {
-        let _props = this.props.location.state
-        console.log("apply this.props", this.props, _props.rawCampTimes[_props.chosenYear])
-        console.log("get weeks parameter", _props.rawCampTimes[_props.chosenYear])
-        this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear)})
-        console.log('apply state', this.state)
+        let _props = this.props.location.state;
+        let year = _props.year;
+        let months = ["June", "July", "August"];
+        let dates = months.map((month, i)=> new Date(year, i + 5, 1))
+        let views = []
+        for(var i = 0; i<months.length; i++) {
+            let month = months[i];
+            let date = dates[i];
+            views.push({month,date})
+        }
+        this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear), months, dates, views,})
+        console.log('apply state and props', this.state, this.props)
     }
     getWeeks (yearChosen, yearString) {
         let weekArray = [];
@@ -171,45 +180,13 @@ class Application extends React.Component {
                                     </div>
                                     <div>
                                         <p>Year</p>
-                                        {_props.yearsArray.length > 1?
-                                            <div>
-                                                <Checkbox
-                                                    name="year1"
-                                                    value={_props.yearsArray[0]}
-                                                    onChange={this.handleYearSelect} 
-                                                    checked={this.state.chosenYear == _props.yearsArray[0]}
-                                                    className='float-left'
-                                                    value={_props.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(_props.yearsArray[0])}
-                                                    text={_props.yearsArray[0]}
-                                                />
-                                                <Checkbox 
-                                                    type="checkbox" 
-                                                    name="year2"
-                                                    value={_props.yearsArray[1]}
-                                                    onChange={this.handleYearSelect}
-                                                    checked={this.state.chosenYear == _props.yearsArray[1]} 
-                                                    className='float-left'
-                                                    value={_props.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(_props.yearsArray[1])} 
-                                                    text={_props.yearsArray[1]}
-                                                />
-                                            </div>
-                                        :
-                                            <div>
-                                                <Checkbox
-                                                    name="year1"
-                                                    value={_props.yearsArray[0]}
-                                                    onChange={this.handleYearSelect} 
-                                                    checked={true}
-                                                    className='float-left'
-                                                    value={_props.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(_props.yearsArray[0])}
-                                                    text={_props.yearsArray[0]}
-                                                />
-                                            </div>
-                                        }
+                                        <YearSelect 
+                                            yearsArray={_props.yearsArray} 
+                                            handleYearSelect={this.handleYearSelect}
+                                            chosenYear={this.state.chosenYear}
+                                        />
                                         <br />
+
                                         {this.state.weekArray.map((week,i)=>
                                             <div key = {week.week}>
                                                 <p style={{fontSize: "1.5em"}}>{week.week}{"  "}{week.start}-{week.end} Available Spots: {week.available - week.pending}</p>

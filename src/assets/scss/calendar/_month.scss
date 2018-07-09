@@ -8,10 +8,17 @@
 
 .rbc-row-segment {
   padding: 0 1px 1px 1px;
-  line-height: 5.5em;
+  line-height: 3em;
+  font-size: 1.5em;
+  height:100%;
   .rbc-event-content {
     @extend .rbc-ellipsis;
-    background-color: green;
+      & > span > button.available {
+            background-color: $event-available;
+          }
+      & > span > button.no-vacancy {
+            background-color: $event-no-vacancy;
+      }
   }
 }
 

@@ -6,12 +6,6 @@
 @import './_agenda.scss';
 @import './_time-grid.scss';
 @import './_monthevent.scss';
-.available {
-  background-color: green;
-}
-.no-vacancy {
-  background-color: red;
-}
 .rbc-calendar {
   box-sizing: border-box;
   height: 100%;
@@ -77,8 +71,8 @@
   z-index: 4;
 }
 
-.rbc-today {
-  background-color: $today-highlight-bg;
-}
+// .rbc-today {
+//   background-color: $today-highlight-bg;
+// }
 
 

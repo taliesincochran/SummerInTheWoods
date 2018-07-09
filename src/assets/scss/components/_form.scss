@@ -1,5 +1,20 @@
 	form {
 		margin: 0 0 _size(element-margin) 0;
+		.smallBox {
+			overflow:auto;
+			border-bottom:1px solid white;
+			margin-bottom: 30px;
+		}
+		.infoBox {
+			overflow:auto;
+			padding: 30px;
+			border: 5px solid white;
+			margin-bottom: 50px;
+		}
+		.yearBox {
+			margin-bottom: 30px;
+			overflow: auto;
+		}
 		.field {
 			margin: 0 0 (_size(element-margin) * 1) 0;
 
@@ -70,6 +85,8 @@
 	input[type="tel"],
 	input[type="search"],
 	input[type="url"],
+	input[type="date"],
+	input[type="number"],
 	select,
 	textarea {
 		@include vendor('appearance', 'none');

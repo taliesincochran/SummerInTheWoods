@@ -6,6 +6,7 @@ import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
 import Selectable from '../components/Selectable'
 import YearSelect from '../components/YearSelect'
+import PaypalButton from '../components/PayPalButton'
 class Application extends React.Component {
     constructor(props) {
         super(props);
@@ -32,7 +33,8 @@ class Application extends React.Component {
             Week6: 0,
             Week7: 0,
             Week8: 0,
-            weekArray: []
+            weekArray: [],
+            hash: ''
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleYearSelect = this.handleYearSelect.bind(this)
@@ -131,7 +133,82 @@ class Application extends React.Component {
         let totalCost = fiveDayCost + threeDayCost;
         let amountDue = initialCost + (totalWeeksSelected - 1) * 25; 
         this.setState({totalCost, amountDue, savings});
+        this.setButton(this.state.amountDue)
     }
+
+    setButton = (amountDue)=>{
+        let hash = "";
+        switch (amountDue){
+            case amountDue == 120:
+                hash= "";
+                break;
+            case amountDue == 135:
+                hash= "";
+                break;
+            case amountDue == 145:
+                hash= "";
+                break;
+            case amountDue == 150:
+                hash= "";
+                break;
+            case amountDue == 160:
+                hash= "";
+                break;
+            case amountDue == 170:
+                hash= "";
+                break;
+            case amountDue == 175:
+                hash= "";
+                break;
+            case amountDue == 185:
+                hash= "";
+                break;
+            case amountDue == 195:
+                hash= "";
+                break;
+            case amountDue == 200:
+                hash= "";
+                break;
+            case amountDue == 210:
+                hash= "";
+                break;
+            case amountDue == 220:
+                hash= "";
+                break;
+            case amountDue == 225:
+                hash= "";
+                break;
+            case amountDue == 235:
+                hash= "";
+                break;
+            case amountDue == 245:
+                hash= "";
+                break;
+            case amountDue == 250:
+                hash= "";
+                break;
+            case amountDue == 260:
+                hash= "";
+                break;
+            case amountDue == 270:
+                hash= "";
+                break;
+            case amountDue == 275:
+                hash= "";
+                break;
+            case amountDue == 285:
+                hash= "";
+                break;
+            case amountDue == 300:
+                hash= "";
+                break;
+            case amountDue == 325:
+                hash= "";
+                break;
+        }
+        this.setState({hash});
+    }
+
     render() {
         console.log("apply props ", this.props)
         console.log("apply state ", this.state)
@@ -238,12 +315,18 @@ class Application extends React.Component {
                                                         />
                                                     </div>
                                                 }
+                                               
                                             </div>                                                
                                         )}
                                     </div>                               
                                 </form>
                             </section>
                         </div>
+                        <PaypalButton
+                                                    //currency='USD'
+                                                    //total={225}
+                                                    //client={{name:'Betty'}}
+                                                    />
                     </div>
                 </div>            
         )        

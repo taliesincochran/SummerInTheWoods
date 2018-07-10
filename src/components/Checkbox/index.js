@@ -7,7 +7,7 @@ const Input = props =>
             name={props.name}
             value={props.value}
             onChange={props.handleWeekSelect}
-            checked={props.isChecked}
+            checked={props.checked}
         />
         :
         <input
@@ -15,26 +15,48 @@ const Input = props =>
             name={props.name}
             value={props.value}
             onChange={props.handleWeekSelect}
-            checked={props.isChecked}
+            checked={props.checked}
         />
-
+const Label = props => {
+    return(
+        props.disabled?
+            <label
+                className={props.className}
+                htmlFor={props.name}
+                style={props.labelStyle}
+            >
+                {props.text}
+            </label>
+        :
+            <label
+                className={props.className}
+                htmlFor={props.name}
+                value={props.value}
+                onClick={props.onClick}
+                style={props.labelStyle}
+            >
+            {props.text}
+            </label>
+    )
+}
 const Checkbox = props => 
     <div style={props.style}>
         <Input
             name={props.name}
             value={props.value}
             onChange={props.onChange}
-            isChecked={props.isChecked}
+            checked={props.checked}
             labelStyle={props.labelStyle}
         />
-        <label
+        <Label
             className={props.className}
-            htmlFor={props.name}
+            name={props.name}
             value={props.value}
-            onClick={props.onClickLabel}
-            style={props.labelStyle}
+            onClick={props.onClick}
+            labelStyle={props.labelStyle}
+            text={props.text}
         >
         {props.text}
-        </label>
+        </Label>
     </div>
 export default Checkbox

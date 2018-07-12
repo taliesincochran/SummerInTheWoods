@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import SignOut from '../SignOut';
 import * as routes from '../../constants/routes';
 import linkArray from '../../constants/linkArray'
 import LinkItem from '../LinkItem'
@@ -21,7 +20,6 @@ const NavigationNonAuth = (props) => {
 		      	/>
 		      	:'')
   			}
-      <li><SignOut button={props.button}/></li>
   </ul>
   )}
 

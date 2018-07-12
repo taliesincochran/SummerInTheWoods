@@ -1,27 +1,31 @@
 import React from 'react'
 import Helmet from 'react-helmet'
+import { Redirect } from "react-router-dom"
 // import Moment from 'react-moment'
 import { db } from '../firebase'
+import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
+import Input from '../components/Input'
+import PaypalButton from '../components/PaypalButton'
+import { test } from '../constants/functions'
 class Application extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            date: this.props.location.state.date,
-            month: this.props.location.state.month,
-            year: this.props.location.state.year,
-            yearsArray: this.props.location.state.yearsArray,
-            chosenYear: this.props.location.state.year,
+            date: '',
+            month: '',
+            year: '',
+            yearsArray: '',
+            chosenYear: '',
             numberOfChildren: 1,
             totalCost: 0,
             amountDue: 0,
             savings: 0,
-            // localTimezoneOffset: props.loction.state.localTimezoneOffset,
             campTimezoneOffset: 4,
-            localTimezoneOffset: this.props.location.state.localTimezoneOffset,
-            campTimes: this.props.location.state.campTimes,
-            rawCampTimes: this.props.location.state.rawCampTimes,
+            localTimezoneOffset: '',
+            campTimes: '',
+            rawCampTimes:'',
             Week1: 0,
             Week2: 0,
             Week3: 0,
@@ -50,9 +54,12 @@ class Application extends React.Component {
             physicianPhone:'',
             dentistName:'',
             dentistPhone:'',
-            address:''
-
-
+            address:'',
+            option:'',
+            firstWeek:0,
+            paypalCost: 0,
+            page:0,
+            buttonHash:''
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleYearSelect = this.handleYearSelect.bind(this)
@@ -60,11 +67,16 @@ class Application extends React.Component {
         this.getWeeks =  this.getWeeks.bind(this)
     }
     componentDidMount() {
-        let _props = this.props.location.state
-        console.log("apply this.props", this.props, _props.rawCampTimes[_props.chosenYear])
-        console.log("get weeks parameter", _props.rawCampTimes[_props.chosenYear])
-        this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear)})
-        console.log('apply state', this.state)
+        if(this.props.location.state) {
+            test(ReactDom, this);
+            let _props = this.props.location.state
+            let {year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset} = _props;
+            this.setState({year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset})
+            console.log("apply this.props", this.props, _props.rawCampTimes[_props.chosenYear])
+            console.log("get weeks parameter", _props.rawCampTimes[_props.chosenYear])
+            this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear)})
+            console.log('apply state', this.state)    
+        }
     }
     getWeeks (yearChosen, yearString) {
         console.log("get weeks called", yearString)
@@ -91,8 +103,55 @@ class Application extends React.Component {
     }
     handleYearSelect = year => {
         console.log('year select', year)
-        
         this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year)})
+    }
+    getButtonHash = (firstWeek) => {
+        let buttonHash = "";
+        switch(firstWeek) {
+            case 1:
+                buttonHash="27FS3JKVXYL76";
+                break;
+            case 2: 
+                buttonHash="27FS3JKVXYL76";
+                break;
+            case 3:
+                buttonHash="27FS3JKVXYL76";
+                break;
+            case 4: 
+                buttonHash="27FS3JKVXYL76";
+                break;
+        }
+        this.setState({buttonHash})
+    }
+    handleSubmit = event => {
+        event.preventDefault();
+        let weekArray = this.makeWeekArray()
+        if (weekArray.length=0) {
+            alert("You have selected no weeks, please select the weeks you would like you're child to attend.");
+        } else {
+            let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset} = this.state;
+            let application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset }
+            db.applicationSubmit(application)   
+        }
+
+    }
+    handleNext = event => {
+        event.preventDefault();
+        console.log(event.target)
+        switch(event.target.id) {
+            case 'submitPage0':
+                this.setState({page: 1});
+                break;
+            case 'submitPage1':
+                this.setState({page:2});
+                break;
+            case 'submitPage2':
+                this.setState({page:3});
+                break;
+            case 'submitPage3':
+                this.setState({page:4});
+                break;
+        }
     }
     handleWeekSelect = (week, value) => {
         if(this.state[week] == value) {
@@ -103,8 +162,12 @@ class Application extends React.Component {
         }
         console.log("week select", 'week', week, 'value', value)
     }
-    getCost = () => { 
+    makeWeekArray = () => {
         let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8];
+        return weekArray  
+    }
+    getCost = () => { 
+        let weekArray = this.makeWeekArray()
         console.log("weeks selected", weekArray)
         let firstWeekSelected = 0;
         let totalWeeksSelected = 0;
@@ -126,32 +189,42 @@ class Application extends React.Component {
         let initialCost = 0;
         let fiveDayNumber = fiveDayArray.length
         let savings = 0;
+        let firstWeek=0;
         if(fiveDayNumber>5) {
             fiveDayCost = 135 * fiveDayArray.length;
             initialCost = 135;
             savings = 40 * fiveDayArray.length;
+            firstWeek = 4;
+            this.getButtonHash(4);
         } else if(fiveDayNumber> 3) {
             fiveDayCost = 150 * fiveDayArray.length;
             initialCost = 150;
             savings = 25 * fiveDayArray.length;
+            firstWeek=3;
+            this.getButtonHash(3);
         } else if(fiveDayNumber) {
             fiveDayCost = 175 * fiveDayArray.length;
             initialCost = 175;
+            firstWeek=2;
+            this.getButtonHash(2)
         } else if (!fiveDayNumber && totalWeeksSelected) {
             initialCost = 120;
+            firstWeek=1;
+            this.getButtonHash(1)
         }
         let totalCost = fiveDayCost + threeDayCost;
-        let amountDue = initialCost + (totalWeeksSelected - 1) * 25; 
-        this.setState({totalCost, amountDue, savings});
+        let paypalCostUnrounded = (initialCost * .029) +.3;
+        let paypalTemp = 100 * paypalCostUnrounded;
+        let paypalCost = Math.round(paypalTemp)/100;
+        let amountDue = initialCost + (totalWeeksSelected - 1) * 25;
+        this.setState({totalCost, amountDue, savings, firstWeek, paypalCost});
     }
     render() {
         console.log("apply props ", this.props)
         console.log("apply state ", this.state)
         let _props = this.props.location.state;
         return(
-            this.props.location.state.isLoadingCalendar?
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" />
-                :
+        !this.props.location.state?<Redirect to="/"/>:
                 <div>
                     <Helmet>
                         <title>Summer In The Woods</title>
@@ -161,227 +234,153 @@ class Application extends React.Component {
                     <div id="main">
                         <div className="inner">
                             <section>
-                                <form method="post" action='#'>
-                                    <p>To reserve your child’s spot, please submit this completed htmlForm and a deposit of your first week’s payment
-                                        plus $25 per additional week. The waiver can be signed once you have visited our location.
-                                    </p>
-                                    <div>
-                                        <p>Year</p>
-                                        <div className="yearBox">
-                                        <h2>Select the weeks you would your child to attend.</h2>
-                                        {_props.yearsArray.length > 1?
+                                <form>
+                                    {this.state.page == 0?
+                                        <div>
+                                            <p>To reserve your child’s spot, please submit this completed htmlForm and a deposit of your first week’s payment
+                                                plus $25 per additional week. The waiver can be signed once you have visited our location.  Payments can be paid via Paypal, but a 0.29% +$.30 service charge will be added to cover the added expense to the camp. 
+                                            </p>
                                             <div>
-                                                <Checkbox
-                                                    name="year1"
-                                                    value={_props.yearsArray[0]}
-                                                    onChange={this.handleYearSelect} 
-                                                    checked={this.state.chosenYear == _props.yearsArray[0]}
-                                                    className='float-left'
-                                                    value={_props.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(_props.yearsArray[0])}
-                                                    text={_props.yearsArray[0]}
-                                                />
-                                                <Checkbox 
-                                                    type="checkbox" 
-                                                    name="year2"
-                                                    value={_props.yearsArray[1]}
-                                                    onChange={this.handleYearSelect}
-                                                    checked={this.state.chosenYear == _props.yearsArray[1]} 
-                                                    className='float-left'
-                                                    value={_props.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(_props.yearsArray[1])} 
-                                                    text={_props.yearsArray[1]}
-                                                />
-                                            </div>
-                                        :
-                                            <div>
-                                                <Checkbox
-                                                    name="year1"
-                                                    value={_props.yearsArray[0]}
-                                                    onChange={this.handleYearSelect} 
-                                                    checked={true}
-                                                    className='float-left'
-                                                    value={_props.yearsArray[0]}
-                                                    onClick={() => this.handleYearSelect(_props.yearsArray[0])}
-                                                    text={_props.yearsArray[0]}
-                                                />
-                                            </div>
-                                        }
-                                        </div>
-                                        <div className="infoBox">
-                                        {this.state.weekArray.map((week,i)=>
-                                            week.noCamp?
-                                            <div key ={week.week} className='smallBox'>
-                                                <p style={{fontSize:"1.5em"}}>{week.start}-{week.end}<br/> No Camp This Week</p>
-                                            </div>:
-                                            <div key = {week.week} className='smallBox'>
-                                                <p style={week.available-week.pending>0?{fontSize: "1.5em"}:{fontSize:"1.5em",textDecoration:"line-through"}}>{week.start}-{week.end} <br/>Spots Available: {week.available - week.pending}</p>
-                                                {(week.available - week.pending)>0?
-                                                    <div key={i}>
-                                                        <Checkbox
-                                                            name={`"${week.week}5"`}
-                                                            value="5"
-                                                            onChange={()=>this.handleWeekSelect(week.week, 5)}
-                                                            checked={this.state[week.week] == "5"}
-                                                            value='5'
-                                                            onClick={()=> this.handleWeekSelect(week.week, 5)}
-                                                            text="5 day"
-                                                            
-                                                        />
-                                                        <Checkbox
-                                                            name={`"${week.week}3"`}
-                                                            value='5'
-                                                            onChange={()=>this.handleWeekSelect(week.week, 5)}
-                                                            checked={this.state[week.week] == "3"}
-                                                            value='5'
-                                                            onClick={()=> this.handleWeekSelect(week.week, 3)}
-                                                            text="3 day"
-                                                        />
+                                                <p>Year</p>
+                                                <div className="yearBox">
+                                                <h2>Select the weeks you would your child to attend.</h2>
+                                                {_props.yearsArray.length > 1?
+                                                    <div>
+                                                        <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[0]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
+                                                        <Checkbox type="checkbox" name="year2" value={_props.yearsArray[1]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[1]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[1])} text={_props.yearsArray[1]} />
                                                     </div>
-                                                    :
-                                                    <div key={i}>
-                                                        <Checkbox
-                                                            labelStyle={{textDecoration: 'line-through'}}
-                                                            disabled={true}
-                                                            name={`"${week.week}5"`}
-                                                            value="5"
-                                                            onChange={()=>this.handleWeekSelect(week.week, 5)}
-                                                            checked={this.state[week.week] == "5"}
-                                                            value='5'
-                                                            onClick={()=> this.handleWeekSelect(week.week, 5)}
-                                                            text="5 day"
-                                                        />
-                                                        <Checkbox
-                                                            disabled={true}
-                                                            labelStyle={{textDecoration: 'line-through'}}
-                                                            name={`"${week.week}3"`}
-                                                            value='5'
-                                                            onChange={()=>this.handleWeekSelect(week.week, 5)}
-                                                            checked={this.state[week.week] == "3"}
-                                                            value='5'
-                                                            onClick={()=> this.handleWeekSelect(week.week, 3)}
-                                                            text="3 day"
-                                                        />
+                                                :
+                                                    <div>
+                                                        <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={true} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
                                                     </div>
                                                 }
-                                            </div>                                                
-                                        )}
+                                                </div>
+                                                <div className="infoBox">
+                                                {this.state.weekArray.map((week,i)=>
+                                                    week.noCamp?
+                                                    <div key ={week.week} className='smallBox'>
+                                                        <p style={{fontSize:"1.5em"}}>{week.start}-{week.end}<br/> No Camp This Week</p>
+                                                    </div>:
+                                                    <div key = {week.week} className='smallBox'>
+                                                        <p style={week.available-week.pending>0?{fontSize: "1.5em"}:{fontSize:"1.5em",textDecoration:"line-through"}}>{week.start}-{week.end} <br/>Spots Available: {week.available - week.pending}</p>
+                                                        {(week.available - week.pending)>0?
+                                                            <div key={i}>
+                                                                <Checkbox name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} value='5' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
+                                                                <Checkbox name={`"${week.week}3"`} value='5' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} value='5' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                            </div>
+                                                            :
+                                                            <div key={i}>
+                                                                <Checkbox labelStyle={{textDecoration: 'line-through'}} disabled={true} name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} value='5' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
+                                                                <Checkbox disabled={true} labelStyle={{textDecoration: 'line-through'}} name={`"${week.week}3"`} value='5' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} value='5' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                            </div>
+                                                        }
+                                                    </div>                                                
+                                                )}
+                                                </div>
+                                                <button className="button" id="submitPage0" onClick={this.handleNext}>Next</button>
+                                            </div> 
                                         </div>
-                                    </div> 
-                                    <div>
-                                        <h2>Child's Information</h2>
-                                        <div className="infoBox">                           
-                                            <div className="field half first">
-                                                <label htmlFor="childFirstName">Child's First Name</label>
-                                                <input type="text" name="childFirstName" required onChange={this.onChange}></input>
+                                    :this.state.page == 1?
+                                        <div>
+                                            <h2>Child's Information</h2>
+                                            <div className="infoBox">                           
+                                                <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" required={true} onChange={this.onChange} />
+                                                <Input className="field half" text="Child's Last Name" type="text" name="childLastName" required={true}onChange={this.onChange} />
+                                                <Input className="field half first" text="Age" type="number" name="age" required={true} onChange={this.onChange} />
+                                                <Input className="field half" text="Birthdate" type="date" name="birthday" required={true} onChange={this.onChange} />                                            
+                                                <div className="field">
+                                                    <label htmlFor="allergies">Allergies</label>
+                                                    <textarea name="allergies" rows="6" onChange={this.onChange}></textarea>
+                                                </div>
                                             </div>
-                                            <div className="field half">
-                                                <label htmlFor="childLastName">Child's Last Name</label>
-                                                <input type="text" name="childLastName" required onChange={this.onChange}></input>
-                                            </div>
-                                            <div className="field half first">
-                                                <label htmlFor='age'>Age</label>
-                                                <input type="number" name="age" required onChange={this.onChange}></input>
-                                            </div>
-                                            <div className="field half">
-                                                <label htmlFor="birthday">Birthdate</label>
-                                                <input type="date" name="birthday" required onChange={this.onChange}></input>
-                                            </div>
-                                            <div className="field">
-                                                <label htmlFor="allergies">Allergies</label>
-                                                <textarea name="allergies" rows="6" onChange={this.onChange}></textarea>
-                                            </div>
+                                            <button className="button" id="submitPage1" onClick={this.handleNext}>Next</button>
                                         </div>
-                                        <h2>Parent Information</h2>
-                                        <div className="infoBox">
-                                            <div className='smallBox'>
-                                                <p  className="formText">Parent 1</p>  
-                                                <div className="field half">
-                                                    <label htmlFor="parent1Name">Parent or Guardian's Name</label>
-                                                    <input type="text" name="parent1Name" required onChange={this.onChange}></input>
+                                    :this.state.page == 2?
+                                        <div>
+                                            <h2>Parent Information</h2>
+                                            <div className="infoBox">
+                                                <div className='smallBox'>
+                                                    <p  className="formText">Parent 1</p>  
+                                                    <Input className="field half" text="Parent or Guardian's Name" type="text" name="parent1Name" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent1Phone" required={true} onChange={this.onChange} />
                                                 </div>
-                                                <div className="field half">
-                                                    <label htmlFor="parent1Phone">Parent or Guardian's Phone Number</label>
-                                                    <input type="tel" name="parent1Phone" required onChange={this.onChange}></input>
+                                                <p  className="formText">Parent 2</p>
+                                                <div className="smallBox">
+                                                    <Input className="field half" text="Parent or Guardian's Name" type="text" name="parent2Name" onChange={this.onChange} />
+                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent2Phone" onChange={this.onChange} />
                                                 </div>
-                                            </div>
-                                            <p  className="formText">Parent 2</p>
-                                            <div className="smallBox">
-                                                <div className="field half">
-                                                    <label htmlFor="parent2Name">Parent or Guardian's Name</label>
-                                                    <input type="text" name="parent2Name" onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="parent2Phone">Parent or Guardian's Phone Number</label>
-                                                    <input type="tel" name="parent2Phone" onChange={this.onChange}></input>
+                                                <div className="field">
+                                                    <label htmlFor="address">Address</label>
+                                                    <textarea name="address" rows="4"  required onChange={this.onChange}></textarea>
                                                 </div>
                                             </div>
-                                            <div className="field">
-                                                <label htmlFor="address">Address</label>
-                                                <textarea name="address" rows="4"  required onChange={this.onChange}></textarea>
+                                            <button className="button" id="submitPage2" onClick={this.handleNext}>Next</button>
+                                        </div>          
+                                    :this.state.page == 3?
+                                        <div>
+                                            <h2>Emergency Information</h2>
+                                            <div className="infoBox">
+                                                <div className="smallBox">
+                                                    <p className="infoText">List two other contacts who will assume temporary care of your child if you cannot be reached</p>
+                                                    <p className="formText">Contact 1</p>
+                                                    <Input className="field half" text="Contact's Name" type="text" name="emergency1Name" required={true} onChange={this.onChange} /> 
+                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency1Phone" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency1Relationship" required={true} onChange={this.onChange} />
+                                                </div>
+                                                <p className="formText">Contact 2</p>
+                                                <div className="smallBox">
+                                                    <div style={{height:'5px'}} />
+                                                    <Input className="field half" text="Contact's Name" type="text" name="emergency2Name"  required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency2Phone"  required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" required={true} onChange={this.onChange} />
+                                                </div>
                                             </div>
+                                            <button className="button" id="submitPage3" onClick={this.handleNext}>Next</button>
                                         </div>
-                                        <h2>Emergency Information</h2>
-                                        <div className="infoBox">
-                                            <div className="smallBox">
-                                                <p className="infoText">List two other contacts who will assume temporary care of your child if you cannot be reached</p>
-                                                <p className="formText">Contact 1</p>
-                                                <div className="field half">
-                                                    <label htmlFor="emergency1Name">Contact's Name</label>
-                                                    <input type="text" name="emergency1Name" required onChange={this.onChange}></input>
+                                    :this.state.page== 4?
+                                        <div>
+                                            <h2>Physician and Dentist Information</h2>
+                                                <div className="infoBox">
+                                                    <Input className="field half" text="Physician's Name" type="tel" name="physicianName" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Physician's Number" type="tel" name="physicianPhone" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Dentist's Name" type="text" name="dentistName"  required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" required={true} onChange={this.onChange} />                                            
                                                 </div>
-                                                <div className="field half">
-                                                    <label htmlFor="emergency1Phone">Contact's Phone Number</label>
-                                                    <input type="tel" name="emergency1Phone" required onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="emergency1Relationship">Contact's Relationship</label>
-                                                    <input type="text" name="emergency1Relationship" required onChange={this.onChange}></input>
-                                                </div>
-                                            </div>
-                                            <p className="formText">Contact 2</p>
-                                            <div className="smallBox">
-                                                <div style={{height:'5px'}} />
-                                                <div className="field half">
-                                                    <label htmlFor="emergency2Name">Contact's Name</label>
-                                                    <input type="text" name="emergency2Name"  required onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="emergency2Phone">Contact's Phone Number</label>
-                                                    <input type="tel" name="emergency2Phone"  required onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="emergency2Relationship">Contact's Relationship</label>
-                                                    <input type="text" name="emergency2Relationship" required onChange={this.onChange}></input>
-                                                </div>
-                                            </div>
-                                            <div style={{marginBottom: "30px"}}>
-                                                <div className="field half">
-                                                    <label htmlFor="physicianName">Physician's Name</label>
-                                                    <input type="text" name="physicianName"  required onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="physicianPhone">Physician's Number</label>
-                                                    <input type="tel" name="physicianPhone" required onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="dentistName">Dentist's Name</label>
-                                                    <input type="text" name="dentistName"  required onChange={this.onChange}></input>
-                                                </div>
-                                                <div className="field half">
-                                                    <label htmlFor="dentistPhone">Dentists's Number</label>
-                                                    <input type="tel" name="dentistPhone"  required onChange={this.onChange}></input>
-                                                </div>
-                                            </div>
+                                            <button className="button" id="submitPage4" onClick={this.handleNext}>Next</button>
                                         </div>
-                                    </div>
-                                    <p>Amount Due: ${this.state.amountDue}{'    '}Total Cost: ${this.state.totalCost}</p>
+                                    :
+                                        <div>
+                                           <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
+                                           <h3>Total Cost: ${this.state.totalCost}</h3>
+                                           <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
+                                           {this.state.buttonHash?
+                                                <div>
+                                                    <p>Please Choose Form of Payment</p>
+                                                    <Link to={{pathname:"/mail", state:this.state}}>Mail Check</Link>
+                                                    <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                                        <input type="hidden" name="cmd" value="_s-xclick" />
+                                                        <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />
+                                                        <table>
+                                                        <tr><td><input type="hidden" name="on0" value="Price" />Price</td></tr><tr><td><select name="os0">
+                                                            <option value={this.paypalPrice}>{this.paypalPrice}</option>
+                                                        </select> </td></tr>
+                                                        </table>
+                                                        <input type="hidden" name="currency_code" value="USD" />
+                                                        <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_cart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+                                                        <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                                                   </form>
+                                                </div>
+                                           :""
+                                           }
+                                       </div>
+                                    }                                    
                                 </form>
                             </section>
                         </div>
                     </div>
-                </div>            
-        )        
+                </div>
+                
+            )       
     }
 }
 

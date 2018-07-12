@@ -68,7 +68,6 @@ class Application extends React.Component {
     }
     componentDidMount() {
         if(this.props.location.state) {
-            test(ReactDom, this);
             let _props = this.props.location.state
             let {year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset} = _props;
             this.setState({year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset})
@@ -139,18 +138,31 @@ class Application extends React.Component {
         event.preventDefault();
         console.log(event.target)
         switch(event.target.id) {
+            case 'previousPage0':
+                this.setState({page:0});
+                break;
             case 'submitPage0':
+                this.setState({page: 1});
+                break;
+            case 'previousPage1':
                 this.setState({page: 1});
                 break;
             case 'submitPage1':
                 this.setState({page:2});
                 break;
+            case 'previousPage2':
+                this.setState({page: 2});
+                break;
             case 'submitPage2':
                 this.setState({page:3});
+                break;
+            case 'previousPage3':
+                this.setState({page: 3});
                 break;
             case 'submitPage3':
                 this.setState({page:4});
                 break;
+
         }
     }
     handleWeekSelect = (week, value) => {
@@ -293,6 +305,7 @@ class Application extends React.Component {
                                                     <textarea name="allergies" rows="6" onChange={this.onChange}></textarea>
                                                 </div>
                                             </div>
+                                            <button className="button" id="previousPage0" onClick={this.handleNext}>Previous</button>
                                             <button className="button" id="submitPage1" onClick={this.handleNext}>Next</button>
                                         </div>
                                     :this.state.page == 2?
@@ -314,6 +327,7 @@ class Application extends React.Component {
                                                     <textarea name="address" rows="4"  required onChange={this.onChange}></textarea>
                                                 </div>
                                             </div>
+                                            <button className="button" id="previousPage1" onClick={this.handleNext}>Previous</button>
                                             <button className="button" id="submitPage2" onClick={this.handleNext}>Next</button>
                                         </div>          
                                     :this.state.page == 3?
@@ -335,9 +349,10 @@ class Application extends React.Component {
                                                     <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" required={true} onChange={this.onChange} />
                                                 </div>
                                             </div>
+                                            <button className="button" id="previousPage2" onClick={this.handleNext}>Previous</button>
                                             <button className="button" id="submitPage3" onClick={this.handleNext}>Next</button>
                                         </div>
-                                    :this.state.page== 4?
+                                    :this.state.page== 4 ?
                                         <div>
                                             <h2>Physician and Dentist Information</h2>
                                                 <div className="infoBox">
@@ -346,6 +361,7 @@ class Application extends React.Component {
                                                     <Input className="field half" text="Dentist's Name" type="text" name="dentistName"  required={true} onChange={this.onChange} />
                                                     <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" required={true} onChange={this.onChange} />                                            
                                                 </div>
+                                                <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
                                             <button className="button" id="submitPage4" onClick={this.handleNext}>Next</button>
                                         </div>
                                     :

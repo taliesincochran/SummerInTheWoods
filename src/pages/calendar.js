@@ -12,34 +12,34 @@ class Calendar extends React.Component {
             year: '',
             yearsArray: [],
             weekArray: [],
-            chosenYear: ''
+            chosenYear: '',
+            rawCampTimes: ''
         }
     }
     componentDidMount () {
         if(this.props.location.state) {                        
             let _props = this.props.location.state
             console.log("this.props.location.state Calendar///////////////////////////////", _props)                 
-            let {year, yearsArray, chosenYear} = _props;
-            this.setState({year, yearsArray, chosenYear})
+            let {year, yearsArray, chosenYear, rawCampTimes} = _props;
+            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(chosenYear)})
             this.getViews(_props.chosenYear); 
         }    
     }
     handleYearSelect = year => {
-        let _props = this.props.location.state
-        console.log('year select', year)
-        this.setState({ chosenYear : year, weekArray: this.getWeeks(_props.rawCampTimes[year], year)})
-        this.getViews(year)
+        console.log('year select', year, this.state)
+        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), views: this.getViews(year)})
     }
     getViews = (year) => {
         let months = ["June", "July", "August"];
-        let dates =[];
+        let dates = months.map((month, i)=> new Date(year, i + 5, 1))
         let views = [];
         for(var i = 0; i<months.length; i++) {
             let month = months[i];
             let date = dates[i];
             views.push({month, date, i})
         }
-        this.setState({views, year})
+        console.log('views', views)
+        return views;
     }  
     getWeeks (yearChosen, yearString) {
         console.log("get weeks called", yearString)
@@ -54,7 +54,6 @@ class Calendar extends React.Component {
             start = start.getMonth() + "/" + start.getDate();
             end = new Date(end);
             end = end.getMonth() + "/" + end.getDate();
-
             weekArray.push({week,year,start,end,available,pending,noCamp})
         }
         console.log("week array", weekArray)
@@ -62,6 +61,7 @@ class Calendar extends React.Component {
     }
     render() {
         let _props= this.props.location.state;
+        console.log("i", _props.yearsArray.indexOf(this.state.chosenYear))
         return(
             !_props?<Redirect to="/"/>:
             <div>
@@ -82,9 +82,18 @@ class Calendar extends React.Component {
                         </div>
                     }
                     <div className="inner">
-                        {this.state.views?this.state.views.map((view,i)=>
-                            <Selectable {...this.props} i={_props.yearsArray.indexOf(this.state.chosenYear)} title={view.month} defaultDate={view.date} />                        
-                        ):null}
+                        {this.state.views?
+                            this.state.chosenYear==this.state.yearsArray[0]?
+                                this.state.views.map((view, i)=>
+                                    <Selectable {...this.props} key={i} index={0} title={view.month} defaultDate={view.date} />                        
+                                )
+                                :this.state.chosenYear==this.state.yearsArray[1]?
+                                    this.state.views.map((view, i)=>
+                                        <Selectable {...this.props} key={i} index={1} title={view.month} defaultDate={view.date} />  
+                                )
+                               :null
+                            :null
+                        }
                     </div>
                 </div>
             </div>

@@ -34,7 +34,7 @@ class Application extends React.Component {
             Week7: 0,
             Week8: 0,
             weekArray: [],
-            hash: ''
+            hash: '',
             childFirstName:'',
             childLastName:'',
             age:'',

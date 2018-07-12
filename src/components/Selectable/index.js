@@ -32,7 +32,6 @@ let eventPopulate = (props)=>{
         let campWeek = _props.campTimes[props.i][week];
         campWeek.id = week;
         let available = campWeek.available - campWeek.pending;
-        console.log('campweek', campWeek, "available", available)
         if(!campWeek.noCamp){     
             switch(available) {
                 case 0:
@@ -42,7 +41,7 @@ let eventPopulate = (props)=>{
                     campWeek.title = `Week ${week.slice(4)}: 1 slot available.                                     `
                     break;
                 default: 
-                    capmWeek.title = `Week ${week.slice(4)}: ${available} slots available.                         `
+                    campWeek.title = `Week ${week.slice(4)}: ${available} slots available.                         `
                     break;
             }
         } else if (campWeek.noCamp && campWeek.noCampDescription) {

@@ -23,3 +23,6 @@ export const getAdmin = () =>
 // Other db APIs ...
 export const getWeeks = () =>
 	db.ref('campTimes/year').once('value')
+export const applicationSubmit = (obj) => {
+  db.ref('applications/').set(obj);
+}

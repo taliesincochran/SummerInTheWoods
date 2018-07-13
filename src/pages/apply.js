@@ -7,7 +7,6 @@ import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
 import Input from '../components/Input'
-import PaypalButton from '../components/PaypalButton'
 import { test } from '../constants/functions'
 class Application extends React.Component {
     constructor(props) {

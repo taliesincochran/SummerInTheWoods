@@ -27,8 +27,6 @@ const withAuthentication = (Component) =>
 
     render() {
       const { authUser } = this.state;
-      this.state.authUser?console.log((this.state.authUser)):''
-
       return (
         <AuthUserContext.Provider value={authUser}>
           <Component { ...this.props } />

@@ -26,6 +26,7 @@
     "lodash": "^4.17.10",
     "paypal-checkout": "^4.0.204",
     "prop-types": "^15.6.2",
+    "react": "^15.6.0",
     "react-async-script-loader": "^0.3.0",
     "react-big-calendar": "^0.19.1",
     "react-helmet": "^5.2.0"

@@ -9,6 +9,7 @@ class Calendar extends React.Component {
         super(props);
         this.state= {
             views: [],
+            views2: [],
             year: '',
             yearsArray: [],
             weekArray: [],
@@ -18,16 +19,14 @@ class Calendar extends React.Component {
     }
     componentDidMount () {
         if(this.props.location.state) {                        
-            let _props = this.props.location.state
-            console.log("this.props.location.state Calendar///////////////////////////////", _props)                 
+            let _props = this.props.location.state                
             let {year, yearsArray, chosenYear, rawCampTimes} = _props;
-            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(chosenYear)})
-            this.getViews(_props.chosenYear); 
+            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(_props.chosenYear), views2: this.getViews(parseInt(_props.chosenYear) + 1)}, () => console.log("CALENDAR STATE", this.state))      
         }    
     }
     handleYearSelect = year => {
         console.log('year select', year, this.state)
-        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), views: this.getViews(year)})
+        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year)})
     }
     getViews = (year) => {
         let months = ["June", "July", "August"];
@@ -83,16 +82,19 @@ class Calendar extends React.Component {
                     }
                     <div className="inner">
                         {this.state.views?
-                            this.state.chosenYear==this.state.yearsArray[0]?
+                            this.state.chosenYear==_props.yearsArray[0]?
                                 this.state.views.map((view, i)=>
-                                    <Selectable {...this.props} key={i} index={0} title={view.month} defaultDate={view.date} />                        
+                                    <Selectable {...this.props} key={i} campTimes={_props.campTimes[0]} year={_props.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
+                            ):null
+                        :null
+                        }
+                        {this.state.views2?
+                            this.state.chosenYear==_props.yearsArray[1]?
+                                this.state.views2.map((view, i)=>
+                                     <Selectable {...this.props} key={i} year={_props.yearsArray[1]} campTimes={_props.campTimes[1]} index={1} title={view.month} defaultDate={view.date} />  
                                 )
-                                :this.state.chosenYear==this.state.yearsArray[1]?
-                                    this.state.views.map((view, i)=>
-                                        <Selectable {...this.props} key={i} index={1} title={view.month} defaultDate={view.date} />  
-                                )
-                               :null
                             :null
+                        :null
                         }
                     </div>
                 </div>

@@ -3,10 +3,11 @@ import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
 
 const Mail = (props) => {
-	const _props = this.location.state
+	const _props = props.location.state
     const gotchaStyle = {
         display: 'none'
     }
+    const message = _props.parent1Name + "has filled out an application for your camp. Please email them at " + _props.email + " the address so that they can mail thier check for the $" + _props.amountDue + " to confirm the hold.";
     return(
         <div>
             <Helmet>
@@ -31,9 +32,9 @@ const Mail = (props) => {
                                 <input type="text" name="_gotcha" style={gotchaStyle} className="gotcha" />
                                 <input type="hidden" name="_next" value="/" />
                             </div>
-                            <div className="field" style={{display:none}}>
+                            <div className="field" style={{display:"none"}}>
                                 <label htmlFor="message">Message</label>
-                                <textarea name="message" id="message" rows="6">{_props.childFirstName}{' '}{_props.childLastName} has filled out an application for your camp.  Please send me the address so that they can mail my check for the ${_props.amountDue} to confirm the hold.</textarea>
+                                <textarea name="message" id="message" rows="6">{message}</textarea>
                             </div>
                             <ul className="actions">
                                 <li><input type="submit" value="Send Message" className="special" /></li>

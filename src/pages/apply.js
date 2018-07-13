@@ -71,16 +71,11 @@ class Application extends React.Component {
             let _props = this.props.location.state
             let {year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset} = _props;
             this.setState({year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset})
-            console.log("apply this.props", this.props, _props.rawCampTimes[_props.chosenYear])
-            console.log("get weeks parameter", _props.rawCampTimes[_props.chosenYear])
-            this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear)})
-            console.log('apply state', this.state)    
+            this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear)}) 
         }
     }
     getWeeks (yearChosen, yearString) {
-        console.log("get weeks called", yearString)
         let weekArray = [];
-        console.log("yearChosen", yearChosen);
         let year = yearString;
         for(let weekChosen in yearChosen) {
             let week = weekChosen;
@@ -93,7 +88,6 @@ class Application extends React.Component {
 
             weekArray.push({week,year,start,end,available,pending,noCamp})
         }
-        console.log("week array", weekArray)
         return weekArray
     }
     handleChange = e => {
@@ -101,23 +95,22 @@ class Application extends React.Component {
         this.setState({ [name]: value });
     }
     handleYearSelect = year => {
-        console.log('year select', year)
         this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year)})
     }
     getButtonHash = (firstWeek) => {
         let buttonHash = "";
         switch(firstWeek) {
             case 1:
-                buttonHash="27FS3JKVXYL76";
+                buttonHash="HFZLESBQRMT78";
                 break;
             case 2: 
-                buttonHash="27FS3JKVXYL76";
+                buttonHash="C7RB9N4NF448S";
                 break;
             case 3:
-                buttonHash="27FS3JKVXYL76";
+                buttonHash="UWCSQW5Y5GGUG";
                 break;
             case 4: 
-                buttonHash="27FS3JKVXYL76";
+                buttonHash="K9YMLSATDL24A";
                 break;
         }
         this.setState({buttonHash})
@@ -136,7 +129,6 @@ class Application extends React.Component {
     }
     handleNext = event => {
         event.preventDefault();
-        console.log(event.target)
         switch(event.target.id) {
             case 'previousPage0':
                 this.setState({page:0});
@@ -178,7 +170,6 @@ class Application extends React.Component {
         else {
             this.setState({[ week ]: value},() => this.getCost());    
         }
-        console.log("week select", 'week', week, 'value', value)
     }
     makeWeekArray = () => {
         let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8];
@@ -213,7 +204,7 @@ class Application extends React.Component {
             initialCost = 135;
             savings = 40 * fiveDayArray.length;
             firstWeek = 4;
-            this.getButtonHash(4);
+            this.getButtonHash(2);
         } else if(fiveDayNumber> 3) {
             fiveDayCost = 150 * fiveDayArray.length;
             initialCost = 150;
@@ -224,17 +215,18 @@ class Application extends React.Component {
             fiveDayCost = 175 * fiveDayArray.length;
             initialCost = 175;
             firstWeek=2;
-            this.getButtonHash(2)
+            this.getButtonHash(4)
         } else if (!fiveDayNumber && totalWeeksSelected) {
             initialCost = 120;
             firstWeek=1;
             this.getButtonHash(1)
         }
         let totalCost = fiveDayCost + threeDayCost;
-        let paypalCostUnrounded = (initialCost * .029) +.3;
-        let paypalTemp = 100 * paypalCostUnrounded;
-        let paypalCost = Math.round(paypalTemp)/100;
         let amountDue = initialCost + (totalWeeksSelected - 1) * 25;
+        let paypalCostUnrounded = (amountDue * 1.029) +.3;
+        let paypalTemp = 100 * paypalCostUnrounded;
+        let paypalCost = (Math.round(paypalTemp)/100).toFixed(2);
+        console.log("paypal cost", paypalCostUnrounded, paypalTemp, paypalCost)
         this.setState({totalCost, amountDue, savings, firstWeek, paypalCost});
     }
     render() {
@@ -383,22 +375,25 @@ class Application extends React.Component {
                                            {this.state.buttonHash?
                                                 <div>
                                                     <p>Please Choose Form of Payment</p>
-                                                    <Link to={{pathname:"/mail", state:this.state}}>Mail Check</Link>
+                                                    <p>Use paypal to secure your child's place immediatly.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
                                                     <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                                                         <input type="hidden" name="cmd" value="_s-xclick" />
                                                         <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />
-                                                        <table>
-                                                        <tr><td><input type="hidden" name="on0" value="Price" />Price</td></tr><tr><td><select name="os0">
-                                                            <option value={this.paypalPrice}>{this.paypalPrice}</option>
+                                                        <table class="hidden">
+                                                        <tBody>
+                                                        <tr><td><input type="hidden" name="on0" value="Price" /></td></tr><tr><td><select name="os0">
+                                                            <option value={this.state.paypalCost}>{this.state.paypalCost}</option>
                                                         </select> </td></tr>
+                                                        </tBody>
                                                         </table>
                                                         <input type="hidden" name="currency_code" value="USD" />
-                                                        <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_cart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+                                                        <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
                                                         <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                                                   </form>
-                                                   <button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
+                                                    </form>
+                                                        <p className='field'>Or send us a check for ${this.state.amountDue}.  Available spots will be filled as checks are recieved. For information on where to send the check click <Link style={{textDecoration: "underline"}} to={{pathname:"/mail", state: this.state}}>here</Link>.</p>
+                                                        <button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
                                                 </div>
-                                           :""
+                                           :<button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
                                            }
                                        </div>
                                     }                                    

@@ -22,7 +22,7 @@ class AdminParentAccounts extends React.Component {
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
-	                <meta name="description" content="Contact Page" />
+	                <meta name="description" content="Admin: Parent Acounts Page" />
 	            </Helmet>
 	            <BannerLanding bannerClass="contactBanner" />
 	            <div id="main">

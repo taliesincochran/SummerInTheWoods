@@ -68,8 +68,6 @@ const linkArray = [
   {
     path: routes.SIGN_IN,
     text: 'Sign In',
-    admin: false,
-    auth: false,
     nonAuth: true
   }
 ]

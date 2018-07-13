@@ -163,6 +163,12 @@ class Application extends React.Component {
             case 'submitPage3':
                 this.setState({page:4});
                 break;
+            case 'submitPage4':
+                this.setState({page:5});
+                break;
+            case 'previousPage4':
+                this.setState({page:4});
+                break;
 
         }
     }
@@ -257,6 +263,7 @@ class Application extends React.Component {
                                                 <p>Year</p>
                                                 <div className="yearBox">
                                                 <h2>Select the weeks you would your child to attend.</h2>
+                                                <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                                 {_props.yearsArray.length > 1?
                                                     <div>
                                                         <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[0]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
@@ -278,13 +285,13 @@ class Application extends React.Component {
                                                         <p style={week.available-week.pending>0?{fontSize: "1.5em"}:{fontSize:"1.5em",textDecoration:"line-through"}}>{week.start}-{week.end} <br/>Spots Available: {week.available - week.pending}</p>
                                                         {(week.available - week.pending)>0?
                                                             <div key={i}>
-                                                                <Checkbox name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} value='5' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
-                                                                <Checkbox name={`"${week.week}3"`} value='5' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} value='5' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                                <Checkbox name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
+                                                                <Checkbox name={`"${week.week}3"`} value='3' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
                                                             </div>
                                                             :
                                                             <div key={i}>
-                                                                <Checkbox labelStyle={{textDecoration: 'line-through'}} disabled={true} name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} value='5' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
-                                                                <Checkbox disabled={true} labelStyle={{textDecoration: 'line-through'}} name={`"${week.week}3"`} value='5' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} value='5' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                                <Checkbox labelStyle={{textDecoration: 'line-through'}} disabled={true} name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 0)} checked={false} value='0' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
+                                                                <Checkbox disabled={true} labelStyle={{textDecoration: 'line-through'}} name={`"${week.week}3"`} value='5' onChange={()=>this.handleWeekSelect(week.week, 0)} checked={false} value='0' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
                                                             </div>
                                                         }
                                                     </div>                                                
@@ -295,15 +302,16 @@ class Application extends React.Component {
                                         </div>
                                     :this.state.page == 1?
                                         <div>
+                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Child's Information</h2>
                                             <div className="infoBox">                           
-                                                <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" required={true} onChange={this.onChange} />
-                                                <Input className="field half" text="Child's Last Name" type="text" name="childLastName" required={true}onChange={this.onChange} />
-                                                <Input className="field half first" text="Age" type="number" name="age" required={true} onChange={this.onChange} />
-                                                <Input className="field half" text="Birthdate" type="date" name="birthday" required={true} onChange={this.onChange} />                                            
+                                                <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" required={true} onChange={this.handleChange} value={this.state.childsFirstName} value={this.state.childFirstName} />
+                                                <Input className="field half" text="Child's Last Name" type="text" name="childLastName" required={true}onChange={this.handleChange} value={this.state.childLastName} />
+                                                <Input className="field half first" text="Age" type="number" name="age" required={true} onChange={this.handleChange} value={this.state.age} />
+                                                <Input className="field half" text="Birthdate" type="date" name="birthday" required={true} onChange={this.handleChange}  value={this.state.birthday}/>                                            
                                                 <div className="field">
                                                     <label htmlFor="allergies">Allergies</label>
-                                                    <textarea name="allergies" rows="6" onChange={this.onChange}></textarea>
+                                                    <textarea name="allergies" rows="6" onChange={this.handleChange} value={this.state.allergies}></textarea>
                                                 </div>
                                             </div>
                                             <button className="button" id="previousPage0" onClick={this.handleNext}>Previous</button>
@@ -311,21 +319,22 @@ class Application extends React.Component {
                                         </div>
                                     :this.state.page == 2?
                                         <div>
+                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Parent Information</h2>
                                             <div className="infoBox">
                                                 <div className='smallBox'>
                                                     <p  className="formText">Parent 1</p>  
-                                                    <Input className="field half" text="Parent or Guardian's Name" type="text" name="parent1Name" required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent1Phone" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Parent or Guardian's Name" type="text" name="parent1Name" required={true} onChange={this.handleChange} value={this.state.parent1Name} value={this.state.parent1Name} />
+                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent1Phone" required={true} onChange={this.handleChange} value={this.state.parent1Phone}  value={this.state.parent1Phone}/>
                                                 </div>
                                                 <p  className="formText">Parent 2</p>
                                                 <div className="smallBox">
-                                                    <Input className="field half" text="Parent or Guardian's Name" type="text" name="parent2Name" onChange={this.onChange} />
-                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent2Phone" onChange={this.onChange} />
+                                                    <Input className="field half" text="Parent or Guardian's Name" type="text" name="parent2Name" onChange={this.handleChange}  value={this.state.parent2Name}/>
+                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent2Phone" onChange={this.handleChange} value={this.state.parent2Phone}/>
                                                 </div>
                                                 <div className="field">
                                                     <label htmlFor="address">Address</label>
-                                                    <textarea name="address" rows="4"  required onChange={this.onChange}></textarea>
+                                                    <textarea name="address" rows="4"  required onChange={this.handleChange}  value={this.state.address}></textarea>
                                                 </div>
                                             </div>
                                             <button className="button" id="previousPage1" onClick={this.handleNext}>Previous</button>
@@ -333,21 +342,22 @@ class Application extends React.Component {
                                         </div>          
                                     :this.state.page == 3?
                                         <div>
+                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Emergency Information</h2>
                                             <div className="infoBox">
                                                 <div className="smallBox">
                                                     <p className="infoText">List two other contacts who will assume temporary care of your child if you cannot be reached</p>
                                                     <p className="formText">Contact 1</p>
-                                                    <Input className="field half" text="Contact's Name" type="text" name="emergency1Name" required={true} onChange={this.onChange} /> 
-                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency1Phone" required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency1Relationship" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Contact's Name" type="text" name="emergency1Name" required={true} onChange={this.handleChange}  value={this.state.emergency1Name}/> 
+                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency1Phone" required={true} onChange={this.handleChange}  value={this.state.emergency1Phone}/>
+                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency1Relationship" required={true} onChange={this.handleChange}  value={this.state.emergency1Relationship}/>
                                                 </div>
                                                 <p className="formText">Contact 2</p>
                                                 <div className="smallBox">
                                                     <div style={{height:'5px'}} />
-                                                    <Input className="field half" text="Contact's Name" type="text" name="emergency2Name"  required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency2Phone"  required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" required={true} onChange={this.onChange} />
+                                                    <Input className="field half" text="Contact's Name" type="text" name="emergency2Name"  required={true} onChange={this.handleChange}  value={this.state.emergency2Name}/>
+                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency2Phone"  required={true} onChange={this.handleChange}  value={this.state.emergency2Phone}/>
+                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" required={true} onChange={this.handleChange}  value={this.state.emergency2Relationship} />
                                                 </div>
                                             </div>
                                             <button className="button" id="previousPage2" onClick={this.handleNext}>Previous</button>
@@ -355,12 +365,13 @@ class Application extends React.Component {
                                         </div>
                                     :this.state.page== 4 ?
                                         <div>
+                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Physician and Dentist Information</h2>
                                                 <div className="infoBox">
-                                                    <Input className="field half" text="Physician's Name" type="tel" name="physicianName" required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Physician's Number" type="tel" name="physicianPhone" required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Dentist's Name" type="text" name="dentistName"  required={true} onChange={this.onChange} />
-                                                    <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" required={true} onChange={this.onChange} />                                            
+                                                    <Input className="field half" text="Physician's Name" type="tel" name="physicianName" required={true} onChange={this.handleChange}  value={this.state.physicianName}/>
+                                                    <Input className="field half" text="Physician's Number" type="tel" name="physicianPhone" required={true} onChange={this.handleChange} value={this.state.physicianPhone} />
+                                                    <Input className="field half" text="Dentist's Name" type="text" name="dentistName"  required={true} onChange={this.handleChange} value={this.state.dentistName} />
+                                                    <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" required={true} onChange={this.handleChange} value={this.state.dentistPhone} />                                            
                                                 </div>
                                                 <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
                                             <button className="button" id="submitPage4" onClick={this.handleNext}>Next</button>
@@ -391,6 +402,7 @@ class Application extends React.Component {
                                                         <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_cart_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
                                                         <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
                                                    </form>
+                                                   <button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
                                                 </div>
                                            :""
                                            }

@@ -24,12 +24,12 @@ function EventWithCheckbox ({event}) {
         <span className={event.className}/>)
 }
 let eventPopulate = (props)=>{
-    console.log("Event List", props);
     let _props = props.location.state
+    console.log("Selectiable CampTimes", _props.campTimes)
     let eventTemp = [];
     //let propsToPass = [];
-    for (var week in _props.campTimes[props.i]){
-        let campWeek = _props.campTimes[props.i][week];
+    for (var week in _props.campTimes[props.index]){
+        let campWeek = _props.campTimes[props.index][week];
         campWeek.id = week;
         let available = campWeek.available - campWeek.pending;
         if(!campWeek.noCamp){     
@@ -49,9 +49,7 @@ let eventPopulate = (props)=>{
         } else {
             campWeek.title = "No camp this week."
         }
-        console.log("available", week, available)
         available>0?campWeek.className = "available":campWeek.className = "no-vacancy";
-        console.log(campWeek)
         eventTemp.push(campWeek);
     }
     return eventTemp;
@@ -59,8 +57,8 @@ let eventPopulate = (props)=>{
 
 const Selectable = (props) => {
     let eventArray = eventPopulate(props);
-    console.log("These are the events", eventArray, props);
     const events = eventArray;
+    console.log("EVENTS", eventArray)
     const date = new Date(props.location.state.year, 5, 1);
     return(    
          <div>
@@ -75,8 +73,7 @@ const Selectable = (props) => {
                     defaultView={BigCalendar.Views.MONTH}
                     defaultDate={props.defaultDate}
                     onSelectEvent={event => {
-                        console.log(event);
-                        console.log(props);
+                        console.log('')
                         }
                     }
                     components={{event: Event}}

@@ -7,17 +7,17 @@ const LinkItem = props => {
         props.button?
         (
             <li>
-                <button type="button" className='button'>
-                    <Link 
-                        onClick={props.onToggleMenu} 
-                        to={{
-                            pathname: path,
-                            state: props.state
-                        }}
-                    >
+                <Link 
+                    onClick={props.onToggleMenu} 
+                    to={{
+                        pathname: path,
+                        state: props.state
+                    }}
+                >
+                    <button type="button" className='button'>
                         {props.text}
-                    </Link>
-                </button>
+                    </button>
+                </Link>
             </li>
         ):(
             <li>

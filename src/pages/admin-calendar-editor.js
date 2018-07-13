@@ -3,6 +3,7 @@ import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
+import Selectable from '../components/Selectable'
 
 
 class AdminCalendarEditor extends React.Component {
@@ -11,7 +12,8 @@ class AdminCalendarEditor extends React.Component {
 		this.state = {
 			username: '',
 			email: '',
-			campTimes: this.props.location.state.rawCampTimes
+			campTimes: this.props.location.state.rawCampTimes,
+			views: []
 		}
 	}
 	componentDidMount() {
@@ -26,6 +28,7 @@ class AdminCalendarEditor extends React.Component {
         	let date = dates[i];
         	views.push({month,date})
     	}
+    	this.setState({views})
 	}
 	render() {		
 	    return(
@@ -37,8 +40,8 @@ class AdminCalendarEditor extends React.Component {
 	            <BannerLanding bannerClass="contactBanner" />
 	            <div id="main">
 	                <div className="inner">
-	                    {views.map(view=>
-	                        <Selectable {...props} title={view.month} defaultDate={view.date} />                        
+	                    {this.state.views.map(view=>
+	                        <Selectable {...this.props} title={view.month} defaultDate={view.date} />                        
 	                    )}
 	                </div>
 	            </div>

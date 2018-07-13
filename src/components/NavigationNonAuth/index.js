@@ -21,7 +21,6 @@ const NavigationNonAuth = (props) => {
 		      	/>
 		      	:'')
   			}
-      <li><SignOut button={props.button}/></li>
   </ul>
   )}
 

@@ -64,6 +64,13 @@ const linkArray = [
     admin: true,
     auth: true,
     nonAuth: true
+  },
+  {
+    path: routes.SIGN_IN,
+    text: 'Sign In',
+    admin: false,
+    auth: false,
+    nonAuth: true
   }
 ]
 export default linkArray

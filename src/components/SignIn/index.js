@@ -37,7 +37,7 @@ class SignInForm extends Component {
       .then((obj) => {
         console.log('signIn object', obj);
         this.setState(() => ({ ...INITIAL_STATE }));
-        history.push(routes.HOME);
+        history.push(routes.ACCOUNT);
       })
       .catch(error => {
         this.setState(updateByPropertyName('error', error));

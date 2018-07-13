@@ -12,7 +12,7 @@ const Mail = (props) => {
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>
-                <meta name="description" content="Contact Page" />
+                <meta name="description" content="Mail Page" />
             </Helmet>
             <BannerLanding bannerClass="contactBanner" />
             <div id="main">

@@ -9,7 +9,6 @@ import NavigationAuth from '../NavigationAuth'
 import NavigationNonAuth from '../NavigationNonAuth'
 
 const Navigation = (props) => {
-    console.log('nav props', props);
     return(
     <AuthUserContext.Consumer>
         {authUser => authUser

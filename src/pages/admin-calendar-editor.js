@@ -33,8 +33,9 @@ class AdminCalendarEditor extends React.Component {
 	    	this.setState({views, rawCampTimes})
 	    }
 	}
-	render() {		
-	    return(
+	render() {	
+		return(
+		!this.props.location.state?<Redirect to="/"/>:	
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
@@ -49,7 +50,7 @@ class AdminCalendarEditor extends React.Component {
 	                </div>
 	            </div>
 	        </div>
-	    )
+		)
 	}
 }
 

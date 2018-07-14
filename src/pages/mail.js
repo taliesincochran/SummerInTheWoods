@@ -8,7 +8,8 @@ const Mail = (props) => {
         display: 'none'
     }
     const message = _props.parent1Name + "has filled out an application for your camp. Please email them at " + _props.email + " the address so that they can mail thier check for the $" + _props.amountDue + " to confirm the hold.";
-    return(
+        return(
+        !this.props.location.state?<Redirect to="/"/>:
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>
@@ -18,7 +19,7 @@ const Mail = (props) => {
             <div id="main">
                 <div className="inner">
                     <section>
-                    	<p>Please fill out this form and we will email you the address to send the check for the ${_props.amountDue}.00</p>
+                        <p>Please fill out this form and we will email you the address to send the check for the ${_props.amountDue}.00</p>
                         <form method="post" action="https://formspree.io/taliesincochran@gmail.com">
                             <div className="field half first">
                                 <label htmlFor="name">Name</label>

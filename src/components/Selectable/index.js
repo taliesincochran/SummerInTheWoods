@@ -58,7 +58,6 @@ let eventPopulate = (props)=>{
 const Selectable = (props) => {
     let eventArray = eventPopulate(props);
     const events = eventArray;
-    console.log("EVENTS", events)
     const date = new Date(props.year, 5, 1);
     return(    
          <div>

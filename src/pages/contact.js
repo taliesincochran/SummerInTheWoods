@@ -7,6 +7,7 @@ const Contact = (props) => {
         display: 'none'
     }
     return(
+    !this.props.location.state?<Redirect to="/"/>:
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>

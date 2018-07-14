@@ -3,7 +3,7 @@ import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
-
+import { Redirect } from "react-router-dom"
 
 class AdminParentAccounts extends React.Component {
 	constructor(props) {
@@ -18,11 +18,12 @@ class AdminParentAccounts extends React.Component {
 		console.log(this.state);
 	}
 	render() {
-	    return(
+		return(
+		!this.props.location.state?<Redirect to="/"/>:
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
-	                <meta name="description" content="Contact Page" />
+	                <meta name="description" content="Admin: Parent Acounts Page" />
 	            </Helmet>
 	            <BannerLanding bannerClass="contactBanner" />
 	            <div id="main">
@@ -31,7 +32,7 @@ class AdminParentAccounts extends React.Component {
 	                </div>
 	            </div>
 	        </div>
-	    )
+		)
 	}
 }
 

@@ -24,13 +24,13 @@ function EventWithCheckbox ({event}) {
         <span className={event.className}/>)
 }
 let eventPopulate = (props)=>{
+    let year = props.year
     let _props = props.location.state
-    console.log("Selectiable CampTimes", _props.campTimes)
     let eventTemp = [];
     //let propsToPass = [];
-    for (var week in _props.campTimes[props.index]){
-        let campWeek = _props.campTimes[props.index][week];
-        campWeek.id = week;
+    for (var week in props.campTimes){
+        let campWeek = props.campTimes[week];
+        campWeek.id = week + year;
         let available = campWeek.available - campWeek.pending;
         if(!campWeek.noCamp){     
             switch(available) {
@@ -58,8 +58,7 @@ let eventPopulate = (props)=>{
 const Selectable = (props) => {
     let eventArray = eventPopulate(props);
     const events = eventArray;
-    console.log("EVENTS", eventArray)
-    const date = new Date(props.location.state.year, 5, 1);
+    const date = new Date(props.year, 5, 1);
     return(    
          <div>
             <h3 className="callout">

@@ -1,23 +1,27 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
+import { Redirect } from "react-router-dom"
 
 const Mail = (props) => {
-	const _props = this.location.state
     const gotchaStyle = {
         display: 'none'
     }
-    return(
+    if(props.location.state) {
+        const message = _props.parent1Name + "has filled out an application for your camp. Please email them at " + _props.email + " the address so that they can mail thier check for the $" + _props.amountDue + " to confirm the hold.";
+    }
+        return(
+        !props.location.state?<Redirect to="/"/>:
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>
-                <meta name="description" content="Contact Page" />
+                <meta name="description" content="Mail Page" />
             </Helmet>
             <BannerLanding bannerClass="contactBanner" />
             <div id="main">
                 <div className="inner">
                     <section>
-                    	<p>Please fill out this form and we will email you the address to send the check for the ${_props.amountDue}.00</p>
+                        <p>Please fill out this form and we will email you the address to send the check for the ${_props.amountDue}.00</p>
                         <form method="post" action="https://formspree.io/taliesincochran@gmail.com">
                             <div className="field half first">
                                 <label htmlFor="name">Name</label>
@@ -31,9 +35,9 @@ const Mail = (props) => {
                                 <input type="text" name="_gotcha" style={gotchaStyle} className="gotcha" />
                                 <input type="hidden" name="_next" value="/" />
                             </div>
-                            <div className="field" style={{display:none}}>
+                            <div className="field" style={{display:"none"}}>
                                 <label htmlFor="message">Message</label>
-                                <textarea name="message" id="message" rows="6">{_props.childFirstName}{' '}{_props.childLastName} has filled out an application for your camp.  Please send me the address so that they can mail my check for the ${_props.amountDue} to confirm the hold.</textarea>
+                                <textarea name="message" id="message" rows="6">{message}</textarea>
                             </div>
                             <ul className="actions">
                                 <li><input type="submit" value="Send Message" className="special" /></li>

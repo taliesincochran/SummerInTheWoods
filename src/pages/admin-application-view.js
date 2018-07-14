@@ -3,7 +3,7 @@ import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
-
+import { Redirect } from "react-router-dom"
 
 class AdminApplicationView extends React.Component {
 	constructor(props) {
@@ -18,7 +18,8 @@ class AdminApplicationView extends React.Component {
 		console.log(this.state);
 	}
 	render() {
-	    return(
+		return(
+		!this.props.location.state?<Redirect to="/"/>:
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
@@ -31,7 +32,7 @@ class AdminApplicationView extends React.Component {
 	                </div>
 	            </div>
 	        </div>
-	    )
+		)
 	}
 }
 

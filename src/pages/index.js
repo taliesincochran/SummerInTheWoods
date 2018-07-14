@@ -108,13 +108,13 @@ class HomeIndex extends React.Component {
 
 export default HomeIndex
 
-export const pageQuery = graphql`
-    query PageQuery {
-        site {
-            siteMetadata {
-                title
-                description
-            }
-        }
-    }
-`
+// export const pageQuery = graphql`
+//     query PageQuery {
+//         site {
+//             siteMetadata {
+//                 title
+//                 description
+//             }
+//         }
+//     }
+// `

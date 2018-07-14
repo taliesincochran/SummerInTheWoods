@@ -3,7 +3,6 @@ import Link from 'gatsby-link';
 import PropTypes from 'prop-types';
 
 const Menu = (props) => {
-	console.log("menu props", props)
 	return(
 	    <nav id="menu">
 	        <div className="inner">

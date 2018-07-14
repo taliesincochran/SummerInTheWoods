@@ -1,13 +1,14 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
+import { Redirect } from "react-router-dom"
 
 const Contact = (props) => {
     const gotchaStyle = {
         display: 'none'
     }
     return(
-    !this.props.location.state?<Redirect to="/"/>:
+    !props.location.state?<Redirect to="/"/>:
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>

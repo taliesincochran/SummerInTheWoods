@@ -4,7 +4,7 @@ import PasswordChangeForm from '../components/PasswordChange';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
 import Selectable from '../components/Selectable'
-
+import { Redirect } from "react-router-dom"
 
 class AdminCalendarEditor extends React.Component {
 	constructor(props) {

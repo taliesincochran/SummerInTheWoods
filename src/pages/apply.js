@@ -65,7 +65,6 @@ class Application extends React.Component {
         this.handleYearSelect = this.handleYearSelect.bind(this)
         this.handleWeekSelect = this.handleWeekSelect.bind(this)
         this.getWeeks =  this.getWeeks.bind(this)
-        this.handleSubmit= this.handleSubmit.bind(this)
     }
     componentDidMount() {
         if(this.props.location.state) {
@@ -381,12 +380,9 @@ class Application extends React.Component {
                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                            <h3>Total Cost: ${this.state.totalCost}</h3>
                                            <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
-                                           <div>
-                                                <button className="submit-app" onClick = {this.handleSubmit}>
-                                                    Submit Application
-                                                </button>
-                                           </div>
+                                           
                                            {this.state.buttonHash?
+
                                                 <div>
                                                     <p>Please Choose Form of Payment</p>
                                                     <Link to={{pathname:"/mail", state:this.state}}>Mail Check</Link>

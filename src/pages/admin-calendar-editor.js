@@ -12,23 +12,26 @@ class AdminCalendarEditor extends React.Component {
 		this.state = {
 			username: '',
 			email: '',
-			campTimes: this.props.location.state.rawCampTimes,
+			campTimes: '',
 			views: []
 		}
 	}
 	componentDidMount() {
 		console.log(this.state);
-		let yearArray = [];
-	    let year = this.props.location.state.year;
-    	let months = ["June", "July", "August"];
-    	let dates = months.map((month, i)=> new Date(year, i + 5, 1))
-    	let views = []
-    	for(var i = 0; i<months.length; i++) {
-        	let month = months[i];
-        	let date = dates[i];
-        	views.push({month,date})
-    	}
-    	this.setState({views})
+		if(this.props.location.state){
+			let yearArray = [];
+		    let year = this.props.location.state.year;
+		    let rawCampTimes= this.props.location.state.rawCampTimes
+	    	let months = ["June", "July", "August"];
+	    	let dates = months.map((month, i)=> new Date(year, i + 5, 1))
+	    	let views = []
+	    	for(var i = 0; i<months.length; i++) {
+	        	let month = months[i];
+	        	let date = dates[i];
+	        	views.push({month,date})
+	    	}
+	    	this.setState({views, rawCampTimes})
+	    }
 	}
 	render() {		
 	    return(

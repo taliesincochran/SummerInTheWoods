@@ -60,7 +60,6 @@ class Calendar extends React.Component {
     }
     render() {
         let _props= this.props.location.state;
-        console.log("i", _props.yearsArray.indexOf(this.state.chosenYear))
         return(
             !_props?<Redirect to="/"/>:
             <div>

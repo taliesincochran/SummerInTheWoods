@@ -380,7 +380,11 @@ class Application extends React.Component {
                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                            <h3>Total Cost: ${this.state.totalCost}</h3>
                                            <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
-                                           
+                                           <div>
+                                                <button className="submit-app" onClick = {this.handleSubmit}>
+                                                    Submit Application
+                                                </button>
+                                           </div>
                                            {this.state.buttonHash?
 
                                                 <div>

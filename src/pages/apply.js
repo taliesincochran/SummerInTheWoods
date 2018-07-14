@@ -7,7 +7,6 @@ import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
 import Input from '../components/Input'
-import { test } from '../constants/functions'
 
 class Application extends React.Component {
     constructor(props) {
@@ -68,10 +67,9 @@ class Application extends React.Component {
     }
     componentDidMount() {
         if(this.props.location.state) {
-            let _props = this.props.location.state
-            let {year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset} = _props;
+            let {year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset} = this.props.location.state;
             this.setState({year, month, date, yearsArray,chosenYear,campTimes,rawCampTimes,localTimezoneOffset})
-            this.setState({weekArray: this.getWeeks(_props.rawCampTimes[_props.chosenYear],_props.chosenYear)}) 
+            this.setState({weekArray: this.getWeeks(this.props.location.state.rawCampTimes[this.props.location.state.chosenYear],this.props.location.state.chosenYear)}) 
         }
     }
     getWeeks (yearChosen, yearString) {
@@ -230,9 +228,6 @@ class Application extends React.Component {
         this.setState({totalCost, amountDue, savings, firstWeek, paypalCost});
     }
     render() {
-        console.log("apply props ", this.props)
-        console.log("apply state ", this.state)
-        let _props = this.props.location.state;
         return(
         !this.props.location.state?<Redirect to="/"/>:
                 <div>
@@ -255,14 +250,14 @@ class Application extends React.Component {
                                                 <div className="yearBox">
                                                 <h2>Select the weeks you would your child to attend.</h2>
                                                 <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
-                                                {_props.yearsArray.length > 1?
+                                                {this.props.location.state.yearsArray.length > 1?
                                                     <div>
-                                                        <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[0]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
-                                                        <Checkbox type="checkbox" name="year2" value={_props.yearsArray[1]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[1]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[1])} text={_props.yearsArray[1]} />
+                                                        <Checkbox name="year1" value={this.props.location.state.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == this.props.location.state.yearsArray[0]} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} text={this.props.location.state.yearsArray[0]} />
+                                                        <Checkbox type="checkbox" name="year2" value={this.props.location.state.yearsArray[1]} onChange={this.handleYearSelect} checked={this.state.chosenYear == this.props.location.state.yearsArray[1]} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[1])} text={this.props.location.state.yearsArray[1]} />
                                                     </div>
                                                 :
                                                     <div>
-                                                        <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={true} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
+                                                        <Checkbox name="year1" value={this.props.location.state.yearsArray[0]} onChange={this.handleYearSelect} checked={true} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} text={this.props.location.state.yearsArray[0]} />
                                                     </div>
                                                 }
                                                 </div>

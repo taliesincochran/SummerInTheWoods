@@ -1,6 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
+import { Redirect } from "react-router-dom"
 
 const Mail = (props) => {
 	const _props = props.location.state
@@ -9,7 +10,7 @@ const Mail = (props) => {
     }
     const message = _props.parent1Name + "has filled out an application for your camp. Please email them at " + _props.email + " the address so that they can mail thier check for the $" + _props.amountDue + " to confirm the hold.";
         return(
-        !this.props.location.state?<Redirect to="/"/>:
+        !props.location.state?<Redirect to="/"/>:
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>

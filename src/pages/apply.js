@@ -57,8 +57,9 @@ class Application extends React.Component {
             option:'',
             firstWeek:0,
             paypalCost: 0,
-            page:0,
-            buttonHash:''
+            page:2,
+            buttonHash:'', 
+            submited: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleYearSelect = this.handleYearSelect.bind(this)
@@ -93,33 +94,25 @@ class Application extends React.Component {
         let { name, value } = e.target;
         this.setState({ [name]: value });
     }
+    getAge = date => {
+
+    }
     handleTelephoneNumber = e => {
         let { name, value } = e.target;
         let temp = ''
-        console.log("handleTelephoneNumber", "length", value.length, "slice", value.slice(-1), this.state[name].slice(-1))
-        console.log("name", name, "value", value, "state", this.state[name])
-        if(this.state[name].length < 14 && !isNaN(parseInt(value.slice(-1)))) {
-            if(this.state[name].length > value.length || value.slice(-1) == ")" || value.slice(-1) == "(" || value.slice(-1) =="-") {
-                temp = value.slice(0,value.length - 1)
-                console.log("temp0", temp)
-            } else if(this.state[name].length == 0 && value.length == 1 && this.state[name].indexOf("(") == -1) {
-                temp = "(" + value.toString();
-                console.log("temp1", temp);
-            } else if(this.state[name].length == 3 && this.state[name].indexOf(")") == -1) {
-               temp = value.toString() + ")";
-               console.log("temp2", temp);
-            } else if(this.state[name].length == 7 && this.state[name].indexOf("-") == -1 && this.state[name].length < value.length) {
-                temp = value.toString() + "-";
-                console.log("temp3", temp);
-            } else if(this.state[name].length == 13 && value.length == 14) {
-                temp = this.state[name].slice(0,this.state[name].length)
-            } else {
-                temp = value;
-                console.log("tempOther", temp)
-            }
-        } else if (this.state[name].length == 1 && value == "") {
-            temp = "";
-        }
+        let string = value.replace(/[^0-9]+/g,'').toString();
+        let firstPart = string.slice(0,3)
+        let secondPart = string.slice(3,6)
+        let thirdPart = string.slice(6,length)
+        let length = string.length
+        if(length > 0 && length < 4) {
+            temp = "(" + string
+        } else if (length > 3 && string.length < 7) {
+            temp = "(" + firstPart + ")" + secondPart;  
+        } else if (length > 6) {
+            temp = "(" + firstPart + ")" + secondPart + "-" + thirdPart;
+            temp = temp.slice(0,13)
+        } 
         this.setState({ [name]: temp });
     }
     handleYearSelect = year => {

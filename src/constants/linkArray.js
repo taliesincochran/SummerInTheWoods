@@ -55,8 +55,7 @@ const linkArray = [
     path: routes.PASSWORD_CHANGE,
     text: 'Change Password',
     admin: true,
-    auth: true,
-    nonAuth:true
+    auth: true
   },
   {
     path: routes.CALENDAR,

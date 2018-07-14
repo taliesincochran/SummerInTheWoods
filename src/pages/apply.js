@@ -143,10 +143,12 @@ class Application extends React.Component {
         }
         this.setState({buttonHash})
     }
-    handleSubmit = () => {
-            let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset} = this.state;
-            let application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset }
-            db.applicationSubmit(application);   
+    handleSubmit = event => {
+        event.preventDefault();
+        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
+        let key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
+        let application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
+        db.applicationSubmit(application);   
     }
     handleNext = event => {
         event.preventDefault();
@@ -400,14 +402,14 @@ class Application extends React.Component {
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Physician and Dentist Information</h2>
                                                 <div className="infoBox">
-                                                    <Input className="field half first" text="Physician's Name" type="tel" name="physicianName" placeholder="required" required={true} onChange={this.handleTelephoneNumber}  value={this.state.physicianName}/>
+                                                    <Input className="field half first" text="Physician's Name" type="text" name="physicianName" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.physicianName}/>
                                                     <Input className="field half" text="Physician's Number" type="tel" name="physicianPhone" placeholder="required" required={true} onChange={this.handleTelephoneNumber} value={this.state.physicianPhone} />
                                                     <Input className="field half first" text="Dentist's Name" type="text" name="dentistName"  placeholder="required" required={true} onChange={this.handleChange} value={this.state.dentistName} />
                                                     <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" placeholder="required" required={true} onChange={this.handleTelephoneNumber} value={this.state.dentistPhone} />                                            
                                                 </div>
                                                 <p>{this.state.error4}</p>
                                                 <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
-                                            <button className="button nextPage" id="submitPage4" onClick={()=>{this.handleNext(); this.handleSubmit();}}>Next</button>
+                                            <button className="button nextPage" id="submitPage4" onClick={this.handleSubmit}>Next</button>
                                         </div>
                                     :
                                         <div>

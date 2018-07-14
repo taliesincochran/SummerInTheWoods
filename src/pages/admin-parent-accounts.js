@@ -18,7 +18,8 @@ class AdminParentAccounts extends React.Component {
 		console.log(this.state);
 	}
 	render() {
-	    return(
+		return(
+		!this.props.location.state?<Redirect to="/"/>:
 	        <div>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
@@ -31,7 +32,7 @@ class AdminParentAccounts extends React.Component {
 	                </div>
 	            </div>
 	        </div>
-	    )
+		)
 	}
 }
 

@@ -4,6 +4,7 @@ import BannerLanding from '../components/BannerLanding/'
 
 const Admin = (props) => {
     return(
+    !this.props.location.state?<Redirect to="/"/>:
         <div>
             <Helmet>
                 <title>Summer In The Woods</title>

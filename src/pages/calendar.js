@@ -18,10 +18,9 @@ class Calendar extends React.Component {
         }
     }
     componentDidMount () {
-        if(this.props.location.state) {                        
-            let _props = this.props.location.state                
-            let {year, yearsArray, chosenYear, rawCampTimes} = _props;
-            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(_props.chosenYear), views2: this.getViews(parseInt(_props.chosenYear) + 1)}, () => console.log("CALENDAR STATE", this.state))      
+        if(this.props.location.state) {                                       
+            let {year, yearsArray, chosenYear, rawCampTimes} = this.props.location.state;
+            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(this.props.location.state.chosenYear), views2: this.getViews(parseInt(this.props.location.state.chosenYear) + 1)}, () => console.log("CALENDAR STATE", this.state))      
         }    
     }
     handleYearSelect = year => {
@@ -59,9 +58,8 @@ class Calendar extends React.Component {
         return weekArray
     }
     render() {
-        let _props= this.props.location.state;
         return(
-            !_props?<Redirect to="/"/>:
+            !this.props.location.state?<Redirect to="/"/>:
             <div>
                 <Helmet>
                     <title>Summer In The Woods</title>
@@ -69,28 +67,28 @@ class Calendar extends React.Component {
                 </Helmet>
                 <BannerLanding bannerClass="contactBanner" />
                 <div id="main">
-                    {_props.yearsArray.length > 1?
+                    {this.props.location.state.yearsArray.length > 1?
                         <div>
-                            <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[0]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
-                            <Checkbox type="checkbox" name="year2" value={_props.yearsArray[1]} onChange={this.handleYearSelect} checked={this.state.chosenYear == _props.yearsArray[1]} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[1])} text={_props.yearsArray[1]} />
+                            <Checkbox name="year1" value={this.props.location.state.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == this.props.location.state.yearsArray[0]} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} text={this.props.location.state.yearsArray[0]} />
+                            <Checkbox type="checkbox" name="year2" value={this.props.location.state.yearsArray[1]} onChange={this.handleYearSelect} checked={this.state.chosenYear == this.props.location.state.yearsArray[1]} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[1])} text={this.props.location.state.yearsArray[1]} />
                         </div>
                     :
                         <div>
-                            <Checkbox name="year1" value={_props.yearsArray[0]} onChange={this.handleYearSelect} checked={true} className='float-left' value={_props.yearsArray[0]} onClick={() => this.handleYearSelect(_props.yearsArray[0])} text={_props.yearsArray[0]} />
+                            <Checkbox name="year1" value={this.props.location.state.yearsArray[0]} onChange={this.handleYearSelect} checked={true} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} text={this.props.location.state.yearsArray[0]} />
                         </div>
                     }
                     <div className="inner">
                         {this.state.views?
-                            this.state.chosenYear==_props.yearsArray[0]?
+                            this.state.chosenYear==this.props.location.state.yearsArray[0]?
                                 this.state.views.map((view, i)=>
-                                    <Selectable {...this.props} key={i} campTimes={_props.campTimes[0]} year={_props.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
+                                    <Selectable {...this.props} key={i} campTimes={this.props.location.state.campTimes[0]} year={this.props.location.state.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
                             ):null
                         :null
                         }
                         {this.state.views2?
-                            this.state.chosenYear==_props.yearsArray[1]?
+                            this.state.chosenYear==this.props.location.state.yearsArray[1]?
                                 this.state.views2.map((view, i)=>
-                                     <Selectable {...this.props} key={i} year={_props.yearsArray[1]} campTimes={_props.campTimes[1]} index={1} title={view.month} defaultDate={view.date} />  
+                                     <Selectable {...this.props} key={i} year={this.props.location.state.yearsArray[1]} campTimes={this.props.location.state.campTimes[1]} index={1} title={view.month} defaultDate={view.date} />  
                                 )
                             :null
                         :null

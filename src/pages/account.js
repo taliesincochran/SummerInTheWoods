@@ -12,12 +12,15 @@ class AccountPage extends React.Component {
 		this.state = {
 			username: '',
 			email: '',
-			userObject: {}
+			userObject: {},
+			UserId: props
 		}
 	}
 	componentDidMount() {
-		console.log("state of account: " + this.state);
+		console.log("The props at this point: ", this.props);
+		console.log("state of account: " + (this.state));
 	}
+
 	render() {
 	    return(
 	        <div>

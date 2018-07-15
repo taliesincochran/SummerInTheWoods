@@ -7,6 +7,7 @@ import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
 import Input from '../components/Input'
+import Moment from 'moment'
 
 class Application extends React.Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class Application extends React.Component {
             option:'',
             firstWeek:0,
             paypalCost: 0,
-            page:2,
+            page:0,
             buttonHash:'', 
             submited: false
         }
@@ -94,9 +95,7 @@ class Application extends React.Component {
         let { name, value } = e.target;
         this.setState({ [name]: value });
     }
-    getAge = date => {
 
-    }
     handleTelephoneNumber = e => {
         let { name, value } = e.target;
         let temp = ''
@@ -112,7 +111,7 @@ class Application extends React.Component {
         } else if (length > 6) {
             temp = "(" + firstPart + ")" + secondPart + "-" + thirdPart;
             temp = temp.slice(0,13)
-        } 
+        }
         this.setState({ [name]: temp });
     }
     handleYearSelect = year => {
@@ -200,6 +199,10 @@ class Application extends React.Component {
     makeWeekArray = () => {
         let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8];
         return weekArray  
+    }
+    getAge = (birthdate)=>{
+        let age = Moment().diff(birthdate, 'years');
+        return age;
     }
     getCost = () => { 
         let weekArray = this.makeWeekArray()
@@ -331,7 +334,7 @@ class Application extends React.Component {
                                             <div className="infoBox">                           
                                                 <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" placeholder="required" required={true} onChange={this.handleChange} value={this.state.childsFirstName} value={this.state.childFirstName} />
                                                 <Input className="field half" text="Child's Last Name" type="text" name="childLastName" placeholder="required" required={true} onChange={this.handleChange} value={this.state.childLastName} />
-                                                <Input className="field half first" text="Age" type="number" name="age" placeholder="required" required={true} onChange={this.handleChange} value={this.state.age} />
+                                                <Input className="field half first" text="Age" type="number" name="age" placeholder="required" required={true} onChange={this.handleChange} value={this.getAge(this.state.birthday)} />
                                                 <Input className="field half" text="Birthdate" type="date" name="birthday" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.birthday}/>                                            
                                                 <div className="field">
                                                     <label htmlFor="allergies">Allergies</label>

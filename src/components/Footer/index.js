@@ -18,7 +18,7 @@ const Footer = (props) => {
 
             </ul>
             <ul className="copyright">
-                <li>&copy; Taliesin Cochran 2018</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+                <li>&copy; Trakai Web Development</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
             </ul>
         </div>
     </footer>

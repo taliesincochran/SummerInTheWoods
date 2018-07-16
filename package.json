@@ -1,8 +1,8 @@
 {
-  "name": "gatsby-firebase-authentication",
-  "description": "Gatsby Firebase Authentication",
+  "name": "Summer In The Woods",
+  "description": "Summer Camp in Carrboro, NC",
   "version": "1.0.0",
-  "author": "Robin Wieruch <wrobin@gmx.net>",
+  "author": "Trakai Web Development",
   "dependencies": {
     "firebase": "^5.0.4",
     "fs": "0.0.1-security",

@@ -39,12 +39,12 @@ const linkArray = [
     text: 'Our Staff',
     auth: true,
     nonAuth:true
-  },*/
+  },
   {
     path: routes.APPLY,
     text: 'Apply',
     nonAuth:true
-  },
+  },*/
   {
     path: routes.CONTACT,
     text: 'Contact Us',

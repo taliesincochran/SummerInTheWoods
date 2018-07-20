@@ -9,7 +9,7 @@ const linkArray = [
     auth: true,
     nonAuth: true
   },
-  {
+  /*{
     path: routes.ADMIN_PARENT_ACCOUNTS,
     text: "Parent Accounts",
     admin: true
@@ -39,7 +39,7 @@ const linkArray = [
     text: 'Our Staff',
     auth: true,
     nonAuth:true
-  },
+  },*/
   {
     path: routes.APPLY,
     text: 'Apply',
@@ -51,23 +51,23 @@ const linkArray = [
     auth: true,
     nonAuth:true
   },
-  {
+  /*{
     path: routes.PASSWORD_CHANGE,
     text: 'Change Password',
     admin: true,
     auth: true
-  },
+  },*/
   {
     path: routes.CALENDAR,
     text: 'Calendar',
     admin: true,
     auth: true,
     nonAuth: true
-  },
+  }/*,
   {
     path: routes.SIGN_IN,
     text: 'Sign In',
     nonAuth: true
-  }
+  }*/
 ]
 export default linkArray

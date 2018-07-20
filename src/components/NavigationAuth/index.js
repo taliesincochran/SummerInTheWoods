@@ -9,8 +9,7 @@ const NavigationAuth = (props) => {
     return(
         props.email ==  ("tdcochran2@gmail.com" || "mdsch.jackie@gmail.com" || "lernerandrew@gmail.com" || 'viskaslietuvai@gmail.com' || "tripsrmeplus11@gmail.com")?
             (<ul className="links">
-                {linkArray.map((listItem, i) =>{
-                console.log("These are the auth props", props); 
+                {linkArray.map((listItem, i) => 
                   (listItem.admin && props.pathname !== listItem.path)?
                     <LinkItem 
                       key={i} 
@@ -21,7 +20,7 @@ const NavigationAuth = (props) => {
                       handleChange={props.handleChange} 
                       handleYearChange={props.handleYearChange}
                       onToggleMenu={props.onToggleMenu}
-                    />:''})}
+                    />:'')}
                 <li><SignOut button={props.button}/></li>
               </ul>):
             (

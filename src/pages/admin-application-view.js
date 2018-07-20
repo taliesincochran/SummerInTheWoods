@@ -58,6 +58,7 @@ class AdminApplicationView extends React.Component {
 	                		<p>{Physician} {Physician phone}</p>
 	                		<p>{Dentist} {Dentist phone}</p>
 	                		<button value=application.key onClick = handleChange>Set to reviewed</Button>
+	                		<button value=application.key onClick = Route.admin-parent-signup>Sign this parent up</Button>
 	                	*/}
 	                </div>
 	            </div>

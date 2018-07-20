@@ -8,7 +8,7 @@ const Mail = (props) => {
         display: 'none'
     }
     if(props.location.state) {
-        const message = _props.parent1Name + "has filled out an application for your camp. Please email them at " + _props.email + " the address so that they can mail thier check for the $" + _props.amountDue + " to confirm the hold.";
+        const message = props.location.state.parent1Name + "has filled out an application for your camp. Please email them at " + props.location.state.parent1Email + " the address so that they can mail thier check for the $" + props.location.state.amountDue + " to confirm the hold.";
     }
         return(
         !props.location.state?<Redirect to="/"/>:
@@ -21,7 +21,7 @@ const Mail = (props) => {
             <div id="main">
                 <div className="inner">
                     <section>
-                        <p>Please fill out this form and we will email you the address to send the check for the ${_props.amountDue}.00</p>
+                        <p>Please fill out this form and we will email you the address to send the check for the ${props.location.state.amountDue}.00</p>
                         <form method="post" action="https://formspree.io/taliesincochran@gmail.com">
                             <div className="field half first">
                                 <label htmlFor="name">Name</label>

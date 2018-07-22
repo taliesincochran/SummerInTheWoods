@@ -7,6 +7,8 @@ import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
 import Input from '../components/Input'
+import Moment from 'moment'
+import LinkItem from '../components/LinkItem'
 
 class Application extends React.Component {
     constructor(props) {
@@ -41,8 +43,11 @@ class Application extends React.Component {
             allergies:'',
             parent1Name:'',
             parent1Phone: '',
+            parent1Email:'',
+            parent1EmailVerify:'',
             parent2Name:'',
             parent2Phone:'',
+            parent2Email:'',
             emergency1Name:'',
             emergency1Relationship:'',
             emergency1Phone:'',
@@ -57,9 +62,9 @@ class Application extends React.Component {
             option:'',
             firstWeek:0,
             paypalCost: 0,
-            page:2,
+            page:0,
             buttonHash:'', 
-            submited: false
+            submitted: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleYearSelect = this.handleYearSelect.bind(this)
@@ -94,9 +99,12 @@ class Application extends React.Component {
         let { name, value } = e.target;
         this.setState({ [name]: value });
     }
-    getAge = date => {
 
+    handleEmail = e => {
+        let { name, value } = e.target;
+        this.setState({ [name]: value })
     }
+
     handleTelephoneNumber = e => {
         let { name, value } = e.target;
         let temp = ''
@@ -112,7 +120,7 @@ class Application extends React.Component {
         } else if (length > 6) {
             temp = "(" + firstPart + ")" + secondPart + "-" + thirdPart;
             temp = temp.slice(0,13)
-        } 
+        }
         this.setState({ [name]: temp });
     }
     handleYearSelect = year => {
@@ -136,15 +144,32 @@ class Application extends React.Component {
         }
         this.setState({buttonHash})
     }
+
     handleSubmit = event => {
         event.preventDefault();
-        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
-        let key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
-        let application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent2Name, parent2Phone, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
-        db.applicationSubmit(application);   
+        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
+        age = this.getAge(this.state.birthday);
+        const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
+        const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
+       // let databaseAppSubmit = new Promise((resolve, reject)=>{
+        db.applicationSubmit(application)
+        //})
+        //databaseAppSubmit
+        .then((result)=>{
+            this.setState({submitted:true}, ()=>{
+            this.setState({page:5})
+            //console.log(result);
+            })
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+            
+        
     }
     handleNext = event => {
         event.preventDefault();
+        window.scrollTo(0, 0);
         switch(event.target.id) {
             case 'previousPage0':
                 this.setState({page:0});
@@ -158,7 +183,7 @@ class Application extends React.Component {
                 this.setState({page: 1});
                 break;
             case 'submitPage1':
-                (this.state.childFirstName && this.state.childLastName && this.state.age && this.state.birthday)?
+                (this.state.childFirstName && this.state.childLastName && this.state.birthday)?
                     this.setState({page:2, error1: ""}):
                     this.setState({error1: "Please fill out all required fields."});
                 break;
@@ -166,9 +191,9 @@ class Application extends React.Component {
                 this.setState({page: 2});
                 break;
             case 'submitPage2':
-                (this.state.parent1Phone && this.state.parent1Name && this.state.address)?
+                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email==this.state.parent1EmailVerify)?
                     this.setState({page:3, error2: ''}):
-                    this.setState({error2: "Please fill out all required fields."});
+                    this.setState({error2: "Please fill out all required fields and make sure the email fields are filled in properly."});
                 break;
             case 'previousPage3':
                 this.setState({page: 3});
@@ -200,6 +225,10 @@ class Application extends React.Component {
     makeWeekArray = () => {
         let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8];
         return weekArray  
+    }
+    getAge = (birthdate)=>{
+        let age = Moment().diff(birthdate, 'years');
+        return age;
     }
     getCost = () => { 
         let weekArray = this.makeWeekArray()
@@ -329,13 +358,14 @@ class Application extends React.Component {
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Child's Information</h2>
                                             <div className="infoBox">                           
-                                                <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" placeholder="required" required={true} onChange={this.handleChange} value={this.state.childsFirstName} value={this.state.childFirstName} />
-                                                <Input className="field half" text="Child's Last Name" type="text" name="childLastName" placeholder="required" required={true} onChange={this.handleChange} value={this.state.childLastName} />
-                                                <Input className="field half first" text="Age" type="number" name="age" placeholder="required" required={true} onChange={this.handleChange} value={this.state.age} />
-                                                <Input className="field half" text="Birthdate" type="date" name="birthday" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.birthday}/>                                            
+                                                <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" placeholder="Required" required={true} onChange={this.handleChange} value={this.state.childsFirstName} value={this.state.childFirstName} />
+                                                <Input className="field half" text="Child's Last Name" type="text" name="childLastName" placeholder="Required" required={true} onChange={this.handleChange} value={this.state.childLastName} />
+                                                <Input className="field half first" text="Age" type="number" name="age" onChange={this.handleChange} value={this.getAge(this.state.birthday)} />
+                                                <Input className="field half" text="Birthdate" type="date" name="birthday" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.birthday}/>
+
                                                 <div className="field">
                                                     <label htmlFor="allergies">Allergies</label>
-                                                    <textarea name="allergies" rows="6" onChange={this.handleChange} value={this.state.allergies}></textarea>
+                                                    <textarea name="allergies" rows="6" placeholder="Optional" onChange={this.handleChange} value={this.state.allergies}></textarea>
                                                 </div>
                                             </div>
                                             <p>{this.state.error1}</p>
@@ -349,17 +379,21 @@ class Application extends React.Component {
                                             <div className="infoBox">
                                                 <div className='smallBox'>
                                                     <p  className="formText">Parent 1</p>  
-                                                    <Input className="field half first" text="Parent or Guardian's Name" type="text" name="parent1Name" placeholder="required" required={true} onChange={this.handleChange} value={this.state.parent1Name} value={this.state.parent1Name} />
-                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent1Phone" placeholder="required" required={true} onChange={this.handleTelephoneNumber} value={this.state.parent1Phone}  value={this.state.parent1Phone}/>
+                                                    <Input className="field half first" text="Parent or Guardian's Name" type="text" name="parent1Name" placeholder="Required" required={true} onChange={this.handleChange} value={this.state.parent1Name}/>
+                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent1Phone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber} value={this.state.parent1Phone}/>
+                                                    <Input className="field half" text="Parent or Guardian's Email" type="email" name="parent1Email" placeholder="Required" required={true} onChange={this.handleEmail} value={this.state.parent1Email}/>
+                                                    <Input className="field half" text="Please Re-enter Email" type="email" name="parent1EmailVerify" placeholder="Required" required={true} onChange={this.handleEmail} value={this.state.parent1EmailVerify}/>
+                                                    <p>Please note you will use this email address to log in to check your account</p>
                                                 </div>
                                                 <p  className="formText">Parent 2</p>
                                                 <div className="smallBox">
-                                                    <Input className="field half first" text="Parent or Guardian's Name" type="text" name="parent2Name" onChange={this.handleChange}  value={this.state.parent2Name}/>
-                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent2Phone" onChange={this.handleTelephoneNumber} value={this.state.parent2Phone}/>
+                                                    <Input className="field half first" text="Parent or Guardian's Name" type="text" name="parent2Name" placeholder="Optional" onChange={this.handleChange}  value={this.state.parent2Name}/>
+                                                    <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent2Phone" placeholder="Optional" onChange={this.handleTelephoneNumber} value={this.state.parent2Phone}/>
+                                                    <Input className="field half" text="Parent or Guardian's Email" type="email" name="parent2Email" placeholder="Optional" onChange={this.handleEmail} value={this.state.parent2Email}/>
                                                 </div>
                                                 <div className="field">
                                                     <label htmlFor="address">Address</label>
-                                                    <textarea name="address" rows="4"  required onChange={this.handleChange}  value={this.state.address}></textarea>
+                                                    <textarea name="address" rows="4"  placeholder="Required" required onChange={this.handleChange}  value={this.state.address}></textarea>
                                                 </div>
                                             </div>
                                             <p>{this.state.error2}</p>
@@ -374,16 +408,16 @@ class Application extends React.Component {
                                                 <div className="smallBox">
                                                     <p className="infoText">List two other contacts who will assume temporary care of your child if you cannot be reached</p>
                                                     <p className="formText">Contact 1</p>
-                                                    <Input className="field half first" text="Contact's Name" type="text" name="emergency1Name" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.emergency1Name}/> 
-                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency1Phone" placeholder="required" required={true} onChange={this.handleTelephoneNumber}  value={this.state.emergency1Phone}/>
-                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency1Relationship" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.emergency1Relationship}/>
+                                                    <Input className="field half first" text="Contact's Name" type="text" name="emergency1Name" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.emergency1Name}/> 
+                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency1Phone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber}  value={this.state.emergency1Phone}/>
+                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency1Relationship" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.emergency1Relationship}/>
                                                 </div>
                                                 <p className="formText">Contact 2</p>
                                                 <div className="smallBox">
                                                     <div style={{height:'5px'}} />
-                                                    <Input className="field half first" text="Contact's Name" type="text" name="emergency2Name"  placeholder="required" required={true} onChange={this.handleChange}  value={this.state.emergency2Name}/>
-                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency2Phone"  placeholder="required" required={true} onChange={this.handleTelephoneNumber}  value={this.state.emergency2Phone}/>
-                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.emergency2Relationship} />
+                                                    <Input className="field half first" text="Contact's Name" type="text" name="emergency2Name"  placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.emergency2Name}/>
+                                                    <Input className="field half" text="Contact's Phone Number" type="tel" name="emergency2Phone"  placeholder="Required" required={true} onChange={this.handleTelephoneNumber}  value={this.state.emergency2Phone}/>
+                                                    <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.emergency2Relationship} />
                                                 </div>
                                             </div>
                                             <p>{this.state.error3}</p>
@@ -395,21 +429,27 @@ class Application extends React.Component {
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Physician and Dentist Information</h2>
                                                 <div className="infoBox">
-                                                    <Input className="field half first" text="Physician's Name" type="text" name="physicianName" placeholder="required" required={true} onChange={this.handleChange}  value={this.state.physicianName}/>
-                                                    <Input className="field half" text="Physician's Number" type="tel" name="physicianPhone" placeholder="required" required={true} onChange={this.handleTelephoneNumber} value={this.state.physicianPhone} />
-                                                    <Input className="field half first" text="Dentist's Name" type="text" name="dentistName"  placeholder="required" required={true} onChange={this.handleChange} value={this.state.dentistName} />
-                                                    <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" placeholder="required" required={true} onChange={this.handleTelephoneNumber} value={this.state.dentistPhone} />                                            
+                                                    <Input className="field half first" text="Physician's Name" type="text" name="physicianName" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.physicianName}/>
+                                                    <Input className="field half" text="Physician's Number" type="tel" name="physicianPhone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber} value={this.state.physicianPhone} />
+                                                    <Input className="field half first" text="Dentist's Name" type="text" name="dentistName"  placeholder="Required" required={true} onChange={this.handleChange} value={this.state.dentistName} />
+                                                    <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber} value={this.state.dentistPhone} />                                            
                                                 </div>
                                                 <p>{this.state.error4}</p>
                                                 <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
-                                            <button className="button nextPage" id="submitPage4" onClick={this.handleSubmit}>Next</button>
+                                            <button className="button nextPage" id="submitPage4" onClick={this.handleSubmit}>Submit Application</button>
                                         </div>
                                     :
                                         <div>
                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                            <h3>Total Cost: ${this.state.totalCost}</h3>
                                            <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
+                                           <div>
+                                                <button className="submit-app" onClick = {this.handleSubmit}>
+                                                    Submit Application
+                                                </button>
+                                           </div>
                                            {this.state.buttonHash?
+
                                                 <div>
                                                     <p>Please Choose Form of Payment</p>
                                                     <p>Use paypal to secure your child's place immediatly.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>

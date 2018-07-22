@@ -29,7 +29,8 @@ class TemplateWrapper extends Component {
             yearsArray: [],
             rawCampTimes: [],
             campTimes: [],
-            localTimezoneOffset: 4
+            localTimezoneOffset: 4,
+            userAccount: ''
         }
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
         this.handleChange = this.handleChange.bind(this)

@@ -7,7 +7,7 @@ import LinkItem from '../LinkItem'
 
 const NavigationAuth = (props) => {
     return(
-        props.email ==  ("tdcochran2@gmail.com" || "mdsch.jackie@gmail.com" || "lernerandrew@gmail.com" || 'viskaslietuvai@gmail.com' || "tripsrmeplus11@gmail.com")?
+        props.email ==  ("mdsch.jackie@gmail.com" || "lernerandrew@gmail.com" || 'viskaslietuvai@gmail.com' || "tripsrmeplus11@gmail.com" || "katherine.sandiego@gmail.com")?
             (<ul className="links">
                 {linkArray.map((listItem, i) => 
                   (listItem.admin && props.pathname !== listItem.path)?

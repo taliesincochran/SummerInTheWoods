@@ -144,20 +144,32 @@ class Application extends React.Component {
         }
         this.setState({buttonHash})
     }
+
     handleSubmit = event => {
         event.preventDefault();
         let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
-        let key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
-        let application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
+        age = this.getAge(this.state.birthday);
+        const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
+        const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
+       // let databaseAppSubmit = new Promise((resolve, reject)=>{
         db.applicationSubmit(application)
-        .then(()=>{
+        //})
+        //databaseAppSubmit
+        .then((result)=>{
             this.setState({submitted:true}, ()=>{
-                this.props.history.push('/mail');
+            this.setState({page:5})
+            //console.log(result);
             })
         })
+        .catch((err)=>{
+            console.log(err)
+        })
+            
+        
     }
     handleNext = event => {
         event.preventDefault();
+        window.scrollTo(0, 0);
         switch(event.target.id) {
             case 'previousPage0':
                 this.setState({page:0});

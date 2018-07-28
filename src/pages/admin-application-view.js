@@ -30,6 +30,7 @@ class AdminApplicationView extends React.Component {
 		//	else if new set to false
 		//}
 	render() {
+		console.log("user info ", this.props.history.location.state)
 		return(
 		/*-!this.props.location.state?<Redirect to="/"/>:*/
 	        <div>

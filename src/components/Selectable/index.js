@@ -1,5 +1,4 @@
 import React from 'react';
-
 import BigCalendar from 'react-big-calendar';
 import Moment from 'moment';
 import '../../assets/scss/calendar/_reset.scss';
@@ -66,23 +65,10 @@ const Selectable = (props) => {
             </h3>
             <div style={{margin: "50px", height: '50em'}}>
                 <BigCalendar
-                    showMultiDayTimes
-                    selectable
                     events={events}
                     defaultView={BigCalendar.Views.MONTH}
                     defaultDate={props.defaultDate}
-                    onSelectEvent={event => {
-                        console.log('')
-                        }
-                    }
                     components={{event: Event}}
-
-                    onSelectSlot={slotInfo =>
-                     alert(
-                       `selected slot: \n\nstart ${slotInfo.start.toLocaleString()}`  +
-                         `\nend: ${slotInfo.end.toLocaleString()}` +
-                         `\naction: ${slotInfo.action}`)
-                    }
                     toolbar={false}
 
                 />

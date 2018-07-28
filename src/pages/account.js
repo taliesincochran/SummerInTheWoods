@@ -22,6 +22,7 @@ class AccountPage extends React.Component {
 	}
 
 	render() {
+		console.log("user info ", this.props.history.location.state)
 	    return(
 	        <div>
 	            <Helmet>

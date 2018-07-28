@@ -11,7 +11,7 @@ export const doCreateUser = (id, username, email) =>
   });
 
 export const onceGetUsers = () =>
-  db.ref('users'/$).once('value');
+  db.ref('users'/$).once('value')
 
 export const getOneUser = uid => 
 	db.ref(`users/${uid}`).once('value')
@@ -28,12 +28,12 @@ export const getWeeks = () =>
 
 
 export const applicationSubmit = (obj) => 
-  db.ref('applications/').child(obj.key).set(obj);
+  db.ref('applications/').child(obj.key).set(obj)
 
-export const getApplications = ()=> {
+export const getApplications = ()=>
   db.ref('applications/').once('value')
 
-}
+
 
 
 

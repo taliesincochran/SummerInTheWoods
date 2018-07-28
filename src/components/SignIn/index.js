@@ -46,9 +46,7 @@ class SignInForm extends Component {
             .catch(error=>{
                 console.log(error);
             });
-        //this.setState({user: "Hello"});
         console.log("This is the login state: ", this.state)
-        history.push(routes.ACCOUNT);
       })
       .catch(error => {
         this.setState(updateByPropertyName('error', error));

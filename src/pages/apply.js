@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Redirect } from "react-router-dom"
 // import Moment from 'react-moment'
-import { db } from '../firebase'
+import { db, auth } from '../firebase'
 import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
@@ -145,6 +145,20 @@ class Application extends React.Component {
         this.setState({buttonHash})
     }
 
+    addUser = (info)=> {
+        auth.doCreateUserWithEmailAndPassword(info.parent1Email, info.childFirstName+"12345")
+        .then(authUser =>{
+            db.doCreateUser(authUser.user.uid, info.parent1Name, info.parent1Email)
+            .catch(error=>{
+                console.log("Engine Fire Engine Fire! ", error)
+            })
+        })
+        .catch(error=>{
+            console.log("The create user part died", error)
+        })
+    }
+
+
     handleSubmit = event => {
         event.preventDefault();
         let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
@@ -164,6 +178,7 @@ class Application extends React.Component {
         .catch((err)=>{
             console.log(err)
         })
+        this.addUser(application)
             
         
     }

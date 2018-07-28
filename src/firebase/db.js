@@ -4,9 +4,10 @@ import { db } from './firebase';
 
 export const doCreateUser = (id, username, email) =>
 //consider using email instead of id for setting the user id
-  db.ref(`users/${email}`).set({
-    username,
-    email,
+  db.ref(`users/${id}`).set({
+    username: username,
+    email: email,
+    admin: false
   });
 
 export const onceGetUsers = () =>

@@ -25,6 +25,7 @@ class SignInForm extends Component {
   }
 
   onSubmit = (event) => {
+    event.preventDefault();
     const {
       email,
       password,
@@ -34,14 +35,38 @@ class SignInForm extends Component {
       history,
     } = this.props;
     let accountObject = {};
+    let route = routes.ACCOUNT;
     auth.doSignInWithEmailAndPassword(email, password)
       .then((obj) => {
         console.log('signIn object', obj);
-        this.setState(() => ({ ...INITIAL_STATE }));
         db.getOneUser(obj.user.uid)
             .then(object=>{
-                console.log("This is what comes back from the server: ", object);
-                accountObject= object;
+              console.log("This is what comes back from the server: ", object.val());
+              accountObject= object.val();
+              if(accountObject.admin == true) {
+                route = routes.ADMIN_APPLICATION_VIEW;
+              }
+              db.getApplications().then(snapshot=> {
+                let applications = []
+                let userApplications = [];
+                let data = snapshot.val();
+                console.log("data", data)
+                for (let application in data) {
+                  console.log(data[application], data[application].parent1Email == accountObject.email)
+                  applications.push(application)
+                  if(data[application].parent1Email == accountObject.email) {
+                    userApplications.push(data[application]);
+                    console.log("application found", data[application])
+                  }
+                }
+                if(routes == routes.ADMIN_APPLICATION_VIEW) {
+                  userApplications = applications;
+                }
+                return userApplications;
+              })
+
+            }).then(userApplicationInfo => {
+              history.push(route, {applications: userApplicationInfo, accountObject: accountObject})
             })
             .catch(error=>{
                 console.log(error);
@@ -52,7 +77,6 @@ class SignInForm extends Component {
         this.setState(updateByPropertyName('error', error));
       });
 
-    event.preventDefault();
   }
 
   render() {

@@ -6,7 +6,7 @@ const Input = props =>
             type="checkbox"
             name={props.name}
             value={props.value}
-            onChange={props.handleWeekSelect}
+            onChange={props.onChange}
             checked={props.checked}
         />
         :
@@ -14,7 +14,7 @@ const Input = props =>
             type="checkbox"
             name={props.name}
             value={props.value}
-            onChange={props.handleWeekSelect}
+            onChange={props.onChange}
             checked={props.checked}
         />
 const Label = props => {

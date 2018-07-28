@@ -26,13 +26,11 @@ export const getAdmin = () =>
 export const getWeeks = () =>
 	db.ref('campTimes/year').once('value')
 
-
 export const applicationSubmit = (obj) => 
   db.ref('applications/').child(obj.key).set(obj)
 
 export const getApplications = ()=>
   db.ref('applications/').once('value')
-
 
 
 

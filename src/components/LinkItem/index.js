@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'gatsby-link';
 const LinkItem = props => {
-    let path = props.path;
-    let state = props.state
     return(
         props.button?
         (
@@ -10,7 +8,7 @@ const LinkItem = props => {
                 <Link 
                     onClick={props.onToggleMenu} 
                     to={{
-                        pathname: path,
+                        pathname: props.path,
                         state: props.state
                     }}
                 >
@@ -24,8 +22,8 @@ const LinkItem = props => {
                 <Link 
                     onClick={props.onToggleMenu} 
                     to={{
-                        pathname: path,
-                        state: state
+                        pathname: props.path,
+                        state: props.state
                     }}
                 >
                     {props.text}

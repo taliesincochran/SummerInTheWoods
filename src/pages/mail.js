@@ -4,12 +4,15 @@ import BannerLanding from '../components/BannerLanding/'
 import { Redirect } from "react-router-dom"
 
 const Mail = (props) => {
+    let message = '';
     const gotchaStyle = {
         display: 'none'
     }
     if(props.location.state) {
-        const message = props.location.state.parent1Name + "has filled out an application for your camp. Please email them at " + props.location.state.parent1Email + " the address so that they can mail thier check for the $" + props.location.state.amountDue + " to confirm the hold.";
+        console.log(props.location.state.parent1Name)
+        message = props.location.state.parent1Name + "has filled out an application for your camp. Please email them at " + props.location.state.parent1Email + " the address so that they can mail thier check for the $" + props.location.state.amountDue + " to confirm the hold.";
     }
+
         return(
         !props.location.state?<Redirect to="/"/>:
         <div>

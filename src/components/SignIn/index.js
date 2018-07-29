@@ -59,15 +59,15 @@ class SignInForm extends Component {
                     console.log("application found", data[application])
                   }
                 }
-                if(routes == routes.ADMIN_APPLICATION_VIEW) {
+                if(route == routes.ADMIN_APPLICATION_VIEW) {
                   userApplications = applications;
                 }
                 return userApplications;
-              })
 
             }).then(userApplicationInfo => {
-              history.push(route, {applications: userApplicationInfo, accountObject: accountObject})
+              history.push({pathname: route, state: {applications: userApplicationInfo, accountObject: accountObject}})
             })
+              })
             .catch(error=>{
                 console.log(error);
             });

@@ -40,6 +40,7 @@ class TemplateWrapper extends Component {
             this.setState({loading: '', });
             this.getCalendar()
         }, 100);
+        this.props.location.state?console.log("Welcome back."):auth.doSignOut()
     }
     getCalendar() {
         db.getWeeks().then(snapshot => {

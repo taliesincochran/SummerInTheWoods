@@ -59,19 +59,18 @@ class SignInForm extends Component {
                     console.log("application found", data[application])
                   }
                 }
-                if(routes == routes.ADMIN_APPLICATION_VIEW) {
+                if(route == routes.ADMIN_APPLICATION_VIEW) {
                   userApplications = applications;
                 }
                 return userApplications;
-              })
 
             }).then(userApplicationInfo => {
-              history.push(route, {applications: userApplicationInfo, accountObject: accountObject})
+              history.push({pathname: route, state: {applications: userApplicationInfo, accountObject: accountObject, weekTime: this.props.location.state.campTimes}})
             })
+              })
             .catch(error=>{
                 console.log(error);
             });
-        //this.setState({user: "Hello"});
         console.log("This is the login state: ", this.state)
       })
       .catch(error => {
@@ -90,8 +89,9 @@ class SignInForm extends Component {
     const isInvalid =
       password === '' ||
       email === '';
-
+    console.log("These are the props at the signin page: ", this.props);  
     return (
+
       <form onSubmit={this.onSubmit}>
         <input
           value={email}

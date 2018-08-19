@@ -4,10 +4,11 @@ import { db } from './firebase';
 
 export const doCreateUser = (id, username, email) =>
 //consider using email instead of id for setting the user id
-  db.ref(`users/${email}`).set({
-    username,
-    email,
-  })
+  db.ref(`users/${id}`).set({
+    username: username,
+    email: email,
+    admin: false
+  });
 
 export const onceGetUsers = () =>
   db.ref('users'/$).once('value')
@@ -26,10 +27,9 @@ export const getWeeks = () =>
 	db.ref('campTimes/year').once('value')
 
 export const applicationSubmit = (obj) => 
-  db.ref('applications/').child(obj.key).set(obj);
+  db.ref('applications/').child(obj.key).set(obj)
 
-export const getApplications = ()=> 
+export const getApplications = ()=>
   db.ref('applications/').once('value')
-
 
 

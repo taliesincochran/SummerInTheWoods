@@ -4,6 +4,7 @@ import Banner from '../components/Banner'
 import { db } from '../firebase'
 import PasswordChangeForm from '../components/PasswordChange';
 import BannerLanding from '../components/BannerLanding/'
+import moment from 'moment'
 
 
 class AccountPage extends React.Component {
@@ -15,13 +16,50 @@ class AccountPage extends React.Component {
 			userObject: {},
 			UserId: props
 		}
+		this.setSchedule = this.setSchedule.bind(this)
 	}
+
+	setSchedule(weekArray){
+		console.log("the array of week objects", weekArray);
+		let weekStarts=[];
+		let weekDate;
+		for (let weeks in weekArray) {
+			weekDate=moment(weekArray[weeks].start).format('LL');
+			weekStarts.push(weekDate);
+		}
+		let appliedWeeks = [];
+		console.log("the starting dates", weekStarts);
+		for (let weekApply in this.props.history.location.state.applications[0]){
+			if (weekApply.slice(0,4) == "Week"){
+				appliedWeeks.push(this.props.history.location.state.applications[0][weekApply]);
+			}
+		}
+		let appliedWeekIndices =[];
+		console.log("the weeks that have been applied for: ", appliedWeeks);
+		for (let i = 0; i < appliedWeeks.length; i++){
+			if (appliedWeeks[i]>0.5){
+				appliedWeekIndices.push([i])
+			}
+		}
+		appliedWeeks = [];
+		for (let j = 0; j< appliedWeekIndices.length; j++){
+			appliedWeeks.push(<p>{weekStarts[appliedWeekIndices[j]]}</p>);
+		}
+		return(
+			<div>
+				{appliedWeeks}
+			</div>
+			)
+	}
+
 	componentDidMount() {
 
-		console.log("state of account: " + this.state);
 	}
 
+
 	render() {
+		console.log("These are the mu'fuckin props!", this.props);
+		console.log("user info ", this.props.history.location.state);
 	    return(
 	        <div>
 	            <Helmet>
@@ -31,7 +69,19 @@ class AccountPage extends React.Component {
 	            <BannerLanding bannerClass="contactBanner" />
 	            <div id="main">
 	                <div className="inner">
-	                    To Do
+	                	<div className="greeting">
+	                    Hello, {this.props.history.location.state.applications[0].parent1Name}!
+	                    </div>
+	                    <div className="pending-section">
+	                    You have an application with the following dates pending:
+	                    	<div className="pending">
+	                    		{this.props.history.location.state.applications[0].chosenYear == "2019"?
+	                    		this.setSchedule(this.props.history.location.state.weekTime[1])
+	                    		:
+	                    		this.setSchedule(this.props.history.location.state.weekTime[0])
+	                    	}
+	                    	</div>
+	                    </div>
 	                </div>
 	            </div>
 	        </div>

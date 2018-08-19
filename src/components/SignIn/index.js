@@ -65,7 +65,7 @@ class SignInForm extends Component {
                 return userApplications;
 
             }).then(userApplicationInfo => {
-              history.push({pathname: route, state: {applications: userApplicationInfo, accountObject: accountObject}})
+              history.push({pathname: route, state: {applications: userApplicationInfo, accountObject: accountObject, weekTime: this.props.location.state.campTimes}})
             })
               })
             .catch(error=>{
@@ -89,8 +89,9 @@ class SignInForm extends Component {
     const isInvalid =
       password === '' ||
       email === '';
-
+    console.log("These are the props at the signin page: ", this.props);  
     return (
+
       <form onSubmit={this.onSubmit}>
         <input
           value={email}

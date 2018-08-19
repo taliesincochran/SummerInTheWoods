@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Redirect } from "react-router-dom"
 // import Moment from 'react-moment'
-import { db } from '../firebase'
+import { db, auth } from '../firebase'
 import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
@@ -145,16 +145,27 @@ class Application extends React.Component {
         this.setState({buttonHash})
     }
 
+    addUser = (info)=> {
+        auth.doCreateUserWithEmailAndPassword(info.parent1Email, info.childFirstName+"12345")
+        .then(authUser =>{
+            db.doCreateUser(authUser.user.uid, info.parent1Name, info.parent1Email)
+            .catch(error=>{
+                console.log("Engine Fire Engine Fire! ", error)
+            })
+        })
+        .catch(error=>{
+            console.log("The create user part died", error)
+        })
+    }
+
+
     handleSubmit = event => {
         event.preventDefault();
-        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
+        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear, Week1, Week2, Week3, Week4, Week5, Week6, Week7, Week8} = this.state;
         age = this.getAge(this.state.birthday);
         const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
-        const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
-       // let databaseAppSubmit = new Promise((resolve, reject)=>{
+        const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear, Week1, Week2, Week3, Week4, Week5, Week6, Week7, Week8, key }       
         db.applicationSubmit(application)
-        //})
-        //databaseAppSubmit
         .then((result)=>{
             this.setState({submitted:true}, ()=>{
             this.setState({page:5})
@@ -164,6 +175,7 @@ class Application extends React.Component {
         .catch((err)=>{
             console.log(err)
         })
+        this.addUser(application)
             
         
     }
@@ -338,7 +350,7 @@ class Application extends React.Component {
                                                         {(week.available - week.pending)>0?
                                                             <div key={i}>
                                                                 <Checkbox name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
-                                                                <Checkbox name={`"${week.week}3"`} value='3' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                                <Checkbox name={`"${week.week}3"`} value='3' onChange={()=>this.handleWeekSelect(week.week, 3)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
                                                             </div>
                                                             :
                                                             <div key={i}>

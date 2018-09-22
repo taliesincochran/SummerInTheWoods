@@ -19,8 +19,9 @@ class AccountPage extends React.Component {
 		this.setSchedule = this.setSchedule.bind(this)
 	}
 
-	setSchedule(weekArray){
+	setSchedule(weekArray, appliedLength){
 		console.log("the array of week objects", weekArray);
+		console.log("The object of stay lengths: ", appliedLength);
 		let weekStarts=[];
 		let weekDate;
 		for (let weeks in weekArray) {
@@ -42,8 +43,18 @@ class AccountPage extends React.Component {
 			}
 		}
 		appliedWeeks = [];
+		let appliedWeeksLength = [];
+		let appliedLengthArray=Object.keys(appliedLength)
+		console.log(appliedLengthArray)
+		appliedLengthArray.forEach(key => {
+			if (key.slice(0,4) == "Week"){
+				if (parseInt(appliedLength[key])>1) {
+					appliedWeeksLength.push(parseInt(appliedLength[key]))
+				} else console.log("fail")
+			}
+		})
 		for (let j = 0; j< appliedWeekIndices.length; j++){
-			appliedWeeks.push(<p>{weekStarts[appliedWeekIndices[j]]}</p>);
+			appliedWeeks.push(<p>{weekStarts[appliedWeekIndices[j]]} for {appliedWeeksLength[j]} days.</p>);
 		}
 		return(
 			<div>
@@ -76,9 +87,9 @@ class AccountPage extends React.Component {
 	                    You have an application with the following dates pending:
 	                    	<div className="pending">
 	                    		{this.props.history.location.state.applications[0].chosenYear == "2019"?
-	                    		this.setSchedule(this.props.history.location.state.weekTime[1])
+	                    		this.setSchedule(this.props.history.location.state.weekTime[0], this.props.history.location.state.applications[0])
 	                    		:
-	                    		this.setSchedule(this.props.history.location.state.weekTime[0])
+	                    		this.setSchedule(this.props.history.location.state.weekTime[0], this.props.history.location.state.applications[0])
 	                    	}
 	                    	</div>
 	                    </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Redirect } from "react-router-dom"
 // import Moment from 'react-moment'
-import { db, auth } from '../firebase'
+import { db } from '../firebase'
 import Link from 'gatsby-link'
 import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
@@ -145,27 +145,16 @@ class Application extends React.Component {
         this.setState({buttonHash})
     }
 
-    addUser = (info)=> {
-        auth.doCreateUserWithEmailAndPassword(info.parent1Email, info.childFirstName+"12345")
-        .then(authUser =>{
-            db.doCreateUser(authUser.user.uid, info.parent1Name, info.parent1Email)
-            .catch(error=>{
-                console.log("Engine Fire Engine Fire! ", error)
-            })
-        })
-        .catch(error=>{
-            console.log("The create user part died", error)
-        })
-    }
-
-
     handleSubmit = event => {
         event.preventDefault();
-        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear, Week1, Week2, Week3, Week4, Week5, Week6, Week7, Week8} = this.state;
+        let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear} = this.state;
         age = this.getAge(this.state.birthday);
         const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
-        const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear, Week1, Week2, Week3, Week4, Week5, Week6, Week7, Week8, key }       
+        const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, key }
+       // let databaseAppSubmit = new Promise((resolve, reject)=>{
         db.applicationSubmit(application)
+        //})
+        //databaseAppSubmit
         .then((result)=>{
             this.setState({submitted:true}, ()=>{
             this.setState({page:5})
@@ -175,7 +164,6 @@ class Application extends React.Component {
         .catch((err)=>{
             console.log(err)
         })
-        this.addUser(application)
             
         
     }
@@ -316,7 +304,7 @@ class Application extends React.Component {
                     <div id="main">
                         <div className="inner">
                             <section>
-                                <form>
+                                <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                                     <h1>Application</h1>
                                     {this.state.page == 0?
                                         <div>
@@ -350,7 +338,7 @@ class Application extends React.Component {
                                                         {(week.available - week.pending)>0?
                                                             <div key={i}>
                                                                 <Checkbox name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
-                                                                <Checkbox name={`"${week.week}3"`} value='3' onChange={()=>this.handleWeekSelect(week.week, 3)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                                <Checkbox name={`"${week.week}3"`} value='3' onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
                                                             </div>
                                                             :
                                                             <div key={i}>
@@ -436,7 +424,7 @@ class Application extends React.Component {
                                             <button className="button" id="previousPage2" onClick={this.handleNext}>Previous</button>
                                             <button className="button nextPage" id="submitPage3" onClick={this.handleNext}>Next</button>
                                         </div>
-                                    :this.state.page== 4 ?
+                                    :this.state.page == 4?
                                         <div>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Physician and Dentist Information</h2>
@@ -446,29 +434,32 @@ class Application extends React.Component {
                                                     <Input className="field half first" text="Dentist's Name" type="text" name="dentistName"  placeholder="Required" required={true} onChange={this.handleChange} value={this.state.dentistName} />
                                                     <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber} value={this.state.dentistPhone} />                                            
                                                 </div>
-                                                <p>{this.state.error4}</p>
-                                                <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
-                                            <button className="button nextPage" id="submitPage4" onClick={this.handleSubmit}>Submit Application</button>
+                                                <div>
+                                                    <p>{this.state.error4}</p>
+                                                    <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
+                                                    <button className="button nextPage" id="submitPage4" onClick={this.handleNext}>Next</button>
+                                                </div>
                                         </div>
-                                    :
+                                    :this.state.page == 5?
                                         <div>
                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                            <h3>Total Cost: ${this.state.totalCost}</h3>
                                            <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
-                                           <div>
+                                           {/*<div>
                                                 <button className="submit-app" onClick = {this.handleSubmit}>
                                                     Submit Application
                                                 </button>
-                                           </div>
+                                           </div>*/}
                                            {this.state.buttonHash?
 
                                                 <div>
                                                     <p>Please Choose Form of Payment</p>
                                                     <p>Use paypal to secure your child's place immediatly.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
-                                                    <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                                    {/*this action needs to be changed for production*/}
+                                                    <div>
                                                         <input type="hidden" name="cmd" value="_s-xclick" />
                                                         <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />
-                                                        <table class="hidden">
+                                                        <table className="hidden">
                                                         <tBody>
                                                         <tr><td><input type="hidden" name="on0" value="Price" /></td></tr><tr><td><select name="os0">
                                                             <option value={this.state.paypalCost}>{this.state.paypalCost}</option>
@@ -476,18 +467,19 @@ class Application extends React.Component {
                                                         </tBody>
                                                         </table>
                                                         <input type="hidden" name="currency_code" value="USD" />
-                                                        <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" onClick = {this.handleSubmit} border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
-                                                        <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                                                    </form>
+                                                        <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" target="blank" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+                                                        <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" onClick={this.handleSubmit} />
+                                                    </div>
                                                         <p className='field'>
-                                                            Or send us a check for ${this.state.amountDue}.  Available spots will be filled as checks are recieved. For information on where to send the check click 
+                                                            Or send us a check for ${this.state.amountDue}.  Available spots will be filled as checks are recieved. For information on where to send the check click {" "}
                                                             <Link style={{textDecoration: "underline"}}  to={{pathname:"/mail", state: this.state}}>here</Link>.
                                                         </p>
                                                         <button className="button" id="previousPage4">Previous</button>
                                                 </div>
                                            :<button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
                                            }
-                                       </div>
+                                        </div>
+                                        :null
                                     }                                    
                                 </form>
                             </section>

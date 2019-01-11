@@ -49,6 +49,9 @@ class TemplateWrapper extends Component {
             let date = dateObject.getDate();
             let month = dateObject.getMonth();
             let year = dateObject.getFullYear();
+            if(month > 6) {
+                year += 1;
+            }
             // get the timezone of the applicant for security purposes
             let localTimezoneOffset = dateObject.getTimezoneOffset() 
             // data from firebase to be processed into the year or years to be displayed

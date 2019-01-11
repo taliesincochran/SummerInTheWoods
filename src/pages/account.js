@@ -17,6 +17,7 @@ class AccountPage extends React.Component {
 			UserId: props
 		}
 		this.setSchedule = this.setSchedule.bind(this)
+		this.handleClick = this.handleClick.bind(this)
 	}
 
 	setSchedule(weekArray, appliedLength){
@@ -63,13 +64,20 @@ class AccountPage extends React.Component {
 			)
 	}
 
+	handleClick(){
+		const {history,} = this.props.history.location.state;
+		let applicationData = this.props.history.location.state;
+		let route = routes.APPLY
+
+	}
+
 	componentDidMount() {
 
 	}
 
 
 	render() {
-		console.log("These are the mu'fuckin props!", this.props);
+		console.log("These are the props!", this.props);
 		console.log("user info ", this.props.history.location.state);
 	    return(
 	        <div>
@@ -93,6 +101,12 @@ class AccountPage extends React.Component {
 	                    	}
 	                    	</div>
 	                    </div>
+	                </div>
+	                <div className = "change-info-section">
+	                	<p>If you need to change any of the information on your child's application, please select the button below:</p>
+	                	<button className= "button" id = "review" onClick={this.handleClick}>
+	                		Change Information
+	                	</button>
 	                </div>
 	            </div>
 	        </div>

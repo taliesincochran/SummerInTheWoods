@@ -50,7 +50,7 @@ class Calendar extends React.Component {
         let year = yearString;
         for(let weekChosen in yearChosen) {
             let week = weekChosen;
-            week.split('').splice(4,0," ").join('');
+            // week.split('').splice(4,0," ").join('');
             let { start, end, available, pending, noCamp } = yearChosen[week]
             start = new Date(start);
             start = start.getMonth() + "/" + start.getDate();

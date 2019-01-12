@@ -27,6 +27,7 @@ class Application extends React.Component {
             localTimezoneOffset: '',
             campTimes: '',
             rawCampTimes:'',
+            Week0: 0,
             Week1: 0,
             Week2: 0,
             Week3: 0,
@@ -35,10 +36,11 @@ class Application extends React.Component {
             Week6: 0,
             Week7: 0,
             Week8: 0,
+            Week9: 0,
             weekArray: [],
             childFirstName:'',
             childLastName:'',
-            age:'',
+            age:0,
             birthday:'',
             allergies:'',
             parent1Name:'',
@@ -84,7 +86,11 @@ class Application extends React.Component {
         let year = yearString;
         for(let weekChosen in yearChosen) {
             let week = weekChosen;
+            // let weekText = week.slice(0,4);
+            // let weekNum = parseInt(week.slice(.1)) + 1;
+            // week = weekText + ' ' + weekNum.toString()
             week.split('').splice(4,0," ").join('');
+            console.log("ddddddddddddddddd", week);
             let { start, end, available, pending, noCamp } = yearChosen[week]
             start = new Date(start);
             start = start.getMonth() + "/" + start.getDate();
@@ -124,7 +130,7 @@ class Application extends React.Component {
         this.setState({ [name]: temp });
     }
     handleYearSelect = year => {
-        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), Week1: 0, Week2:0, Week3: 0, Week4:0, Week5:0, Week6:0, Week7:0, Week8:0, firstWeek:0, totalCost:0, amountDue:0, paypalCost:0}, ()=>{this.getCost()})
+        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2:0, Week3: 0, Week4:0, Week5:0, Week6:0, Week7:0, Week8:0, firstWeek:0, totalCost:0, amountDue:0, paypalCost:0}, ()=>{this.getCost()})
     }
     getButtonHash = (firstWeek) => {
         let buttonHash = "";
@@ -187,7 +193,7 @@ class Application extends React.Component {
                 this.setState({page:0});
                 break;
             case 'submitPage0':
-                this.state.firstWeek !==0?
+                this.state.firstWeek !==-1?
                     this.setState({page: 1, error0:""}):
                     this.setState({error0: "Please select at least one week."});
                 break;
@@ -235,12 +241,16 @@ class Application extends React.Component {
         }
     }
     makeWeekArray = () => {
-        let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8];
+        let weekArray = [this.state.week0, this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8, this.state.Week9];
         return weekArray  
     }
     getAge = (birthdate)=>{
-        let age = Moment().diff(birthdate, 'years');
-        return age;
+        if(parseInt(birthdate.slice(0,4))>1000 && parseInt(birthdate.slice(0,4))<Moment().year()) {
+            let age = Moment().diff(birthdate, 'years') || 0;
+            return age;
+        } else {
+            return 0;
+        }
     }
     getCost = () => { 
         let weekArray = this.makeWeekArray()
@@ -265,7 +275,7 @@ class Application extends React.Component {
         let initialCost = 0;
         let fiveDayNumber = fiveDayArray.length
         let savings = 0;
-        let firstWeek=0;
+        let firstWeek=-1;
         if(fiveDayNumber>5) {
             fiveDayCost = 135 * fiveDayArray.length;
             initialCost = 135;
@@ -289,7 +299,7 @@ class Application extends React.Component {
             this.getButtonHash(1)
         }
         let totalCost = fiveDayCost + threeDayCost;
-        let test = weekArray.filter(value => value=== 0);
+        let test = weekArray.filter(value => value === 0);
         console.log("test",test.length, weekArray.length)
         let amountDue = 0;
         if(test.length == weekArray.length) {
@@ -324,6 +334,7 @@ class Application extends React.Component {
                                                 plus $25 per additional week. The waiver can be signed once you have visited our location.  Payments can be paid via Paypal, but a 0.29% +$.30 service charge will be added to cover the added expense to the camp. 
                                             </p>
                                             <div>
+                                                <p className='errorMessage'>{this.state.error0}</p>
                                                 <p>Year {this.props.location.state.yearsArray[0]}</p>
                                                 <div className="yearBox">
                                                 <h2>Select the weeks you would your child to attend.</h2>
@@ -361,7 +372,7 @@ class Application extends React.Component {
                                                     </div>                                                
                                                 )}
                                                 </div>
-                                                <p>{this.state.error0}</p>
+                                                
                                                 <button className="button" id="submitPage0" onClick={this.handleNext}>Next</button>
                                             </div> 
                                         </div>
@@ -369,6 +380,7 @@ class Application extends React.Component {
                                         <div>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h2>Child's Information</h2>
+                                            <p className='errorMessage'>{this.state.error1}</p>
                                             <div className="infoBox">                           
                                                 <Input className="field half first" text="Child's First Name" type="text" name="childFirstName" placeholder="Required" required={true} onChange={this.handleChange} value={this.state.childsFirstName} value={this.state.childFirstName} />
                                                 <Input className="field half" text="Child's Last Name" type="text" name="childLastName" placeholder="Required" required={true} onChange={this.handleChange} value={this.state.childLastName} />
@@ -380,13 +392,13 @@ class Application extends React.Component {
                                                     <textarea name="allergies" rows="6" placeholder="Optional" onChange={this.handleChange} value={this.state.allergies}></textarea>
                                                 </div>
                                             </div>
-                                            <p>{this.state.error1}</p>
                                             <button className="button" id="previousPage0" onClick={this.handleNext}>Previous</button>
                                             <button className="button nextPage" id="submitPage1" onClick={this.handleNext}>Next</button>
                                         </div>
                                     :this.state.page == 2?
                                         <div>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
+                                            <p className='errorMessage'>{this.state.error2}</p>
                                             <h2>Parent Information</h2>
                                             <div className="infoBox">
                                                 <div className='smallBox'>
@@ -408,13 +420,13 @@ class Application extends React.Component {
                                                     <textarea name="address" rows="4"  placeholder="Required" required onChange={this.handleChange}  value={this.state.address}></textarea>
                                                 </div>
                                             </div>
-                                            <p>{this.state.error2}</p>
                                             <button className="button" id="previousPage1" onClick={this.handleNext}>Previous</button>
                                             <button className="button nextPage" id="submitPage2" onClick={this.handleNext}>Next</button>
                                         </div>          
                                     :this.state.page == 3?
                                         <div>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
+                                            <p className='errorMessage'>{this.state.error3}</p>
                                             <h2>Emergency Information</h2>
                                             <div className="infoBox">
                                                 <div className="smallBox">
@@ -432,13 +444,13 @@ class Application extends React.Component {
                                                     <Input className="field half" text="Contact's Relationship" type="text" name="emergency2Relationship" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.emergency2Relationship} />
                                                 </div>
                                             </div>
-                                            <p>{this.state.error3}</p>
                                             <button className="button" id="previousPage2" onClick={this.handleNext}>Previous</button>
                                             <button className="button nextPage" id="submitPage3" onClick={this.handleNext}>Next</button>
                                         </div>
                                     :this.state.page== 4 ?
                                         <div>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
+                                            <p className='errorMessage'>{this.state.error4}</p>
                                             <h2>Physician and Dentist Information</h2>
                                                 <div className="infoBox">
                                                     <Input className="field half first" text="Physician's Name" type="text" name="physicianName" placeholder="Required" required={true} onChange={this.handleChange}  value={this.state.physicianName}/>
@@ -446,7 +458,6 @@ class Application extends React.Component {
                                                     <Input className="field half first" text="Dentist's Name" type="text" name="dentistName"  placeholder="Required" required={true} onChange={this.handleChange} value={this.state.dentistName} />
                                                     <Input className="field half" text="Dentists's Number" type="tel" name="dentistPhone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber} value={this.state.dentistPhone} />                                            
                                                 </div>
-                                                <p>{this.state.error4}</p>
                                                 <button className="button" id="previousPage3" onClick={this.handleNext}>Previous</button>
                                             <button className="button nextPage" id="submitPage4" onClick={this.handleSubmit}>Submit Application</button>
                                         </div>

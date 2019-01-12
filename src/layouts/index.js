@@ -68,6 +68,7 @@ class TemplateWrapper extends Component {
             let yearsArray = rawYearsArray.slice(yearIndex)
             //Make an array of relavent camptimes
             let campTimes = yearsArray.map(year => rawCampTimes[year])
+            console.log(';;;;;;;;;;;;;;;;;',campTimes);
             let data = {
                 campTimes,
                 rawCampTimes,
@@ -113,7 +114,7 @@ class TemplateWrapper extends Component {
         this.setState({ yearChosen: event.target.value });
     }
     calculateCost() {
-        let weeksArray = [this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8];
+        let weeksArray = [this.state.week0,this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8,this.week9];
         let threeDayArray = weeksArray.filter(value=> value == 3);
         let fiveDayArray = weeksArray.filter(value=> value == 5);
         let threeDayCount = threeDayArray.length() + 1;

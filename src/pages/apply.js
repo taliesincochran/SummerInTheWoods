@@ -9,6 +9,7 @@ import Checkbox from '../components/Checkbox'
 import Input from '../components/Input'
 import Moment from 'moment'
 import LinkItem from '../components/LinkItem'
+import Mail from './mail.js';
 
 class Application extends React.Component {
     constructor(props) {
@@ -81,14 +82,14 @@ class Application extends React.Component {
             this.setState({weekArray: this.getWeeks(this.props.location.state.rawCampTimes[this.props.location.state.chosenYear],this.props.location.state.chosenYear)}) 
         }
     }
+
+
+
     getWeeks (yearChosen, yearString) {
         let weekArray = [];
         let year = yearString;
         for(let weekChosen in yearChosen) {
             let week = weekChosen;
-            // let weekText = week.slice(0,4);
-            // let weekNum = parseInt(week.slice(.1)) + 1;
-            // week = weekText + ' ' + weekNum.toString()
             week.split('').splice(4,0," ").join('');
             console.log("ddddddddddddddddd", week);
             let { start, end, available, pending, noCamp } = yearChosen[week]
@@ -241,7 +242,7 @@ class Application extends React.Component {
         }
     }
     makeWeekArray = () => {
-        let weekArray = [this.state.week0, this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8, this.state.Week9];
+        let weekArray = [this.state.Week0, this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8, this.state.Week9];
         return weekArray  
     }
     getAge = (birthdate)=>{
@@ -271,32 +272,33 @@ class Application extends React.Component {
         let threeDayArray = weekArray.filter(value => value === 3)
         let threeDayCost = 120 * threeDayArray.length
         let fiveDayArray = weekArray.filter(value => value === 5)
+        console.log('weekarray',weekArray);
         let fiveDayCost = 0;
         let initialCost = 0;
         let fiveDayNumber = fiveDayArray.length
         let savings = 0;
-        let firstWeek=-1;
+        let firstWeek= 0;
         if(fiveDayNumber>5) {
             fiveDayCost = 135 * fiveDayArray.length;
             initialCost = 135;
             savings = 40 * fiveDayArray.length;
             firstWeek = 4;
-            this.getButtonHash(2);
+            // this.getButtonHash(2);
         } else if(fiveDayNumber> 3) {
             fiveDayCost = 150 * fiveDayArray.length;
             initialCost = 150;
             savings = 25 * fiveDayArray.length;
             firstWeek=3;
-            this.getButtonHash(3);
+            // this.getButtonHash(3);
         } else if(fiveDayNumber) {
             fiveDayCost = 175 * fiveDayArray.length;
             initialCost = 175;
             firstWeek=2;
-            this.getButtonHash(4)
+            // this.getButtonHash(4);
         } else if (!fiveDayNumber && totalWeeksSelected) {
             initialCost = 120;
             firstWeek=1;
-            this.getButtonHash(1)
+            // this.getButtonHash(1);
         }
         let totalCost = fiveDayCost + threeDayCost;
         let test = weekArray.filter(value => value === 0);
@@ -339,6 +341,7 @@ class Application extends React.Component {
                                                 <div className="yearBox">
                                                 <h2>Select the weeks you would your child to attend.</h2>
                                                 <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
+                                                <h2>Total Cost ${this.state.totalCost}</h2>
                                                 {this.props.location.state.yearsArray.length > 1?
                                                     <div>
                                                         <Checkbox name="year1" value={this.props.location.state.yearsArray[0]} onChange={this.handleYearSelect} checked={this.state.chosenYear == this.props.location.state.yearsArray[0]} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} text={this.props.location.state.yearsArray[0]} />
@@ -360,13 +363,13 @@ class Application extends React.Component {
                                                         <p style={week.available-week.pending>0?{fontSize: "1.5em"}:{fontSize:"1.5em",textDecoration:"line-through"}}>{week.start}-{week.end} <br/>Spots Available: {week.available - week.pending}</p>
                                                         {(week.available - week.pending)>0?
                                                             <div key={i}>
-                                                                <Checkbox name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
-                                                                <Checkbox name={`"${week.week}3"`} value='3' onChange={()=>this.handleWeekSelect(week.week, 3)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                                <Checkbox name={`${week.week}5`} value="5" onChange={()=>this.handleWeekSelect(week.week, 5)} checked={this.state[week.week] == "5"} onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
+                                                                <Checkbox name={`${week.week}3`} value='3' onChange={()=>this.handleWeekSelect(week.week, 3)} checked={this.state[week.week] == "3"} onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
                                                             </div>
                                                             :
                                                             <div key={i}>
-                                                                <Checkbox labelStyle={{textDecoration: 'line-through'}} disabled={true} name={`"${week.week}5"`} value="5" onChange={()=>this.handleWeekSelect(week.week, 0)} checked={false} value='0' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
-                                                                <Checkbox disabled={true} labelStyle={{textDecoration: 'line-through'}} name={`"${week.week}3"`} value='5' onChange={()=>this.handleWeekSelect(week.week, 0)} checked={false} value='0' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
+                                                                <Checkbox labelStyle={{textDecoration: 'line-through'}} disabled={true} name={`${week.week}5`} value="5" onChange={()=>this.handleWeekSelect(week.week, 0)} checked={false} value='0' onClick={()=> this.handleWeekSelect(week.week, 5)} text="5 day" />
+                                                                <Checkbox disabled={true} labelStyle={{textDecoration: 'line-through'}} name={`${week.week}3`} value='5' onChange={()=>this.handleWeekSelect(week.week, 0)} checked={false} value='0' onClick={()=> this.handleWeekSelect(week.week, 3)} text="3 day" />
                                                             </div>
                                                         }
                                                     </div>                                                
@@ -407,7 +410,7 @@ class Application extends React.Component {
                                                     <Input className="field half" text="Parent or Guardian's Phone Number" type="tel" name="parent1Phone" placeholder="Required" required={true} onChange={this.handleTelephoneNumber} value={this.state.parent1Phone}/>
                                                     <Input className="field half" text="Parent or Guardian's Email" type="email" name="parent1Email" placeholder="Required" required={true} onChange={this.handleEmail} value={this.state.parent1Email}/>
                                                     <Input className="field half" text="Please Re-enter Email" type="email" name="parent1EmailVerify" placeholder="Required" required={true} onChange={this.handleEmail} value={this.state.parent1EmailVerify}/>
-                                                    <p>Please note you will use this email address to log in to check your account</p>
+                                                    
                                                 </div>
                                                 <p  className="formText">Parent 2</p>
                                                 <div className="smallBox">
@@ -466,38 +469,8 @@ class Application extends React.Component {
                                            <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                            <h3>Total Cost: ${this.state.totalCost}</h3>
                                            <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
-                                           <div>
-                                                <button className="submit-app" onClick = {this.handleSubmit}>
-                                                    Submit Application
-                                                </button>
-                                           </div>
-                                           {this.state.buttonHash?
-
-                                                <div>
-                                                    <p>Please Choose Form of Payment</p>
-                                                    <p>Use paypal to secure your child's place immediately.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
-                                                    <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-                                                        <input type="hidden" name="cmd" value="_s-xclick" />
-                                                        <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />
-                                                        <table class="hidden">
-                                                        <tBody>
-                                                        <tr><td><input type="hidden" name="on0" value="Price" /></td></tr><tr><td><select name="os0">
-                                                            <option value={this.state.paypalCost}>{this.state.paypalCost}</option>
-                                                        </select> </td></tr>
-                                                        </tBody>
-                                                        </table>
-                                                        <input type="hidden" name="currency_code" value="USD" />
-                                                        <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" onClick = {this.handleSubmit} border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
-                                                        <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                                                    </form>
-                                                        <p className='field'>
-                                                            Or send us a check for ${this.state.amountDue}.  Available spots will be filled as checks are recieved. For information on where to send the check click 
-                                                            <Link style={{textDecoration: "underline"}}  to={{pathname:"/mail", state: this.state}}>here</Link>.
-                                                        </p>
-                                                        <button className="button" id="previousPage4">Previous</button>
-                                                </div>
-                                           :<button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
-                                           }
+                                            <Mail {...this.props} state={this.state} handleSubmit={this.handleSubmit}/>                                                
+                                            <button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
                                        </div>
                                     }                                    
                                 </form>
@@ -511,3 +484,35 @@ class Application extends React.Component {
 }
 
 export default Application
+
+//                                            <div>
+//                                                 <button className="submit-app" onClick = {this.handleSubmit}>
+//                                                     Submit Application
+//                                                 </button>
+//                                            </div>
+
+
+
+// <div>
+//                                                     <p>Please Choose Form of Payment</p>
+//                                                     <p>Use paypal to secure your child's place immediately.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
+//                                                     <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+//                                                         <input type="hidden" name="cmd" value="_s-xclick" />
+//                                                         <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />
+//                                                         <table class="hidden">
+//                                                         <tBody>
+//                                                         <tr><td><input type="hidden" name="on0" value="Price" /></td></tr><tr><td><select name="os0">
+//                                                             <option value={this.state.paypalCost}>{this.state.paypalCost}</option>
+//                                                         </select> </td></tr>
+//                                                         </tBody>
+//                                                         </table>
+//                                                         <input type="hidden" name="currency_code" value="USD" />
+//                                                         <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" onClick = {this.handleSubmit} border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+//                                                         <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+//                                                     </form>
+//                                                         <p className='field'>
+//                                                             Or send us a check for ${this.state.amountDue}.  Available spots will be filled as checks are recieved. For information on where to send the check click 
+//                                                             <Link style={{textDecoration: "underline"}}  to={{pathname:"/mail", state: this.state}}>here</Link>.
+//                                                         </p>
+//                                                         <button className="button" id="previousPage4">Previous</button>
+//                                                 </div>

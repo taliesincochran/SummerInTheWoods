@@ -320,11 +320,11 @@ class Application extends React.Component {
                                     <h1>Application</h1>
                                     {this.state.page == 0?
                                         <div>
-                                            <p>To reserve your child’s spot, please submit this completed htmlForm and a deposit of your first week’s payment
+                                            <p>To reserve your child’s spot, please submit this completed Application Form and a deposit of your first week’s payment
                                                 plus $25 per additional week. The waiver can be signed once you have visited our location.  Payments can be paid via Paypal, but a 0.29% +$.30 service charge will be added to cover the added expense to the camp. 
                                             </p>
                                             <div>
-                                                <p>Year</p>
+                                                <p>Year {this.props.location.state.yearsArray[0]}</p>
                                                 <div className="yearBox">
                                                 <h2>Select the weeks you would your child to attend.</h2>
                                                 <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
@@ -464,7 +464,7 @@ class Application extends React.Component {
 
                                                 <div>
                                                     <p>Please Choose Form of Payment</p>
-                                                    <p>Use paypal to secure your child's place immediatly.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
+                                                    <p>Use paypal to secure your child's place immediately.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
                                                     <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                                                         <input type="hidden" name="cmd" value="_s-xclick" />
                                                         <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />

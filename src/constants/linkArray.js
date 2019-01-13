@@ -45,7 +45,7 @@ const linkArray = [
     path: routes.APPLY,
     text: 'Apply',
     nonAuth:true
-  },*/
+  },
   {
     path: routes.CONTACT,
     text: 'Contact Us',

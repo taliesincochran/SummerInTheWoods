@@ -5,6 +5,21 @@ const select = require(`unist-util-select`)
 const fs = require(`fs-extra`)
 require('dotenv').config();
 
+
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /bad-module/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    })
+  }
+}
 // exports.createPages = ({ graphql, boundActionCreators }) => {
 //   const { createPage } = boundActionCreators
 

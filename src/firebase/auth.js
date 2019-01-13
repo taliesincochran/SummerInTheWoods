@@ -1,5 +1,5 @@
 import { auth } from './firebase';
-import firebase from 'firebase/app';
+import firebase from '@firebase/app';
 // Sign Up
 export const doCreateUserWithEmailAndPassword = (email, password) =>
  auth.createUserWithEmailAndPassword(email, password);

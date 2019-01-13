@@ -38,10 +38,8 @@ class SignInForm extends Component {
     let route = routes.ACCOUNT;
     auth.doSignInWithEmailAndPassword(email, password)
       .then((obj) => {
-        console.log('signIn object', obj);
         db.getOneUser(obj.user.uid)
             .then(object=>{
-              console.log("This is what comes back from the server: ", object.val());
               accountObject= object.val();
               if(accountObject.admin == true) {
                 route = routes.ADMIN_APPLICATION_VIEW;
@@ -50,13 +48,10 @@ class SignInForm extends Component {
                 let applications = []
                 let userApplications = [];
                 let data = snapshot.val();
-                console.log("data", data)
                 for (let application in data) {
-                  console.log(data[application], data[application].parent1Email == accountObject.email)
                   applications.push(application)
                   if(data[application].parent1Email == accountObject.email) {
                     userApplications.push(data[application]);
-                    console.log("application found", data[application])
                   }
                 }
                 if(route == routes.ADMIN_APPLICATION_VIEW) {
@@ -69,9 +64,7 @@ class SignInForm extends Component {
             })
               })
             .catch(error=>{
-                console.log(error);
             });
-        console.log("This is the login state: ", this.state)
       })
       .catch(error => {
         this.setState(updateByPropertyName('error', error));
@@ -88,8 +81,7 @@ class SignInForm extends Component {
 
     const isInvalid =
       password === '' ||
-      email === '';
-    console.log("These are the props at the signin page: ", this.props);  
+      email === '';  
     return (
 
       <form onSubmit={this.onSubmit}>

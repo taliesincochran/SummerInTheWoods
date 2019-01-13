@@ -30,18 +30,24 @@ class TemplateWrapper extends Component {
             rawCampTimes: [],
             campTimes: [],
             localTimezoneOffset: 4,
-            userAccount: ''
+            userAccount: '',
+            goodBrowser: true
         }
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
     componentDidMount () {
+        // this.detectBrowser();
         this.timeoutId = setTimeout(() => {
             this.setState({loading: '', });
             this.getCalendar()
         }, 100);
-        this.props.location.state?console.log("Welcome back."):auth.doSignOut()
+        !this.props.location.state?auth.doSignOut():null;
     }
+    // detectBrowse = () => {
+    //     let goodBrowser = (navigator.userAgent.index('Mozilla') !== -1 || navigator.userAgent.indexOf('Safari') !== -1)? false: true;
+    //     this.setState({goodBrowser});
+    // }
     getCalendar() {
         db.getWeeks().then(snapshot => {
             // get current date, month, year
@@ -68,7 +74,6 @@ class TemplateWrapper extends Component {
             let yearsArray = rawYearsArray.slice(yearIndex)
             //Make an array of relavent camptimes
             let campTimes = yearsArray.map(year => rawCampTimes[year])
-            console.log(';;;;;;;;;;;;;;;;;',campTimes);
             let data = {
                 campTimes,
                 rawCampTimes,

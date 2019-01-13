@@ -86,25 +86,16 @@ const Mail = (props) => {
             "dentist name:" +    dentistName + "\n" + 
             "dentist phone:" +   dentistPhone + "\n" + 
             "address:" + address + "\n"
-            "timezone offset. This should equal 300 or 400:" + localTimezoneOffset + "\n" 
+            "timezone offset:" + localTimezoneOffset + "\n" 
         }
-        console.log(message)
         return(
         !props.location.state?<Redirect to="/"/>:
         <div>
-            <p>Add any additional information below.  Once the application is submitted, we will email you a bill.</p>
+            <p>Once the application is submitted, we will email you a bill.</p>
             <div id="main">
                 <div className="inner">
                     <section>
-                        <form method="post" action="https://formspree.io/taliesincochran@gmail.com">
-                            <div className="field half first">
-                                <label htmlFor="name">Name</label>
-                                <input type="text" name="name" id="name" />
-                            </div>
-                            <div className="field half">
-                                <label htmlFor="email">Email</label>
-                                <input type="text" name="_replyto" id="email" />
-                            </div>
+                        <form method="post" action="https://formspree.io/summerinthewoodscamp@gmail.com">
                             <div className="gotcha" style={gotchaStyle}>
                                 <input type="text" name="_gotcha" style={gotchaStyle} className="gotcha" />
                                 <input type="hidden" name="_next" value="/" />

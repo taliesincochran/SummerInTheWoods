@@ -17,7 +17,6 @@ class AdminCalendarEditor extends React.Component {
 		}
 	}
 	componentDidMount() {
-		console.log(this.state);
 		if(this.props.location.state){
 			let yearArray = [];
 		    let year = this.props.location.state.year;

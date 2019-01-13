@@ -21,11 +21,10 @@ class Calendar extends React.Component {
     componentDidMount () {
         if(this.props.location.state) {                                       
             let {year, yearsArray, chosenYear, rawCampTimes} = this.props.location.state;
-            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(this.props.location.state.chosenYear), views2: this.getViews(parseInt(this.props.location.state.chosenYear) + 1)}, () => console.log("CALENDAR STATE", this.state))      
+            this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(this.props.location.state.chosenYear), views2: this.getViews(parseInt(this.props.location.state.chosenYear) + 1)})      
         }    
     }
     handleYearSelect = year => {
-        console.log('year select', year, this.state)
         this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year)})
     }
     handleMonthSelect = (month) => {
@@ -40,13 +39,10 @@ class Calendar extends React.Component {
             let date = dates[i];
             views.push({month, date, i})
         }
-        console.log('views', views)
         return views;
     }  
     getWeeks (yearChosen, yearString) {
-        console.log("get weeks called", yearString)
         let weekArray = [];
-        console.log("yearChosen", yearChosen);
         let year = yearString;
         for(let weekChosen in yearChosen) {
             let week = weekChosen;
@@ -58,7 +54,6 @@ class Calendar extends React.Component {
             end = end.getMonth() + "/" + end.getDate();
             weekArray.push({week,year,start,end,available,pending,noCamp})
         }
-        console.log("week array", weekArray)
         return weekArray
     }
     render() {

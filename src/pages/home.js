@@ -23,11 +23,8 @@ class HomeIndex extends React.Component {
         })
     }
     render() {
-        console.log('index pages state', this.state)
         const siteTitle = "Summer In The Woods"
         const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"
-        console.log("index pages props", this.props)
-        console.log('history pushed state: ', this.props.location.state?this.props.location.state:null)
         return (
             <div>
                 <Helmet>

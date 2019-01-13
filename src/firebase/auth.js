@@ -12,7 +12,6 @@ export const doSignInWithEmailAndPassword = (email, password) =>
       })
       .catch(function(error) {
         // Handle Errors here.
-        console.log(error.code, error.message);
       });
 
 

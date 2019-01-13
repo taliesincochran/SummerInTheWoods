@@ -118,6 +118,6 @@ const SignUpLink = () =>
 
 export default withRouter(SignUpForm);
 
-export {
-  SignUpLink,
-};
+// export {
+//   SignUpLink,
+// };

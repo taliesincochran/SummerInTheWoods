@@ -18,15 +18,7 @@ const Contact = (props) => {
             <div id="main">
                 <div className="inner">
                     <section>
-                        <form method="post" action="https://formspree.io/taliesincochran@gmail.com">
-                            <div className="field half first">
-                                <label htmlFor="name">Name</label>
-                                <input type="text" name="name" id="name" />
-                            </div>
-                            <div className="field half">
-                                <label htmlFor="email">Email</label>
-                                <input type="text" name="_replyto" id="email" />
-                            </div>
+                        <form method="post" action="https://formspree.io/summerinthewoodscamp@gmail.com">
                             <div className="gotcha" style={gotchaStyle}>
                                 <input type="text" name="_gotcha" style={gotchaStyle} className="gotcha" />
                                 <input type="hidden" name="_next" value="/" />

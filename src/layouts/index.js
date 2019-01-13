@@ -29,17 +29,25 @@ class TemplateWrapper extends Component {
             yearsArray: [],
             rawCampTimes: [],
             campTimes: [],
-            localTimezoneOffset: 4
+            localTimezoneOffset: 4,
+            userAccount: '',
+            goodBrowser: true
         }
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
     componentDidMount () {
+        // this.detectBrowser();
         this.timeoutId = setTimeout(() => {
             this.setState({loading: '', });
             this.getCalendar()
         }, 100);
+        !this.props.location.state?auth.doSignOut():null;
     }
+    // detectBrowse = () => {
+    //     let goodBrowser = (navigator.userAgent.index('Mozilla') !== -1 || navigator.userAgent.indexOf('Safari') !== -1)? false: true;
+    //     this.setState({goodBrowser});
+    // }
     getCalendar() {
         db.getWeeks().then(snapshot => {
             // get current date, month, year
@@ -111,7 +119,7 @@ class TemplateWrapper extends Component {
         this.setState({ yearChosen: event.target.value });
     }
     calculateCost() {
-        let weeksArray = [this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8];
+        let weeksArray = [this.state.week0,this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8,this.week9];
         let threeDayArray = weeksArray.filter(value=> value == 3);
         let fiveDayArray = weeksArray.filter(value=> value == 5);
         let threeDayCount = threeDayArray.length() + 1;

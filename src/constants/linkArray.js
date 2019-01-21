@@ -17,7 +17,8 @@ const linkArray = [
   {
     path: routes.ADMIN_CALENDAR_EDITOR,
     text: "Calendar Editor",
-    admin: true
+    admin: false,
+    nonAuth: true
   },
   {
     path: routes.ADMIN_APPLICATION_VIEW,

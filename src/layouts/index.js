@@ -42,7 +42,12 @@ class TemplateWrapper extends Component {
         }, 100);
         this.props.location.state?console.log("Welcome back."):auth.doSignOut()
     }
-    getCalendar() {
+    componentWillUnmount () {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+    }
+    getCalendar = () => {
         db.getWeeks().then(snapshot => {
             // get current date, month, year
             let dateObject = new Date(); 
@@ -92,14 +97,10 @@ class TemplateWrapper extends Component {
                     yearsArray,
                     localTimezoneOffset,
                     chosenYear
-                } = data
+                } = data;
+            console.log(rawCampTimes);
             this.setState({localTimezoneOffset, rawCampTimes, campTimes, yearsArray, chosenYear, month, year, date});
         })
-    }
-    componentWillUnmount () {
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-        }
     }
 
     handleToggleMenu() {
@@ -116,22 +117,17 @@ class TemplateWrapper extends Component {
         this.setState({ yearChosen: event.target.value });
     }
     calculateCost() {
-        let weeksArray = [this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8];
-        let threeDayArray = weeksArray.filter(value=> value == 3);
+        let weeksArray = [this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8, this.state.week9, this.state.week10];
         let fiveDayArray = weeksArray.filter(value=> value == 5);
-        let threeDayCount = threeDayArray.length() + 1;
         let fiveDayCount = fiveDayArray.length() + 1;
-        let threeDayCost = threeDayCount * 120;
         let cost = 0;
-        if(fiveDayCount > 5) {
-            cost = threeDayCost + fiveDayCount * 135;
-        } else if (fiveDayCount > 3) {
-            cost = threeDayCost + fiveDayCount * 150;
+        if (fiveDayCount > 3) {
+            cost = fiveDayCount * 150;
         } else {
-            cost = threeDayCost + fiveDayCount * 175;
+            cost = fiveDayCount * 175;
         }
         this.setState({cost: cost});
-    }
+    };
     render() {
         const { children } = this.props;
         return (

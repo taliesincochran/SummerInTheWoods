@@ -6,7 +6,6 @@ import Selectable from '../components/Selectable';
 import { Redirect } from "react-router-dom";
 import { db } from '../firebase/firebase';
 import Input from '../components/Input';
-import setupNewYear, { getDateFromInput } from '../helpers/setupNewYear';
 
 class AdminCalendarEditor extends React.Component {
 	constructor(props) {
@@ -21,10 +20,6 @@ class AdminCalendarEditor extends React.Component {
 	}
 	handleChange = e => {
         let { name, value } = e.target;
-        console.log(value);
-        if(name === "firstDayOfCamp") {
-        	getJuly4th(name, value);
-        }
         this.setState({ [name]: value });
     }
     // find monday will find the monday of the week entered. Day is a number from 0-6 with Sunday as 0.
@@ -37,21 +32,19 @@ class AdminCalendarEditor extends React.Component {
     	event.preventDefault();
     	let { firstDay, lastDay, july4th, attending } = this.state;
     	let weeks = this.getWeeks(firstDay, lastDay);
-
     }
     // This function is used to get the date of a day of the week near another date.  
-	getDateOfTargetNearX = (year, month, date, day, canBeNegative) => {
-		const dateString = new Date(year, month, date);
-		const dayOfWeekBeforeDate = dateString.getDate() - dateString.getDay() + day;
-		let dayDate;
-		if(dayOfWeekBeforeDate < 0 && !canBeNegative) {
-			dayDate = this.getDateString(year, month, dayOfWeekBeforeDate + 7);
-		} else {
-			dayDate = this.getDateString(year, month, dayOfWeekBeforeDate);
-		}
-		console.lgo("getDateOfTargetNearX", getDateOfTargetNearX)
-		return dayDate;
-	};
+	// getDateOfTargetNearX = (year, month, date, day, canBeNegative) => {
+	// 	const dateString = new Date(year, month, date);
+	// 	const dayOfWeekBeforeDate = dateString.getDate() - dateString.getDay() + day;
+	// 	let dayDate;
+	// 	if(dayOfWeekBeforeDate < 0 && !canBeNegative) {
+	// 		dayDate = this.getDateString(year, month, dayOfWeekBeforeDate + 7);
+	// 	} else {
+	// 		dayDate = this.getDateString(year, month, dayOfWeekBeforeDate);
+	// 	}
+	// 	return dayDate;
+	// };
 	isJuly4thWeek = (date, month) => {
 	    const testDate1 = date - 1;
 	    const testDate2 = date + 6;

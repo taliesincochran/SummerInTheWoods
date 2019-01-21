@@ -35,13 +35,13 @@ let eventPopulate = (props)=>{
         if(!campWeek.noCamp){     
             switch(available) {
                 case 0:
-                    campWeek.title = `Week ${week.slice(4)}: No slots available.                                   `
+                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: No slots available.                                   `
                     break;
                 case 1: 
-                    campWeek.title = `Week ${week.slice(4)}: 1 slot available.                                     `
+                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: 1 slot available.                                     `
                     break;
                 default: 
-                    campWeek.title = `Week ${week.slice(4)}: ${available} slots available.                         `
+                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: ${available} slots available.                         `
                     break;
             }
         } else if (campWeek.noCamp && campWeek.noCampDescription) {

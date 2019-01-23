@@ -8,6 +8,7 @@ import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
 import pic12 from '../assets/images/pic12.jpg';
+import { philosophy, location, information, program } from '../constants/homeVariables';
 
 
 class HomeIndex extends React.Component {
@@ -43,7 +44,7 @@ class HomeIndex extends React.Component {
                                 <h2>Our Philosophy</h2>
                             </header>
                             <p>
-                                We draw inspiration from Montessori and Reggio Emilio philosophies and our program is based outdoors with an emphasis on unstructured, child-led play. We believe that children thrive when they are given freedom to follow their interests within a rich environment and supportive community. Mostly, we want to offer a camp that captures the magic that we remember from our own childhood summers - a camp where children are simply free to play. 
+                                {philosophy}
                             </p>
                         </div>
                     </section>
@@ -58,7 +59,7 @@ class HomeIndex extends React.Component {
                                         <h3>Our Program</h3>
                                     </header>
                                     <p>
-                                        We welcome children, ages 3-7 (with some flexibility). Camp runs weekly, June 18 - August 10 from 9 am to 1 pm (no camp July 2-6) with choice of 5 or 3 days per week. Receive a discount when you sign up for four or more weeks! Our camp is located near McDougle school in Chapel Hill, in an area surrounded by nature. For more information, contact <a className="email" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+                                        {program}
                                     </p>
                                     {/*<ul className="actions">
                                         <li><Link to="/generic" className="button">Learn more</Link></li>
@@ -75,10 +76,9 @@ class HomeIndex extends React.Component {
                                     <header className="major">
                                         <h3>Information</h3>
                                     </header>
-                                    <p>Play will often involve creating artwork with lots of different
-                                        <br/>materials (clay, sculpture, painting, collage, etc.), exploring the 
-                                        <br/>natural environment, building, reading, resting, caring for our animals, 
-                                        <br/>and working both independently and collaboratively. </p>
+                                    <p>
+                                        {information}
+                                    </p>
                                     {/*<ul className="actions">
                                         <li><Link to="/generic" className="button">Learn more</Link></li>
                                     </ul>*/}
@@ -94,7 +94,9 @@ class HomeIndex extends React.Component {
                                     <header className="major">
                                         <h3>The Location</h3>
                                     </header>
-                                    <p>We welcome children, ages 3-7 (with some flexibility). Camp runs weekly, June 18 - August 10 from 9 am to 1 pm (no camp July 2-6) with choice of 5 or 3 days per week. Receive a discount when you sign up for four or more weeks! Our camp is located near McDougle school in Chapel Hill, in an area surrounded by nature. For more information, contact <a className="email" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+                                    <p>
+                                        {location}
+                                    </p>
                                     {/*<ul className="actions">
                                         <li><Link to="/generic" className="button">Learn more</Link></li>
                                     </ul>*/}
@@ -110,13 +112,13 @@ class HomeIndex extends React.Component {
 
 export default HomeIndex
 
-export const pageQuery = graphql`
-    query PageQuery {
-        site {
-            siteMetadata {
-                title
-                description
-            }
-        }
-    }
-`
+// export const pageQuery = graphql`
+//     query PageQuery {
+//         site {
+//             siteMetadata {
+//                 title
+//                 description
+//             }
+//         }
+//     }
+// `

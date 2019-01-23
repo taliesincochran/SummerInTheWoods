@@ -94,11 +94,11 @@ class AccountPage extends React.Component {
 	                    <div className="pending-section">
 	                    You have an application with the following dates pending:
 	                    	<div className="pending">
-	                    		{this.props.history.location.state.applications[0].chosenYear == "2019"?
-	                    		//this.setSchedule(this.props.history.location.state.weekTime[0], this.props.history.location.state.applications[0])
+	                    		{/*this.props.history.location.state.applications[0].chosenYear == "2019"?
+	                    			this.setSchedule(this.props.history.location.state.weekTime[0], this.props.history.location.state.applications[0])
 	                    		:
-	                    		//this.setSchedule(this.props.history.location.state.weekTime[0], this.props.history.location.state.applications[0])
-	                    	}
+	                    			this.setSchedule(this.props.history.location.state.weekTime[0], this.props.history.location.state.applications[0])
+		*/}
 	                    	</div>
 	                    </div>
 	                </div>

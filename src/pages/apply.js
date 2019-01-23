@@ -38,6 +38,8 @@ export default class Application extends React.Component {
             Week7: 0,
             Week8: 0,
             Week9: 0,
+            Week10: 0,
+            Week11: 0,
             weekArray: [],
             childFirstName:'',
             childLastName:'',
@@ -131,23 +133,18 @@ export default class Application extends React.Component {
         this.setState({ [name]: temp });
     }
     handleYearSelect = year => {
-        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2:0, Week3: 0, Week4:0, Week5:0, Week6:0, Week7:0, Week8:0, firstWeek:0, totalCost:0, amountDue:0, paypalCost:0}, ()=>{this.getCost()})
+        this.setState({ chosenYear : year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2:0, Week3: 0, Week4:0, Week5:0, Week6:0, Week7:0, Week8:0, Week9, WeekA, WeekB, firstWeek:0, totalCost:0, amountDue:0, paypalCost:0}, ()=>{this.getCost()})
     }
     getButtonHash = (firstWeek) => {
         let buttonHash = "";
         switch(firstWeek) {
             case 1:
-                buttonHash="HFZLESBQRMT78";
+                buttonHash = process.env.buttonHash1;
                 break;
             case 2: 
-                buttonHash="C7RB9N4NF448S";
+                buttonHash = process.env.buttonHash2;
                 break;
-            case 3:
-                buttonHash="UWCSQW5Y5GGUG";
-                break;
-            case 4: 
-                buttonHash="K9YMLSATDL24A";
-                break;
+
         }
         this.setState({buttonHash})
     }
@@ -171,8 +168,6 @@ export default class Application extends React.Component {
         .catch((err)=>{
             console.log(err)
         })
-            
-        
     }
     handleNext = event => {
         event.preventDefault();
@@ -257,8 +252,6 @@ export default class Application extends React.Component {
                 totalWeeksSelected++;
             }
         }
-        let threeDayArray = weekArray.filter(value => value === 3)
-        let threeDayCost = 120 * threeDayArray.length
         let fiveDayArray = weekArray.filter(value => value === 5)
         console.log('weekarray',weekArray);
         let fiveDayCost = 0;
@@ -266,27 +259,15 @@ export default class Application extends React.Component {
         let fiveDayNumber = fiveDayArray.length
         let savings = 0;
         let firstWeek= 0;
-        if(fiveDayNumber>5) {
-            fiveDayCost = 135 * fiveDayArray.length;
-            initialCost = 135;
-            savings = 40 * fiveDayArray.length;
-            firstWeek = 4;
-            // this.getButtonHash(2);
-        } else if(fiveDayNumber> 3) {
+        if(fiveDayNumber> 3) {
             fiveDayCost = 150 * fiveDayArray.length;
             initialCost = 150;
             savings = 25 * fiveDayArray.length;
             firstWeek=3;
-            // this.getButtonHash(3);
         } else if(fiveDayNumber) {
             fiveDayCost = 175 * fiveDayArray.length;
             initialCost = 175;
             firstWeek=2;
-            // this.getButtonHash(4);
-        } else if (!fiveDayNumber && totalWeeksSelected) {
-            initialCost = 120;
-            firstWeek=1;
-            // this.getButtonHash(1);
         }
         let totalCost = fiveDayCost + threeDayCost;
         let test = weekArray.filter(value => value === 0);
@@ -492,15 +473,15 @@ export default class Application extends React.Component {
                                            :<button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
                                            }
                                         </div>
-                                        :null
+                                        :this.state.page6?
+                                        <div>
                                             <Mail {...this.props} state={this.state} handleSubmit={this.handleSubmit}/>                                                
                                             <button className="button" id="previousPage4" onClick={this.handleNext}>Previous</button>
-
-                                           <div>
+                                            <div>
                                                 <button className="submit-app" onClick = {this.handleSubmit}>
                                                     Submit Application
                                                 </button>
-                                           </div>
+                                            </div>
                                             <div>
                                                 <p>Please Choose Form of Payment</p>
                                                 <p>Use paypal to secure your child's place immediately.  There is a charge of 2.9% + $.30 that paypal charges for this convienence, bringing the amount due to ${this.state.paypalCost}.</p>
@@ -508,11 +489,11 @@ export default class Application extends React.Component {
                                                     <input type="hidden" name="cmd" value="_s-xclick" />
                                                     <input type="hidden" name="hosted_button_id" value={this.state.buttonHash} />
                                                     <table class="hidden">
-                                                    <tBody>
-                                                    <tr><td><input type="hidden" name="on0" value="Price" /></td></tr><tr><td><select name="os0">
-                                                        <option value={this.state.paypalCost}>{this.state.paypalCost}</option>
-                                                    </select> </td></tr>
-                                                    </tBody>
+                                                        <tBody>
+                                                            <tr><td><input type="hidden" name="on0" value="Price" /></td></tr><tr><td><select name="os0">
+                                                            <option value={this.state.paypalCost}>{this.state.paypalCost}</option>
+                                                            </select> </td></tr>
+                                                        </tBody>
                                                     </table>
                                                     <input type="hidden" name="currency_code" value="USD" />
                                                     <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" onClick = {this.handleSubmit} border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
@@ -524,7 +505,7 @@ export default class Application extends React.Component {
                                                     </p>
                                                     <button className="button" id="previousPage4">Previous</button>
                                             </div>
-                                       </div>
+                                        </div>:null
                                     }                                    
                                 </form>
                             </section>

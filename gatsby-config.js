@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Firebase Authentication`,
-    author: `Taliesin Cochran`,
+    title: `Summer in the Woods Camp`,
+    author: `Taliesin Cochran and Vytas Rudinskas`,
     description: "A Montessori Inspired Summer Camp in Carrboro, NC"
   },
   pathPrefix: '/',
@@ -23,7 +23,7 @@ module.exports = {
       options: {
         plugins: [
           {
-            resolve: `gatsby-remark-images`,
+            resolve: `gatsby-remark-images`,&$;
             options: {
               maxWidth: 630,
             },

@@ -16,11 +16,11 @@ class AccountPage extends React.Component {
 			userObject: {},
 			UserId: props
 		}
-		this.setSchedule = this.setSchedule.bind(this)
+		// this.setSchedule = this.setSchedule.bind(this)
 		this.handleClick = this.handleClick.bind(this)
 	}
 
-	setSchedule(weekArray, appliedLength){
+	// setSchedule(weekArray, appliedLength){
 		// console.log("the array of week objects", weekArray);
 		// console.log("The object of stay lengths: ", appliedLength);
 		// let weekStarts=[];
@@ -62,11 +62,11 @@ class AccountPage extends React.Component {
 		// 		{appliedWeeks}
 		// 	</div>
 		// 	)
-	}
+	// }
 
-	handleClick(){
+	handleClick =() => {
 		const {history,} = this.props.history.location.state;
-		let applicationData = this.props.history.location.state;
+		// let applicationData = this.props.history.location.state;
 		let route = routes.APPLY
 
 	}

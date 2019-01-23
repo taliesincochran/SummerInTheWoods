@@ -89,7 +89,7 @@ class AccountPage extends React.Component {
 	            <div id="main">
 	                <div className="inner">
 	                	<div className="greeting">
-	                    Hello, {this.props.history.location.state.applications[0].parent1Name}!
+	                    {/* Hello, {this.props.history.location.state.applications[0].parent1Name}! */}
 	                    </div>
 	                    <div className="pending-section">
 	                    You have an application with the following dates pending:

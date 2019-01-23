@@ -40,9 +40,11 @@ class HomeIndex extends React.Component {
                     <section id="one">
                         <div className="inner">
                             <header className="major">
-                                <h2>Our Program</h2>
+                                <h2>Our Philosophy</h2>
                             </header>
-                            <p>We draw inspiration from Montessori and Reggio Emilia philosophies and our program is based outdoors with an emphasis on unstructured, child-led play. Mostly, we want to offer a camp that captures the magic that we remember from our own childhood summers- a camp where children are simply free to play.</p>
+                            <p>
+                                We draw inspiration from Montessori and Reggio Emilio philosophies and our program is based outdoors with an emphasis on unstructured, child-led play. We believe that children thrive when they are given freedom to follow their interests within a rich environment and supportive community. Mostly, we want to offer a camp that captures the magic that we remember from our own childhood summers - a camp where children are simply free to play. 
+                            </p>
                         </div>
                     </section>
                     <section id="two" className="spotlights">
@@ -53,7 +55,7 @@ class HomeIndex extends React.Component {
                             <div className="content">
                                 <div className="inner">
                                     <header className="major">
-                                        <h3>Our Philosophy</h3>
+                                        <h3>Our Program</h3>
                                     </header>
                                     <p>
                                         We welcome children, ages 3-7 (with some flexibility). Camp runs weekly, June 18 - August 10 from 9 am to 1 pm (no camp July 2-6) with choice of 5 or 3 days per week. Receive a discount when you sign up for four or more weeks! Our camp is located near McDougle school in Chapel Hill, in an area surrounded by nature. For more information, contact <a className="email" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>

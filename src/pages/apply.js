@@ -2,13 +2,13 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Redirect } from "react-router-dom"
 // import Moment from 'react-moment'
-import { db, auth } from '../firebase'
-import Link from 'gatsby-link'
-import BannerLanding from '../components/BannerLanding/'
+import { db } from '../firebase'
+// import Link from 'gatsby-link'
+// import BannerLanding from '../components/BannerLanding/'
 import Checkbox from '../components/Checkbox'
 import Input from '../components/Input'
 import Moment from 'moment'
-import LinkItem from '../components/LinkItem'
+// import LinkItem from '../components/LinkItem'
 import Mail from './mail.js';
 
 class Application extends React.Component {
@@ -151,16 +151,6 @@ class Application extends React.Component {
         this.setState({buttonHash})
     }
 
-    addUser = (info)=> {
-        auth.doCreateUserWithEmailAndPassword(info.parent1Email, info.childFirstName+"12345")
-        .then(authUser =>{
-            db.doCreateUser(authUser.user.uid, info.parent1Name, info.parent1Email)
-            .catch(error=>{
-            })
-        })
-        .catch(error=>{
-        })
-    }
 
 
     handleSubmit = event => {

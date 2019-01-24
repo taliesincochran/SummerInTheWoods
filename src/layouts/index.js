@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import '../assets/scss/main.scss';
 import Navigation from '../components/Navigation/';
-import withAuthentication from '../components/Session/withAuthentication';
 import Header from '../components/Header/';
 import Footer from '../components/Footer/';
 import Menu from '../components/Menu/';
 import PropTypes from 'prop-types';
-import { Link, withPrefix } from 'gatsby-link';
+import { withPrefix } from 'gatsby-link';
 import { db } from '../firebase';
-import { auth } from '../firebase';
 
 // const CLIENT = {
 //   sandbox: process.env.PAYPAL_CLIENT_ID_SANDBOX,
@@ -37,17 +35,11 @@ class TemplateWrapper extends Component {
         this.handleChange = this.handleChange.bind(this)
     }
     componentDidMount () {
-        // this.detectBrowser();
         this.timeoutId = setTimeout(() => {
             this.setState({loading: '', });
             this.getCalendar()
         }, 100);
-        !this.props.location.state?auth.doSignOut():null;
     }
-    // detectBrowse = () => {
-    //     let goodBrowser = (navigator.userAgent.index('Mozilla') !== -1 || navigator.userAgent.indexOf('Safari') !== -1)? false: true;
-    //     this.setState({goodBrowser});
-    // }
     getCalendar() {
         db.getWeeks().then(snapshot => {
             // get current date, month, year
@@ -171,4 +163,4 @@ class TemplateWrapper extends Component {
 TemplateWrapper.propTypes = {
     children: PropTypes.func
 };
-export default withAuthentication(TemplateWrapper);
+export default TemplateWrapper;

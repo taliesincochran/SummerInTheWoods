@@ -1,94 +1,88 @@
 import React from 'react';
-import Helmet from 'react-helmet';
-import BannerLanding from '../components/BannerLanding/'
+
 import { Redirect } from "react-router-dom"
 
 const Mail = (props) => {
     let message = '';
-    let state = props.state;
-    let { 
-            date,
-            amountDue,
-            savings,
-            localTimezoneOffset,
-            Week0,
-            Week1,
-            Week2,
-            Week3,
-            Week4,
-            Week5,
-            Week6,
-            Week7,
-            Week8,
-            Week9,
-            weekArray,
-            childFirstName,
-            childLastName,
-            age,
-            birthday,
-            allergies,
-            parent1Name,
-            parent1Phone,
-            parent1Email,
-            parent1EmailVerify,
-            parent2Name,
-            parent2Phone,
-            parent2Email,
-            emergency1Name,
-            emergency1Relationship,
-            emergency1Phone,
-            emergency2Name,
-            emergency2Relationship,
-            emergency2Phone,
-            physicianName,
-            physicianPhone,
-            dentistName,
-            dentistPhone,
-            address
-        } = state;
-
-
+    if(props.state) {
+        let { 
+                amountDue,
+                localTimezoneOffset,
+                Week0,
+                Week1,
+                Week2,
+                Week3,
+                Week4,
+                Week5,
+                Week6,
+                Week7,
+                Week8,
+                Week9,
+                childFirstName,
+                childLastName,
+                age,
+                birthday,
+                allergies,
+                parent1Name,
+                parent1Phone,
+                parent1Email,
+                parent2Name,
+                parent2Phone,
+                parent2Email,
+                emergency1Name,
+                emergency1Relationship,
+                emergency1Phone,
+                emergency2Name,
+                emergency2Relationship,
+                emergency2Phone,
+                physicianName,
+                physicianPhone,
+                dentistName,
+                dentistPhone,
+                address
+            } = this.props.state;    
+        if(props.location.state) {
+            message = parent1Name + "has filled out an application for your camp. Please email them at " + parent1Email + ". Send them the address so that they can mail thier check for the $" + amountDue + " and a paypal bill to confirm the hold.\n" +
+                "amountDue:" + amountDue + "\n" + 
+                "Week 1:" + Week0 + " days\n" + 
+                "Week 2:" + Week1 + " days\n" + 
+                "Week 3:" + Week2 + " days\n" + 
+                "Week 4:" + Week3 + " days\n" + 
+                "Week 5:" + Week4 + " days\n" + 
+                "Week 6:" + Week5 + " days\n" + 
+                "Week 7:" + Week6 + " days\n" + 
+                "Week 8:" + Week7 + " days\n" + 
+                "Week 9:" + Week8 + " days\n" + 
+                "Week 10:" + Week9 + " days\n" + 
+                "child's first name:" + childFirstName + "\n" + 
+                "child's last name:" +  childLastName + "\n" + 
+                "age:" + age + "\n" + 
+                "birthday:" + birthday + "\n" + 
+                "allergies:" + allergies + "\n" + 
+                "parent name:" + parent1Name + "\n" + 
+                "parent phone:" + parent1Phone + "\n" + 
+                "parent email:" + parent1Email + "\n" + 
+                "second parent name:" +  parent2Name + "\n" + 
+                "second parent phone:" + parent2Phone + "\n" + 
+                "second parent email:" + parent2Email + "\n" + 
+                "emergency contact name:" + emergency1Name + "\n" + 
+                "first emergency contact relationship:" + emergency1Relationship + "\n" + 
+                "first emergency contact phone:" +    emergency1Phone + "\n" + 
+                "second emergency contact name:" + emergency2Name + "\n" + 
+                "second emergency contact relationship:" + emergency2Relationship + "\n" + 
+                "second emergency contact phone:" +    emergency2Phone + "\n" + 
+                "physician name:" +  physicianName + "\n" + 
+                "physician phone:" + physicianPhone + "\n" + 
+                "dentist name:" +    dentistName + "\n" + 
+                "dentist phone:" +   dentistPhone + "\n" + 
+                "address:" + address + "\n"
+                "timezone offset:" + localTimezoneOffset + "\n" 
+        }
+    }
     const gotchaStyle = {
         display: 'none'
-    }
-    if(props.location.state) {
-        message = parent1Name + "has filled out an application for your camp. Please email them at " + parent1Email + ". Send them the address so that they can mail thier check for the $" + amountDue + " and a paypal bill to confirm the hold.\n" +
-            "amountDue:" + amountDue + "\n" + 
-            "Week 1:" + Week0 + " days\n" + 
-            "Week 2:" + Week1 + " days\n" + 
-            "Week 3:" + Week2 + " days\n" + 
-            "Week 4:" + Week3 + " days\n" + 
-            "Week 5:" + Week4 + " days\n" + 
-            "Week 6:" + Week5 + " days\n" + 
-            "Week 7:" + Week6 + " days\n" + 
-            "Week 8:" + Week7 + " days\n" + 
-            "Week 9:" + Week8 + " days\n" + 
-            "Week 10:" + Week9 + " days\n" + 
-            "child's first name:" + childFirstName + "\n" + 
-            "child's last name:" +  childLastName + "\n" + 
-            "age:" + age + "\n" + 
-            "birthday:" + birthday + "\n" + 
-            "allergies:" + allergies + "\n" + 
-            "parent name:" + parent1Name + "\n" + 
-            "parent phone:" + parent1Phone + "\n" + 
-            "parent email:" + parent1Email + "\n" + 
-            "second parent name:" +  parent2Name + "\n" + 
-            "second parent phone:" + parent2Phone + "\n" + 
-            "second parent email:" + parent2Email + "\n" + 
-            "emergency contact name:" + emergency1Name + "\n" + 
-            "first emergency contact relationship:" + emergency1Relationship + "\n" + 
-            "first emergency contact phone:" +    emergency1Phone + "\n" + 
-            "second emergency contact name:" + emergency2Name + "\n" + 
-            "second emergency contact relationship:" + emergency2Relationship + "\n" + 
-            "second emergency contact phone:" +    emergency2Phone + "\n" + 
-            "physician name:" +  physicianName + "\n" + 
-            "physician phone:" + physicianPhone + "\n" + 
-            "dentist name:" +    dentistName + "\n" + 
-            "dentist phone:" +   dentistPhone + "\n" + 
-            "address:" + address + "\n"
-            "timezone offset:" + localTimezoneOffset + "\n" 
-        }
-        return(
+    } 
+    return(
         !props.location.state?<Redirect to="/"/>:
         <div>
             <p>Once the application is submitted, we will email you a bill.</p>

@@ -1,9 +1,5 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import SignOut from '../SignOut'
-import LinkArray from '../../constants/linkArray'
 import Navigation from '../Navigation'
-import * as routes from '../../constants/routes';
 
 const Footer = (props) => {
     return(

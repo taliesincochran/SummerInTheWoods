@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'gatsby-link';
 const LinkItem = props => {
     return(
-        props.button?
-        (
-            <li>
+        <li>
+            {props.button?
+            (
                 <Link 
                     onClick={props.onToggleMenu} 
                     to={{
@@ -16,9 +16,7 @@ const LinkItem = props => {
                         {props.text}
                     </button>
                 </Link>
-            </li>
-        ):(
-            <li>
+            ):(
                 <Link 
                     onClick={props.onToggleMenu} 
                     to={{
@@ -28,8 +26,8 @@ const LinkItem = props => {
                 >
                     {props.text}
                 </Link>
-            </li>
-        )
+            )}
+        </li>
     )
 }
 export default LinkItem

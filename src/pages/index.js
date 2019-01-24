@@ -11,7 +11,7 @@ import pic12 from '../assets/images/pic12.jpg';
 import { philosophy, location, information, program } from '../constants/homeVariables';
 
 
-class HomeIndex extends React.Component {
+class index extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -110,15 +110,5 @@ class HomeIndex extends React.Component {
     }
 }
 
-export default HomeIndex
+export default index
 
-// export const pageQuery = graphql`
-//     query PageQuery {
-//         site {
-//             siteMetadata {
-//                 title
-//                 description
-//             }
-//         }
-//     }
-// `

@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "author": "Trakai Web Development",
   "dependencies": {
-    "dotenv": "^6.0.0",
+    "@firebase/app": "0.3.6",
     "@firebase/auth": "0.9.1",
     "@firebase/database": "0.3.9",
-    "@firebase/app": "0.3.6",
+    "dotenv": "^6.0.0",
     "fs": "0.0.1-security",
     "gatsby": "1.9.273",
     "gatsby-link": "1.6.44",

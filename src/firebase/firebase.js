@@ -1,5 +1,4 @@
 import firebase from '@firebase/app';
-import '@firebase/auth';
 import '@firebase/database';
 
 const prodConfig = {
@@ -29,9 +28,7 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.database();
-const auth = firebase.auth();
 
 export {
-  db,
-  auth,
+  db
 };

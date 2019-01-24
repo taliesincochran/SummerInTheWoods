@@ -1,22 +1,17 @@
 import React from "react"
-const Input = props => 
-    props.disabled?
+const Input = props => {
+    return(
         <input
-            disabled
+            disabled={props.disabled?props.disabled:false}
             type="checkbox"
             name={props.name}
             value={props.value}
             onChange={props.onChange}
             checked={props.checked}
         />
-        :
-        <input
-            type="checkbox"
-            name={props.name}
-            value={props.value}
-            onChange={props.onChange}
-            checked={props.checked}
-        />
+    )   
+};
+
 const Label = props => {
     return(
         props.disabled?
@@ -39,7 +34,8 @@ const Label = props => {
             </label>
     )
 }
-const Checkbox = props => 
+const Checkbox = props => {
+    return ( 
     <div style={props.style}>
         <Input
             name={props.name}
@@ -58,5 +54,6 @@ const Checkbox = props =>
         >
         {props.text}
         </Label>
-    </div>
-export default Checkbox
+    </div>)
+}
+export default Checkbox;

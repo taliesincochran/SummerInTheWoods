@@ -2,11 +2,9 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
 import { Redirect } from "react-router-dom"
+import { emailContactTo } from '../constants/variables';
 
 const Contact = (props) => {
-    const gotchaStyle = {
-        display: 'none'
-    }
     return(
     !props.location.state?<Redirect to="/"/>:
         <div>
@@ -18,10 +16,24 @@ const Contact = (props) => {
             <div id="main">
                 <div className="inner">
                     <section>
-                        <form method="post" action="https://formspree.io/summerinthewoodscamp@gmail.com">
-                            <div className="gotcha" style={gotchaStyle}>
-                                <input type="text" name="_gotcha" style={gotchaStyle} className="gotcha" />
-                                <input type="hidden" name="_next" value="/" />
+                        <form method="post" method={emailContactTo}>
+                            <div className="name" class="hide">
+                                <input type="hidden" name="_redirect" value="/" />
+                            </div>
+                            <div className="field">
+                                <input type="text" name="spam" className="hide" />
+                            </div>
+                            <div className="field">
+                                <label htmlFor="email">email</label>
+                                <input type="email" name="email" id="email"></email>
+                            </div>
+                            <div className="field">
+                                <label htmlFor="name">Name</label>
+                                <textarea name="name" id="name" rows="6"></textarea>
+                            </div>
+                            <div className="field">
+                                <label htmlFor="message">Message</label>
+                                <textarea name="message" id="message" rows="6"></textarea>
                             </div>
                             <div className="field">
                                 <label htmlFor="message">Message</label>

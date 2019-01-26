@@ -34,21 +34,26 @@ let eventPopulate = (props)=>{
         if(!campWeek.noCamp){     
             switch(available) {
                 case 0:
-                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: No slots available.                                   `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: No slots available.                                   `
                     break;
                 case 1: 
-                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: 1 slot available.                                     `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: 1 slot available.                                     `
                     break;
                 default: 
-                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: ${available} slots available.                         `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: ${available} slots available.                         `
                     break;
             }
         } else if (campWeek.noCamp && campWeek.noCampDescription) {
             campWeek.title = campWeek.noCampDescription
         } else {
-            campWeek.title = "No camp this week."
+            campWeek.title = "No camp this week.                                                                          "
         }
-        available>0?campWeek.className = "available":campWeek.className = "no-vacancy";
+        available > 0 
+            ? 
+            campWeek.className = "available" 
+            : 
+            campWeek.className = "no-vacancy";
+        
         eventTemp.push(campWeek);
     }
     return eventTemp;
@@ -70,7 +75,6 @@ const Selectable = (props) => {
                     defaultDate={props.defaultDate}
                     components={{event: Event}}
                     toolbar={false}
-
                 />
             </div>
         </div>

@@ -27,6 +27,7 @@
     "prop-types": "15.6.2",
     "react": "15.6.0",
     "react-big-calendar": "0.19.1",
+    "react-google-recaptcha": "^1.0.5",
     "react-helmet": "5.2.0"
   },
   "keywords": [

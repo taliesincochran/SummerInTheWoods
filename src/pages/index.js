@@ -8,7 +8,7 @@ import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
 import pic12 from '../assets/images/pic12.jpg';
-import { philosophy, location, information, program } from '../constants/homeVariables';
+import { philosophy, location, information, program } from '../constants/variables';
 
 
 class index extends React.Component {

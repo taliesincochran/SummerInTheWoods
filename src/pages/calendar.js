@@ -48,13 +48,12 @@ class Calendar extends React.Component {
         let year = yearString;
         for(let weekChosen in yearChosen) {
             let week = weekChosen;
-            // week.split('').splice(4,0," ").join('');
-            let { start, end, available, pending, noCamp } = yearChosen[week]
+            let { start, end, available, pending, noCamp, title } = yearChosen[week]
             start = new Date(start);
             start = start.getMonth() + "/" + start.getDate();
             end = new Date(end);
             end = end.getMonth() + "/" + end.getDate();
-            weekArray.push({week,year,start,end,available,pending,noCamp})
+            weekArray.push({week,year,start,end,available,pending,noCamp, title})
         }
         return weekArray
     }

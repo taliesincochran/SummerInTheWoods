@@ -1,5 +1,13 @@
 	form {
 		margin: 0 0 _size(element-margin) 0;
+		.displayNone {
+			display: none;
+		}
+		.hide {
+			visibility: hidden;
+			overflow: hidden;
+			position: absolute;
+		}
 		.smallBox {
 			overflow:auto;
 			border-bottom:1px solid white;
@@ -170,7 +178,7 @@
 			position: relative;
 
 			&:before {
-				background: _palette(border-bg);
+				background: _palette(fg);
 				content: '';
 				display: inline-block;
 				height: (_size(element-height) * 0.6);
@@ -186,7 +194,7 @@
 
 		&:checked + label {
 			&:before {
-				background: _palette(fg-bold);
+				background: _palette(fg);
 				border-color: _palette(highlight);
 				content: '\f00c';
 				color: _palette(bg);
@@ -196,12 +204,6 @@
 		&:focus + label {
 			&:before {
 				box-shadow: 0 0 0 2px _palette(highlight);
-			}
-		}
-	}
-	input[type="checkbox"] {
-		& + label {
-			&:before {
 			}
 		}
 	}

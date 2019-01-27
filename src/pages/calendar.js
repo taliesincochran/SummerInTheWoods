@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from "react";
 import Helmet from 'react-helmet';
-import Selectable from '../components/Selectable'
-import { Redirect } from "react-router-dom"
-import Checkbox from '../components/Checkbox'
+import Selectable from '../components/Selectable';
+import { Redirect } from "react-router-dom";
+import Checkbox from '../components/Checkbox';
 
 class Calendar extends React.Component {
     constructor(props) {
@@ -105,7 +105,6 @@ class Calendar extends React.Component {
                     </div>
                 </div>
             </div>
-
         )        
     }
 }

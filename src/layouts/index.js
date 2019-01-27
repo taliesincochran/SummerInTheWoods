@@ -136,7 +136,7 @@ class TemplateWrapper extends Component {
                 </Helmet>
                 <div id="wrapper">
                     <Header onToggleMenu={this.handleToggleMenu} />
-                    {children()}
+                    {children ()}
                     <hr/>
                     <Footer 
                         pathname={this.props.location.pathname} 

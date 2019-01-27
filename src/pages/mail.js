@@ -1,13 +1,4 @@
-import React from 'react'
-import { db } from '../firebase'
-import Link from 'gatsby-link'
-import Checkbox from '../components/Checkbox';
-import Input from '../components/Input';
-import { buttonHashAmountDue, buttonHashFullPrice, email, emailApplicationTo, paymentMethodMessage } from '../constants/variables';
-
-const gotchaStyle = {
-    display: 'none'
-}
+import * as React from "react";
 
 class Mail extends React.Component {
     state={
@@ -29,15 +20,6 @@ class Mail extends React.Component {
             this.setState({[paramName]: [paramValue]});
         });
     }
-    "?amountDue=" + this.state.amountDue +
-        "+totalCost=" + this.state.totalCost +
-        "+name=" + parentName +
-        "+totalWeeks=" + this.state.totalWeeksSelected +
-        "+phone=" + this.state.parent1Phone +
-        "+email=" + email +
-        "+address" + this.state.address +
-        "+childsName=" + childsName +
-        "+age=" + this.state.age + "
     getMessage1 = () => {
         let message = this.state.name + " has submitted an aplication and has elected to pay by mail.  Thier email is " + this.state.email + ". Thier phone number is " + this.state.phoneNumber + ". Thier amount due is " + this.state.amountDue + " . Please send them a bill via email." 
         return message;
@@ -53,7 +35,7 @@ class Mail extends React.Component {
                     <div id="main">
                         <div className="inner">
                             <section>
-                            <form action="https://liveformhq.com/form/126423ef-549b-46ac-9907-94e13200a101" method="POST" accept-charset="utf-8">
+                            <form action={process.env.GATSBY_EMAIL_CONTACT_TO} method="POST" accept-charset="utf-8">
                                     <div className="hide">
                                         <label htmlFor="name">Name</label>
                                         <input type="text" name="name" id="name" value={this.state.name} />

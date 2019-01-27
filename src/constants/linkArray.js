@@ -1,5 +1,5 @@
-import React from 'react'
-import * as routes from './routes'
+import * as React from "react";
+import * as routes from './routes';
 
 const linkArray = [
   {
@@ -27,5 +27,12 @@ const linkArray = [
     auth: true,
     nonAuth: true
   },
+  {
+    path: routes.Admin,
+    text: 'Admin',
+    nonAuth:true,
+    admin:true,
+    auth:true
+  }
 ]
-export default linkArray
+export default linkArray;

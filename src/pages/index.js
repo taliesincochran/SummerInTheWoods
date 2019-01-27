@@ -1,13 +1,10 @@
-import React from 'react';
-import Link from 'gatsby-link';
+import * as React from "react";
 import Helmet from 'react-helmet';
-import Banner from '../components/Banner/';
 import BannerLanding from '../components/BannerLanding/';
-import { db } from '../firebase'
+import { db } from '../firebase';
 import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
-import pic12 from '../assets/images/pic12.jpg';
 import { philosophy, location, information, program } from '../constants/variables';
 
 
@@ -111,4 +108,3 @@ class index extends React.Component {
 }
 
 export default index
-

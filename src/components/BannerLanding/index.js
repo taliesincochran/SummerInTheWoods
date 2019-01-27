@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from "react";
 
 const BannerLanding = (props) => (
     <section id="banner" className={props.bannerClass}>

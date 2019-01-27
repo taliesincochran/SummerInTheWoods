@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from "react";
 const Banner = (props) => (
     <section id="banner" className={props.bannerClass}>
         <div className="inner">

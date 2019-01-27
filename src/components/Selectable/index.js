@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 import BigCalendar from 'react-big-calendar';
 import Moment from 'moment';
 import '../../assets/scss/calendar/_reset.scss';

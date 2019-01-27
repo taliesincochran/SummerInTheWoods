@@ -1,16 +1,16 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { Redirect } from "react-router-dom"
-// import Moment from 'react-moment'
-import { db } from '../firebase'
-import Link from 'gatsby-link'
-// import BannerLanding from '../components/BannerLanding/'
+import * as React from "react";
+import Helmet from 'react-helmet';
+import { Redirect } from "react-router-dom";
+// import Moment from 'react-moment';
+import { db } from '../firebase';
+import Link from 'gatsby-link';
+// import BannerLanding from '../components/BannerLanding/';
 import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
 // import LinkItem from '../components/LinkItem';
 // import Mail from './mail.js';
-import { buttonHashAmountDue, buttonHashFullPrice, email, emailApplicationTo, paymentMethodMessage } from '../constants/variables';
+import { paymentMethodMessage } from '../constants/variables';
 
 const gotchaStyle = {
     display: 'none'
@@ -85,9 +85,32 @@ class Application extends React.Component {
             let redirectString = window.location.href.slice(0, (window.location.href.indexOf('/apply') + 1));
             console.log(this.props)
             // console.log(redirectString);
-            let { year, month, date, yearsArray, chosenYear, campTimes, rawCampTimes, localTimezoneOffset } = this.props.location.state;
-            this.setState({ year, month, date, yearsArray, chosenYear, campTimes, rawCampTimes, localTimezoneOffset, redirectString })
-            this.setState({ weekArray: this.getWeeks(this.props.location.state.rawCampTimes[this.props.location.state.chosenYear], this.props.location.state.chosenYear) })
+            let { 
+                year, 
+                month,
+                date, 
+                yearsArray, 
+                chosenYear, 
+                campTimes, 
+                rawCampTimes, 
+                localTimezoneOffset 
+            } = this.props.location.state;
+
+
+            this.setState({ 
+                year, 
+                month, 
+                date, 
+                yearsArray, 
+                chosenYear, 
+                campTimes, 
+                rawCampTimes, 
+                localTimezoneOffset, 
+                redirectString 
+            })
+            this.setState({ 
+                weekArray: this.getWeeks(this.props.location.state.rawCampTimes[this.props.location.state.chosenYear], this.props.location.state.chosenYear) 
+            })
         }
     }
 
@@ -150,7 +173,10 @@ class Application extends React.Component {
         } else {
             redirectString = this.makeRedirectString("mail");
         }
-        this.setState({ redirectString: redirectString, paymentMethod: paymentMethod })
+        this.setState({ 
+            redirectString: redirectString, 
+            paymentMethod: paymentMethod 
+        })
     }
 
     handleTelephoneNumber = e => {
@@ -179,21 +205,93 @@ class Application extends React.Component {
     handleSubmit = event => {
         if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName) {
             event.preventDefault();
-            let { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear, Week1, Week2, Week3, Week4, Week5, Week6, Week7, Week8, Week9, WeekA, WeekB, paymentMethod } = this.state;
+            let { 
+                childFirstName, 
+                childLastName, 
+                age, 
+                birthday, 
+                allergies, 
+                parent1Name, 
+                parent1Phone, 
+                parent1Email, 
+                parent2Name, 
+                parent2Phone, 
+                parent2Email, 
+                emergency1Name, 
+                emergency1Relationship, 
+                emergency1Phone, 
+                emergency2Name, 
+                emergency2Relationship, 
+                emergency2Phone, 
+                physicianName, 
+                physicianPhone, 
+                dentistName, 
+                dentistPhone, 
+                address, 
+                localTimezoneOffset, 
+                chosenYear, 
+                Week1, 
+                Week2, 
+                Week3, 
+                Week4, 
+                Week5, 
+                Week6, 
+                Week7, 
+                Week8, 
+                Week9, 
+                WeekA, 
+                WeekB, 
+                paymentMethod 
+            } = this.state;
             age = this.getAge(this.state.birthday);
             const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
-            const application = { childFirstName, childLastName, age, birthday, allergies, parent1Name, parent1Phone, parent1Email, parent2Name, parent2Phone, parent2Email, emergency1Name, emergency1Relationship, emergency1Phone, emergency2Name, emergency2Relationship, emergency2Phone, physicianName, physicianPhone, dentistName, dentistPhone, address, localTimezoneOffset, chosenYear, Week1, Week2, Week3, Week4, Week5, Week6, Week7, Week8, Week9, WeekA, WeekB, paymentMethod, key }
+            const application = { 
+                childFirstName,
+                childLastName,
+                age,
+                birthday,
+                allergies,
+                parent1Name,
+                parent1Phone,
+                parent1Email,
+                parent2Name,
+                parent2Phone,
+                parent2Email,
+                emergency1Name,
+                emergency1Relationship,
+                emergency1Phone,
+                emergency2Name,
+                emergency2Relationship,
+                emergency2Phone,
+                physicianName,
+                physicianPhone,
+                dentistName,
+                dentistPhone,
+                address,
+                localTimezoneOffset,
+                chosenYear,
+                Week1,
+                Week2,
+                Week3,
+                Week4,
+                Week5,
+                Week6,
+                Week7,
+                Week8,
+                Week9,
+                WeekA,
+                WeekB,
+                paymentMethod 
+            }
             db.applicationSubmit(application)
-                .then((result) => {
-                    this.setState({ submitted: true }, () => {
-                        /*=====================================================================================
-                        * This is where the page gets set after submission
-                        *=====================================================================================*/
-                        this.setState({ page: 5 })
-                    })
+            .then((result) => {
+                this.setState({ submitted: true }, () => {
+                    this.setState({ page: 5 })
                 })
-                .catch((err) => {
-                })
+            })
+            .catch((err) => {
+                this.setState({ error4: "There was an error with the database, please try again." })
+            })
         } else {
             this.setState({ error4: "Please fill out all required fields." })
         }
@@ -272,7 +370,7 @@ class Application extends React.Component {
 
     getCost = () => {
         let weekArray = this.makeWeekArray()
-        let totalWeeksSelected = weekArray.filter(value => value).length;
+        let totalWeeksSelected = weekArray.filter(value => value === true).length;
         console.log('getcost being called', totalWeeksSelected)
         let totalCost = 0;
         let initialCost = 0;
@@ -294,7 +392,8 @@ class Application extends React.Component {
         else {
             amountDue = initialCost + (totalWeeksSelected - 1) * 25;
         }
-        this.setState({ totalCost, amountDue, totalWeeksSelected });
+        console.log("totalCost", totalCost, "amountDue", amountDue);
+        this.setState({ totalCost, amountDue, initialCost, totalWeeksSelected });
     }
 
     render() {
@@ -306,12 +405,12 @@ class Application extends React.Component {
                 <div>
                     <Helmet>
                         <title>Summer In The Woods</title>
-                        <meta name="description" content="Application Page" />
+                        <meta name="daescription" content="Application Page" />
                     </Helmet>
                     <div id="main">
                         <div className="inner">
                             <section>
-                                <form action={emailApplicationTo} method="POST" acceptCharset="utf-8">
+                                <form action={process.env.GATSBY_EMAIL_APPLICATION_TO} method="POST" acceptCharset="utf-8">
                                 
                                     <input 
                                         type="hidden" 

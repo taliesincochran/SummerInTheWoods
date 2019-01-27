@@ -9,9 +9,8 @@ export const doCreateUser = (id, username, email) =>
     email: email,
     admin: false
   });
-
 export const onceGetUsers = () =>
-  db.ref('users'/$).once('value');
+  db.ref('users').once('value');
 
 export const getOneUser = uid => 
 	db.ref(`users/${uid}`).once('value');
@@ -27,9 +26,9 @@ export const getWeeks = () =>
 	db.ref('campTimes/year').once('value');
 
 export const applicationSubmit = (obj) => 
-  db.ref('applications/').child(obj.key).set(obj);
+  db.ref('applications').child(obj.key).set(obj);
 
-export const getApplications = ()=> db.ref('applications/').once('value');
+export const getApplications = () => db.ref('applications').once('value');
 
   
 
@@ -47,6 +46,6 @@ export const changeAvailable = (paymentMethod, year, weekArray) => {
       error = "An error has occured, one of the weeks you are applying for is already filled.";
     }
     return error;
-  })
-}
+  });
+};
 

@@ -1,8 +1,7 @@
-import React from 'react';
+import * as React from "react";
 import Helmet from 'react-helmet';
-import BannerLanding from '../components/BannerLanding/'
-import { Redirect } from "react-router-dom"
-import { emailContactTo } from '../constants/variables';
+import BannerLanding from '../components/BannerLanding/';
+import { Redirect } from "react-router-dom";
 
 const Contact = (props) => {
     return(
@@ -16,8 +15,8 @@ const Contact = (props) => {
             <div id="main">
                 <div className="inner">
                     <section>
-                        <form method="post" method={emailContactTo}>
-                            <div className="name" class="hide">
+                        <form method="post" method={process.env.GATSBY_EMAIL_CONTACT_TO}>
+                            <div className="name" className="hide">
                                 <input type="hidden" name="_redirect" value="/" />
                             </div>
                             <div className="field">
@@ -25,7 +24,7 @@ const Contact = (props) => {
                             </div>
                             <div className="field">
                                 <label htmlFor="email">email</label>
-                                <input type="email" name="email" id="email"></email>
+                                <input type="email" name="email" id="email"></input>
                             </div>
                             <div className="field">
                                 <label htmlFor="name">Name</label>
@@ -51,7 +50,7 @@ const Contact = (props) => {
                                 <span className="icon alt fa-envelope"></span>
                                 <h3>Email</h3>
                             {/*The long string of ASCII is to confuse scraping bots*/}
-                                <a className="email" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+                                <a className="email" href={process.env.GATSBY_CAMP_EMAIL}>{process.env.GATSBY_CAMP_EMAIL}</a>
                             </div>
                         </section>
                         <section>

@@ -1,4 +1,5 @@
-import React from "react"
+import * as React from "react";
+
 const Input = props => {
     return(
         <input
@@ -33,7 +34,7 @@ const Label = props => {
             {props.text}
             </label>
     )
-}
+};
 const Checkbox = props => {
     return ( 
     <div style={props.style}>
@@ -55,5 +56,5 @@ const Checkbox = props => {
         {props.text}
         </Label>
     </div>)
-}
+};
 export default Checkbox;

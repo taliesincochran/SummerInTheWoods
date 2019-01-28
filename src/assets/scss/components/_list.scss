@@ -17,14 +17,33 @@
 	}
 
 	ul {
-		list-style: disc;
+		list-style: none;
 		margin: 0 0 _size(element-margin) 0;
 		padding-left: 1em;
-
 		li {
 			padding-left: 0.5em;
+			&.inline {
+				display: inline-block;
+			}
+			&.infoBox {
+				border-color: _palette(fg);
+				border-width: 5px;
+				border-style: solid;
+				list-style-type: "none";
+				padding: 0;
+				div {
+					padding: 10px;
+					display: inline-block;
+				}
+				.name {
+					padding: 10px;
+					display: inline-block;
+				}
+				.inline {
+					display: inline-block;
+				}
+			}
 		}
-
 		&.alt {
 			list-style: none;
 			padding-left: 0;

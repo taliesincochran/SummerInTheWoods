@@ -22,21 +22,24 @@ export const getAdmin = () =>
 	db.ref('adminlist/').once('value');
 
 // Other db APIs ...
-export const getWeeks = () =>
-	db.ref('campTimes/year').once('value');
+export const getWeeks = () =>db.ref('campTimes/year').once('value');
 
-export const applicationSubmit = (obj) => 
-  db.ref('applications').child(obj.key).set(obj);
+export const applicationSubmit = (obj, key) => db.ref('applications').child(key).set(obj);
 
 export const getApplications = () => db.ref('applications').once('value');
 
-  
-
+export const changePending = (year, week) => {
+  let pendingRef = db.ref(`campTimes/${year}/${week}/pending`);
+  let pending = pendingRef.once('value').then(snapshot => snapshot.val());
+  pendingRef.set(pending + 1);
+};
+export const changeTargetChild = (target, child, value) => db.ref(target).child(child).set(value);
+export const getValue = (target) => db.ref(target).once('value').then(snapshot => snapshot.val());
 export const changeAvailable = (paymentMethod, year, weekArray) => {
   weekArray.forEach(week=> {
     let weekRef = db.ref(`campTimes/year/${year}/${week}`);
-    let available = weekRef.child('available').once('value');
-    let pending = weekRef.child('pending').once('value');
+    let available = weekRef.child('available').once('value').then(snapshot=>snapshot.val());
+    let pending = weekRef.child('pending').once('value').then(snapshot => snapshot.val());
     let error = '';
     if(paymentMethod === "mail" && available > 0 && ((available - pending) > 0)) {
       weekRef.child('pending').set(pending + 1);

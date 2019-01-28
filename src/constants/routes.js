@@ -1,9 +1,15 @@
-export const HOME = '/';
-export const CONTACT = '/contact';
-export const CALENDAR = '/calendar';
-export const APPLY = '/apply';
-export const MAIL = '/mail';
-export const Admin = '/admin';
-export const Paypal = '/paypal';
-export const AdminAccounts = '/adminAccounts'
+export const SIGN_IN = '/signin'
+export const HOME = '/'
+export const ACCOUNT = '/account'
+export const CONTACT = '/contact'
+export const PASSWORD_CHANGE = '/password-change'
+export const CALENDAR = '/calendar'
+export const ADMIN_CALENDAR_EDITOR = '/admin-calendar-editor'
+export const ADMIN_APPLICATION_VIEW = '/admin-application-view'
+export const STAFF = '/staff'
+export const APPLY = '/apply'
+export const MAIL = '/mail'
+export const SUCCESS ='/success'
+export const FAILURE = '/failure'
+export const PAYPAL = '/paypal'
 

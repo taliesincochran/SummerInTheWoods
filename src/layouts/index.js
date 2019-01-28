@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import '../assets/scss/main.scss';
 import Navigation from '../components/Navigation/';
+import withAuthentication from '../components/Session/withAuthentication';
 import Header from '../components/Header/';
 import Footer from '../components/Footer/';
 import Menu from '../components/Menu/';
 import PropTypes from 'prop-types';
-import { withPrefix } from 'gatsby-link';
+import { Link, withPrefix } from 'gatsby-link';
 import { db } from '../firebase';
+import { auth } from '../firebase';
 
 // const CLIENT = {
 //   sandbox: process.env.PAYPAL_CLIENT_ID_SANDBOX,
@@ -23,32 +25,31 @@ class TemplateWrapper extends Component {
             auth: null,
             date: '',
             month: '',
-            year:'',
+            year: '',
             yearsArray: [],
             rawCampTimes: [],
             campTimes: [],
             localTimezoneOffset: 4,
-            userAccount: '',
-            goodBrowser: true
+            userAccount: ''
         }
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
-    componentDidMount () {
+    componentDidMount() {
         this.timeoutId = setTimeout(() => {
-            this.setState({loading: '', });
+            this.setState({ loading: '', });
             this.getCalendar()
         }, 100);
     }
     getCalendar() {
         db.getWeeks().then(snapshot => {
             // get current date, month, year
-            let dateObject = new Date(); 
+            let dateObject = new Date();
             let date = dateObject.getDate();
             let month = dateObject.getMonth();
             let year = dateObject.getFullYear();
             // get the timezone of the applicant for security purposes
-            let localTimezoneOffset = dateObject.getTimezoneOffset() 
+            let localTimezoneOffset = dateObject.getTimezoneOffset()
             // data from firebase to be processed into the year or years to be displayed
             let rawCampTimes = snapshot.val();
             let rawYearsArray = Object.keys(rawCampTimes);
@@ -56,9 +57,9 @@ class TemplateWrapper extends Component {
             let yearIndex = 0;
             let chosenYear = year.toString();
             //if the date is already past the last week start date, don't display current year
-            if(month > 7 && date > 8) {
+            if (month > 7 && date > 8) {
                 yearIndex = rawYearsArray.indexOf((year + 1).toString());
-                chosenYear = (year + 1).toString(); 
+                chosenYear = (year + 1).toString();
             } else {
                 yearIndex = rawYearsArray.indexOf(year.toString())
             }
@@ -77,21 +78,21 @@ class TemplateWrapper extends Component {
                 chosenYear
             }
             //return data to make sure functions are complete before setting the state
-            return(data);
-        }).then(data=> {
-                let { campTimes,
-                    rawCampTimes,
-                    date,
-                    month,
-                    year,
-                    yearsArray,
-                    localTimezoneOffset,
-                    chosenYear
-                } = data
-            this.setState({localTimezoneOffset, rawCampTimes, campTimes, yearsArray, chosenYear, month, year, date});
+            return (data);
+        }).then(data => {
+            let { campTimes,
+                rawCampTimes,
+                date,
+                month,
+                year,
+                yearsArray,
+                localTimezoneOffset,
+                chosenYear
+            } = data
+            this.setState({ localTimezoneOffset, rawCampTimes, campTimes, yearsArray, chosenYear, month, year, date });
         })
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         if (this.timeoutId) {
             clearTimeout(this.timeoutId);
         }
@@ -111,50 +112,50 @@ class TemplateWrapper extends Component {
         this.setState({ yearChosen: event.target.value });
     }
     calculateCost() {
-        let weeksArray = [this.state.week0,this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8,this.week9];
-        let threeDayArray = weeksArray.filter(value=> value == 3);
-        let fiveDayArray = weeksArray.filter(value=> value == 5);
+        let weeksArray = [this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8];
+        let threeDayArray = weeksArray.filter(value => value == 3);
+        let fiveDayArray = weeksArray.filter(value => value == 5);
         let threeDayCount = threeDayArray.length() + 1;
         let fiveDayCount = fiveDayArray.length() + 1;
         let threeDayCost = threeDayCount * 120;
         let cost = 0;
-        if(fiveDayCount > 5) {
+        if (fiveDayCount > 5) {
             cost = threeDayCost + fiveDayCount * 135;
         } else if (fiveDayCount > 3) {
             cost = threeDayCost + fiveDayCount * 150;
         } else {
             cost = threeDayCost + fiveDayCount * 175;
         }
-        this.setState({cost: cost});
+        this.setState({ cost: cost });
     }
     render() {
         const { children } = this.props;
         return (
-            <div  className={`body ${this.state.loading} ${this.state.isMenuVisible ? 'is-menu-visible' : ''}`}>
+            <div className={`body ${this.state.loading} ${this.state.isMenuVisible ? 'is-menu-visible' : ''}`}>
                 <Helmet>
-                <link rel="stylesheet" href={withPrefix('skel.css')} />
+                    <link rel="stylesheet" href={withPrefix('skel.css')} />
                 </Helmet>
                 <div id="wrapper">
                     <Header onToggleMenu={this.handleToggleMenu} />
-                    {children ()}
-                    <hr/>
-                    <Footer 
-                        pathname={this.props.location.pathname} 
-                        auth={this.state.auth} 
+                    {children()}
+                    <hr />
+                    <Footer
+                        pathname={this.props.location.pathname}
+                        auth={this.state.auth}
                         state={this.state}
-                        handleChange={this.handleChange} 
+                        handleChange={this.handleChange}
                         handleYearChange={this.handleYearChange}
                     />
                 </div>
                 <Menu onToggleMenu={this.handleToggleMenu}>
-                    <Navigation 
-                        pathname={this.props.location.pathname} 
-                        handleChange={this.handleChange} 
-                        handleYearChange={this.handleYearChange} 
-                        button={false} 
-                        onToggleMenu={this.handleToggleMenu} 
-                        auth={this.state.auth} 
-                        state={this.state}/>
+                    <Navigation
+                        pathname={this.props.location.pathname}
+                        handleChange={this.handleChange}
+                        handleYearChange={this.handleYearChange}
+                        button={false}
+                        onToggleMenu={this.handleToggleMenu}
+                        auth={this.state.auth}
+                        state={this.state} />
                 </Menu>
             </div>
         );
@@ -163,4 +164,4 @@ class TemplateWrapper extends Component {
 TemplateWrapper.propTypes = {
     children: PropTypes.func
 };
-export default TemplateWrapper;
+export default withAuthentication(TemplateWrapper);

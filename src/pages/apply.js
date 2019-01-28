@@ -1,15 +1,11 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
 import { Redirect } from "react-router-dom";
-// import Moment from 'react-moment';
 import { db } from '../firebase';
 import Link from 'gatsby-link';
-// import BannerLanding from '../components/BannerLanding/';
 import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
-// import LinkItem from '../components/LinkItem';
-// import Mail from './mail.js';
 import { paymentMethodMessage } from '../constants/variables';
 
 const gotchaStyle = {
@@ -113,28 +109,30 @@ class Application extends React.Component {
             })
         }
     }
-
-    makeRedirectString = (paymentMethod) => {
-        let redirectString = ''
-        if(paymentMethod === "paypal") {
-            redirectString = this.state.redirectString + "paypal/"
+    getHash = () => {
+        let hash;
+        if (this.state.totalWeeksSelected < 4 && this.state.totalWeeksSelected > 0) {
+            hash = 1;
+        } else if (this.state.totalWeeksSelected >3 && this.state.totalWeeksSelected < 14) {
+            hash = 2;
         } else {
-            redirectString = this.state.redirectString + "mail/"
+            hash = 0;
         }
-        let parentName = this.state.parent1Name.replace(/\s+/g, '');
-        let email = this.state.parent1Email.replace(/\s+/g, '');
-        let childsName = this.state.childFirstName.replace(/\s+/g, '') + this.state.childLastName.replace(/\s+/g, ''); 
-        let address = this.state.address.replace(/\s+/g, '-');
-        redirectString = redirectString + 
-            "?amountDue=" + this.state.amountDue +
-            "+totalCost=" + this.state.totalCost + 
-            "+name=" + parentName  +
-            "+totalWeeks=" + this.state.totalWeeksSelected + 
-            "+phone=" + this.state.parent1Phone +
-            "+email=" + email +
-            "+address" + this.state.address +
-            "+childsName=" + childsName +
-            "+age=" + this.state.age + "'"
+        return hash;
+    }
+    makeRedirectString = (paymentMethod) => {
+        let redirectString = window.location.href.slice(0, (window.location.href.indexOf('/apply') + 1));
+        let name = this.state.parent1Name.replace(/\s+/g, '_');
+        let email = this.state.parent1Email.replace(/\s+/g, '_');
+        let childsName = this.state.childFirstName.replace(/\s+/g, '_') + this.state.childLastName.replace(/\s+/g, '_'); 
+        if(paymentMethod === "paypal") {
+            let hash = this.getHash();
+            let hash2 = parseInt(hash) + 2;
+            redirectString+= "paypal/?t=" + hash2 + "+a=" + hash + "+";
+        } else {
+            redirectString += "mail/?";
+        }
+        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+cn=" + childsName;
         console.log(redirectString);
         this.setState({redirectString});
         return redirectString;
@@ -167,12 +165,13 @@ class Application extends React.Component {
     }
 
     handlePaymentMethod = paymentMethod => {
-        let redirectString = '';
+        let redirectString;
         if(paymentMethod === "paypal") {
             redirectString = this.makeRedirectString("paypal");
         } else {
             redirectString = this.makeRedirectString("mail");
         }
+        console.log(redirectString);
         this.setState({ 
             redirectString: redirectString, 
             paymentMethod: paymentMethod 
@@ -243,6 +242,7 @@ class Application extends React.Component {
                 WeekB, 
                 paymentMethod 
             } = this.state;
+            
             age = this.getAge(this.state.birthday);
             const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
             const application = { 
@@ -281,10 +281,20 @@ class Application extends React.Component {
                 Week9,
                 WeekA,
                 WeekB,
-                paymentMethod 
+                paymentMethod,
+                key 
             }
-            db.applicationSubmit(application)
+            let weeksAttending = [];
+            for(let item in application) {
+                if(item.slice(0,4) === "Week" && application[item]) {
+                    weeksAttending.push(item);
+                } 
+            }
+            db.applicationSubmit(application, key)
             .then((result) => {
+                weeksAttending.forEach(week => {
+                    db.changePending(chosenYear, week);
+                })
                 this.setState({ submitted: true }, () => {
                     this.setState({ page: 5 })
                 })
@@ -411,11 +421,15 @@ class Application extends React.Component {
                         <div className="inner">
                             <section>
                                 <form action={process.env.GATSBY_EMAIL_APPLICATION_TO} method="POST" acceptCharset="utf-8">
-                                
                                     <input 
                                         type="hidden" 
                                         name="_utf8" 
                                         value="✓"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        value={this.state.redirectString}
+                                        name="_redirect"
                                     />
                                     <h1>Application</h1>
                                     <div>
@@ -469,7 +483,7 @@ class Application extends React.Component {
                                                                 <p style={{ fontSize: "1.5em" }}>{week.start}-{week.end}<br /> No Camp This Week</p>
                                                             </div> :
                                                             <div key={week.week} className='smallBox'>
-                                                                <p style={week.available - week.pending > 0 ? { fontSize: "1.5em" } : { fontSize: "1.5em", textDecoration: "line-through" }}>{week.start}-{week.end} <br />Spots Available: {week.available - week.pending}</p>
+                                                                <p style={week.available - week.pending > 0 ? { fontSize: "1.5em" } : { fontSize: "1.5em", textDecoration: "line-through" }}>{week.start}-{week.end} <br />{(week.available - week.pending)?"Limited spaces available":"No spaces availble"}</p>
                                                                 {(week.available - week.pending) > 0 ?
                                                                     <div key={i}>
                                                                         <Checkbox 
@@ -478,7 +492,7 @@ class Application extends React.Component {
                                                                             onChange={() => this.handleWeekSelect(week.week, true)} 
                                                                             checked={this.state[week.week] == true} 
                                                                             onClick={() => this.handleWeekSelect(week.week, true)} 
-                                                                            text="Attend this week" 
+                                                                            text={`Sign up for the week of ${week.start}`}
                                                                         />
                                                                     </div>
                                                                     :
@@ -827,23 +841,18 @@ class Application extends React.Component {
                                                 className="button" 
                                                 id="previousPage3" 
                                                 onClick={this.handleNext}
-                                            >Previous</button>
+                                                >Previous</button>
 
                                             <button
                                                 className="button nextPage"
                                                 id="submitPage4"
-                                                onClick={this.handleNext}
+                                                onClick={this.handleSubmit}
                                             >Next</button>
                                         </div>
                                         <div className={this.state.page === 5 ? '' : 'displayNone'}>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
                                             <h2>{paymentMethodMessage}</h2>
-                                            <input
-                                                type="hidden"
-                                                value={this.state.redirectString}
-                                                name="_redirect"
-                                            />
                                             <h4>Payment Method</h4>
                                             <Checkbox
                                                 name='paypal'
@@ -864,11 +873,11 @@ class Application extends React.Component {
                                             <button
                                                 className="button"
                                                 id="previousPage4"
-                                                onClick={this.handleNext}
-                                            >
+                                                >
                                                 Previous
                                             </button>
                                             <button 
+                                                disabled={!this.state.paymentMethod}
                                                 type="submit" 
                                             >Submit</button>
                                         </div>

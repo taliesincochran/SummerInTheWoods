@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 
+
 const config = {
   apiKey: process.env.GATSBY_DB_KEY,
   authDomain: process.env.GATSBY_DB_AUTH_DOMAIN,
@@ -14,8 +15,9 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.database();
-console.log(firebase);
+const auth = firebase.auth();
 console.log('db', db)
 export {
   db,
+  auth
 };

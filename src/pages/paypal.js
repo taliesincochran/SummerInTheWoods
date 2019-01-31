@@ -1,6 +1,6 @@
 import React from 'react'
 import { paypalMessage, paypalAction } from '../constants/variables';
-
+import {parseQuery} from '../constants/helper'
 
 const PaypalButton = props => {
     return (
@@ -38,30 +38,34 @@ class Paypal extends React.Component {
         console.log(queryString);
         let queryParameters = queryString.split("+");
         console.log(queryParameters)
-        queryParameters.forEach(parameter=> {
-            let paramName = parameter.split("=")[0];
-            console.log(paramName)
-            let paramValue = parameter.split("=")[1];
-            console.log(paramValue)
-            if(paramName='t'){
-                this.setState({'totalCostButtonHash': paramValue})
-            } else if(paramName='a'){
-                this.setState({ 'amountDueButtonHash': paramValue })
-            } else if (paramName = 'w') {
-                this.setState({ 'totalWeeks': paramValue })
-            } else if (paramName = 'c') {
-                this.setState({ 'totalCost': paramValue })
-            } else if (paramName = 'd') {
-                this.setState({ 'amountDue': paramValue })
-            } else if (paramName = 'n') {
-                this.setState({ 'name': paramValue })
-            } else if (paramName = 'e') {
-                this.setState({ 'email': paramValue })
-                console.log(this.state)
-            } else if(paramName = 'cn') {
-                this.setState({'childName': paramValue})
-            } 
-        })
+        parseQuery(queryParameters, this);
+        // queryParameters.forEach(parameter=> {
+        //     let paramName = parameter.split("=")[0];
+        //     console.log(paramName)
+        //     let paramValue = parameter.split("=")[1];
+        //     console.log(paramValue);
+        //     let totalCostButtonHash, amountDueButtonHash, totalWeeks, totalCost, amountDue, name, email, childName, phone;
+        //     if(paramName='t'){
+        //         totalCostButtonHash = paramValue;
+        //     } else if(paramName='a'){
+        //         amountDueButtonHash = paramValue;
+        //     } else if (paramName = 'w') {
+        //         totalWeeks = paramValue;
+        //     } else if (paramName = 'c') {
+        //         totalCost = paramValue;
+        //     } else if (paramName = 'd') {
+        //         amountDue = paramValue;
+        //     } else if (paramName = 'n') {
+        //         name = paramValue;
+        //     } else if (paramName = 'e') {
+        //         email = paramValue;
+        //         console.log(this.state);
+        //     } else if(paramName = 'cn') {
+        //         childName = paramValue;
+        //     } else if(paramName = 'p') {
+        //         phone = parmValue
+        //     }
+        // })
     }
     render() {
         return (
@@ -71,16 +75,16 @@ class Paypal extends React.Component {
                     <div id="main">
                         <div className="inner">
                             <section>
-                            <p>Pay amount due of ${this.props.location.search.slice(this.props.location.search.indexOf("d=") + 2,this.props.location.search.indexOf("+w=")) + '.00'} to reserve your childs spot</p>
+                            <p>Pay amount due of ${this.state.amountDue + '.00'} to reserve your childs spot</p>
                                 <PaypalButton 
-                                    cost={this.props.location.search.slice(this.props.location.search.indexOf("d=") + 2, this.props.location.search.indexOf("+w="))} 
-                                    week={this.props.location.search.slice(this.props.location.search.indexOf("w=") + 2, this.props.location.search.indexOf("+n="))} 
-                                    hash={this.props.location.search.slice(this.props.location.search.indexOf("a=") + 2, this.props.location.search.indexOf("+c="))} />
+                                    cost={this.state.amountDue} 
+                                    week={this.state.totalWeeks} 
+                                    hash={this.state.amountDueHash} />
                                 <p>...or pay the total cost of ${this.props.location.search.slice(this.props.location.search.indexOf("c=") + 2, this.props.location.search.indexOf("+d="))}.</p>
                             <PaypalButton 
-                                    cost={this.props.location.search.slice(this.props.location.search.indexOf("c=") + 2, this.props.location.search.indexOf("+d="))} 
-                                    week={this.props.location.search.slice(this.props.location.search.indexOf("w=") + 2, this.props.location.search.indexOf("+n="))}  
-                                    hash={this.props.location.search.slice(this.props.location.search.indexOf("t=") + 2, this.props.location.search.indexOf("+a="))} />
+                                    cost={this.state.totalCost}
+                                    week={this.state.totalWeeks}
+                                    hash={this.state.totalCostHash} />
                         </section>
                     </div>
                 </div>

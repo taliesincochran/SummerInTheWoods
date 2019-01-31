@@ -8,7 +8,7 @@ import Footer from '../components/Footer/';
 import Menu from '../components/Menu/';
 import PropTypes from 'prop-types';
 import { Link, withPrefix } from 'gatsby-link';
-import { db } from '../firebase';
+import { getValue } from '../firebase/db';
 import { auth } from '../firebase';
 
 // const CLIENT = {
@@ -42,7 +42,7 @@ class TemplateWrapper extends Component {
         }, 100);
     }
     getCalendar() {
-        db.getWeeks().then(snapshot => {
+        getValue('campTimes/year').then(snapshot => {
             // get current date, month, year
             let dateObject = new Date();
             let date = dateObject.getDate();

@@ -20,7 +20,7 @@ class AdminApplicationView extends React.Component {
         for(let key in newState) {
             this.setState({[key]: [newState[key]]})
         }
-        this.getApplications();
+        this.getValue('applications');
         console.log(this.state);
     }
     handleChange = e => {
@@ -32,7 +32,7 @@ class AdminApplicationView extends React.Component {
     }
     getApplications = () => {
         let applications;
-        db.getApplications().then(snapshot => {
+        db.getValue('applications').then(snapshot => {
             applications = snapshot.val();
             let pendingApplicationArray = [];
             let approvedApplicationArray = [];

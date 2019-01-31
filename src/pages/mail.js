@@ -1,34 +1,29 @@
 import * as React from "react";
-
+import { parseQuery } from '../constants/helper';
 class Mail extends React.Component {
     state={
         totalCost:0,
+        amountDue: 0,
         name: '',
-        totalWeeks:0,
+        totalWeeks: 0,
         phone: "",
         email:"",
         address:"",
         childsName: "",
-        age: 0
+        age: 0, 
+        
     }
     componentDidMount() {
-        let queryString = this.props.location.search.split("?")[1];
-        let queryParameters = queryString.split("+");
-        queryParameters.forEach(parameter=> {
-            let paramName = parameter.split("=")[0];
-            let paramValue = parameter.split("=")[1];
-            this.setState({[paramName]: [paramValue]});
-        });
+        if(this.props.location) {
+            parseQuery(this.props.location.search, this);
+        }
     }
-    getMessage1 = () => {
+    getMessage = () => {
         let message = this.state.name + " has submitted an aplication and has elected to pay by mail.  Thier email is " + this.state.email + ". Thier phone number is " + this.state.phoneNumber + ". Thier amount due is " + this.state.amountDue + " . Please send them a bill via email." 
         return message;
     }
     render() {
         let message = this.getMessage();
-        if(message) {
-            console.log(message);
-        }
         return (
                 <div>
                     <p>Add any additional information below. Once this form is submitted, we will email you the bill. Thank you for choosing summer in the woods.</p>

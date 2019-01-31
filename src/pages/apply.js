@@ -1,12 +1,12 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
 import { Redirect } from "react-router-dom";
-import { db } from '../firebase';
 import Link from 'gatsby-link';
 import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
 import { paymentMethodMessage } from '../constants/variables';
+import { changeWeekAttendanceValueFromArray, setTargetChild  } from "../firebase/db";
 
 const gotchaStyle = {
     display: 'none'
@@ -28,17 +28,17 @@ class Application extends React.Component {
             localTimezoneOffset: '',
             campTimes: '',
             rawCampTimes: '',
-            Week1: false,
-            Week2: false,
-            Week3: false,
-            Week4: false,
-            Week5: false,
-            Week6: false,
-            Week7: false,
-            Week8: false,
-            Week9: false,
-            WeekA: false,
-            WeekB: false,
+            Week1: 0,
+            Week2: 0,
+            Week3: 0,
+            Week4: 0,
+            Week5: 0,
+            Week6: 0,
+            Week7: 0,
+            Week8: 0,
+            Week9: 0,
+            WeekA: 0,
+            WeekB: 0,
             totalWeeksSelected: 0,
             weekArray: [],
             childFirstName: 'Bob',
@@ -76,38 +76,29 @@ class Application extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.location.state) {
-            console.log(window.location);
-            let redirectString = window.location.href.slice(0, (window.location.href.indexOf('/apply') + 1));
-            console.log(this.props)
-            // console.log(redirectString);
-            let { 
-                year, 
-                month,
-                date, 
-                yearsArray, 
-                chosenYear, 
-                campTimes, 
-                rawCampTimes, 
-                localTimezoneOffset 
-            } = this.props.location.state;
+        let weekArray = this.getWeekArray(this.props.location.state.chosenYear);
+        let { 
+            year, 
+            month,
+            date, 
+            yearsArray, 
+            chosenYear, 
+            campTimes, 
+            rawCampTimes, 
+            localTimezoneOffset 
+        } = this.props.location.state;
 
-
-            this.setState({ 
-                year, 
-                month, 
-                date, 
-                yearsArray, 
-                chosenYear, 
-                campTimes, 
-                rawCampTimes, 
-                localTimezoneOffset, 
-                redirectString 
-            })
-            this.setState({ 
-                weekArray: this.getWeeks(this.props.location.state.rawCampTimes[this.props.location.state.chosenYear], this.props.location.state.chosenYear) 
-            })
-        }
+        this.setState({ 
+            year, 
+            month, 
+            date, 
+            yearsArray, 
+            chosenYear, 
+            campTimes, 
+            rawCampTimes, 
+            localTimezoneOffset, 
+            weekArray 
+        });
     }
     getHash = () => {
         let hash;
@@ -121,14 +112,19 @@ class Application extends React.Component {
         return hash;
     }
     makeRedirectString = (paymentMethod) => {
-        let redirectString = window.location.href.slice(0, (window.location.href.indexOf('/apply') + 1));
+        let redirectString = '';
+        if(window !== undefined) {
+            redirectString = window.location.href.slice(0, (window.location.href.indexOf('/apply') + 1));
+        } else {
+            redirectString = 'www.summerinthewoodscamp.com/'
+        }
         let name = this.state.parent1Name.replace(/\s+/g, '_');
         let email = this.state.parent1Email.replace(/\s+/g, '_');
         let childsName = this.state.childFirstName.replace(/\s+/g, '_') + this.state.childLastName.replace(/\s+/g, '_'); 
         if(paymentMethod === "paypal") {
             let hash = this.getHash();
             let hash2 = parseInt(hash) + 2;
-            redirectString+= "paypal/?t=" + hash2 + "+a=" + hash + "+";
+            redirectString+= "paypal/?t=" + (hash===1?3:hash===2?4:0) + "+a=" + hash + "+";
         } else {
             redirectString += "mail/?";
         }
@@ -139,16 +135,17 @@ class Application extends React.Component {
     }
 
 
-    getWeeks = (yearChosen, yearString) => {
+    getWeekArray = (yearString) => {
+        let yearChosen = this.props.location.state.rawCampTimes[this.props.location.state.chosenYear]
         let weekArray = [];
         let year = yearString;
         for (let weekChosen in yearChosen) {
             let week = weekChosen;
             let { start, end, available, pending, noCamp } = yearChosen[week]
             start = new Date(start);
-            start = start.getMonth() + "/" + start.getDate();
+            start = (parseInt(start.getMonth()) + 1) + "/" + start.getDate();
             end = new Date(end);
-            end = end.getMonth() + "/" + end.getDate();
+            end = (parseInt(end.getMonth()) + 1) + "/" + end.getDate();
             weekArray.push({ week, year, start, end, available, pending, noCamp })
         }
         return weekArray
@@ -198,12 +195,12 @@ class Application extends React.Component {
     }
 
     handleYearSelect = year => {
-        this.setState({ chosenYear: year, weekArray: this.getWeeks(this.state.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2: 0, Week3: 0, Week4: 0, Week5: 0, Week6: 0, Week7: 0, Week8: 0, Week9: 0, WeekA: 0, WeekB: 0, firstWeek: 0, totalCost: 0, amountDue: 0 })
+        this.setState({ chosenYear: year, weekArray: this.getWeekArray(this.state.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2: 0, Week3: 0, Week4: 0, Week5: 0, Week6: 0, Week7: 0, Week8: 0, Week9: 0, WeekA: 0, WeekB: 0, firstWeek: 0, totalCost: 0, amountDue: 0 })
     }
 
     handleSubmit = event => {
-        if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName) {
-            event.preventDefault();
+        event.preventDefault();
+        if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName && window !== undefined) {
             let { 
                 childFirstName, 
                 childLastName, 
@@ -285,20 +282,21 @@ class Application extends React.Component {
                 key 
             }
             let weeksAttending = [];
-            for(let item in application) {
-                if(item.slice(0,4) === "Week" && application[item]) {
-                    weeksAttending.push(item);
-                } 
+            async function getWeeksAttending (application) {
+                for(let item in application) {
+                    if(item.slice(0,4) === "Week" && application[item] !== 0) {
+                        weeksAttending.push(item);
+                    } 
+                }
+                return weeksAttending;
             }
-            db.applicationSubmit(application, key)
-            .then((result) => {
-                weeksAttending.forEach(week => {
-                    db.changePending(chosenYear, week);
-                })
-                this.setState({ submitted: true }, () => {
-                    this.setState({ page: 5 })
-                })
-            })
+            getWeeksAttending(application).then(
+                weeks => {
+                    setTargetChild('applications', application, key)
+                    changeWeekAttendanceValueFromArray('pending', year, weeks, add);
+                    this.setState({ submitted: true, page: 5 });
+                }
+            )
             .catch((err) => {
                 this.setState({ error4: "There was an error with the database, please try again." })
             })

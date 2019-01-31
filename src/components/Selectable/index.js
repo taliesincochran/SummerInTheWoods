@@ -40,7 +40,7 @@ let eventPopulate = (props)=>{
                     campWeek.title = `Week ${parseInt(week.slice(4)), 16}: 1 slot available.                                     `
                     break;
                 default: 
-                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: ${available} slots available.                         `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: Limited slots available.                         `
                     break;
             }
         } else if (campWeek.noCamp && campWeek.noCampDescription) {

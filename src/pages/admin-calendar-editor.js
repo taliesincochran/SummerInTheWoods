@@ -30,7 +30,7 @@ class AdminCalendarEditor extends React.Component {
     handleSubmit = (event) => {
     	event.preventDefault();
     	let { firstDay, lastDay, july4th, attending } = this.state;
-    	let weeks = this.getWeeks(firstDay, lastDay);
+    	let weeks = this.getValue('campTimes/year')(firstDay, lastDay);
     }
     // This function is used to get the date of a day of the week near another date.  
 	// getDateOfTargetNearX = (year, month, date, day, canBeNegative) => {

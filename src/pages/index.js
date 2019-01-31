@@ -15,11 +15,6 @@ class index extends React.Component {
             textObj: {}
         }
     }
-    componentDidMount() {
-        db.getText().then(snapshot => {
-            this.setState({ textObj: snapshot.val() })
-        })
-    }
     render() {
         const siteTitle = "Summer In The Woods"
         const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"

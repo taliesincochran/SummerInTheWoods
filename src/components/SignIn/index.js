@@ -31,7 +31,7 @@ class SignInForm extends Component {
 	 let accountObject = {};
 	 auth.doSignInWithEmailAndPassword(email, password).then((obj) => this.props.history.push("/admin-application-view"))
 		//    console.log('signIn object', obj);
-		// 	db.getApplications().then(snapshot=> {
+		// 	db.getValue('applications').then(snapshot=> {
 		// 		let applications = []
 		// 		let userApplications = snapshot.val();
 		// 		return userApplications;

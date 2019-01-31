@@ -16,7 +16,7 @@ class AdminAccount extends React.Component {
         }
     }
     componentDidMount() {
-        const applications = db.getApplications();
+        const applications = db.getValue('applications');
         let newApplicationArray = [];
         let approvedApplicationArray = [];
         let rejectedApplicationArray = [];

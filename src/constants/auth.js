@@ -1,11 +1,9 @@
-import { auth } from './firebase';
-import firebase from 'firebase/app';
 // Sign Up
-export const doCreateUserWithEmailAndPassword = (email, password) =>
+export const doCreateUserWithEmailAndPassword = (email, password, auth) =>
  auth.createUserWithEmailAndPassword(email, password);
 
 // Sign In
-export const doSignInWithEmailAndPassword = (email, password) =>
+export const doSignInWithEmailAndPassword = (email, password, auth, firebase) =>
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
       .then(function() {
         return firebase.auth().signInWithEmailAndPassword(email, password);
@@ -17,13 +15,13 @@ export const doSignInWithEmailAndPassword = (email, password) =>
 
 
 // Sign out
-export const doSignOut = () =>
+export const doSignOut = (auth) =>
  auth.signOut();
 
 // Password Reset
-export const doPasswordReset = (email) =>
+export const doPasswordReset = (email, auth) =>
  auth.sendPasswordResetEmail(email);
 
 // Password Change
-export const doPasswordUpdate = (password) =>
+export const doPasswordUpdate = (password, auth) =>
  auth.currentUser.updatePassword(password);

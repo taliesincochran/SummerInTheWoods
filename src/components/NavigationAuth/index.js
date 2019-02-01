@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import SignOut from '../SignOut';
 import linkArray from '../../constants/linkArray'
 import LinkItem from '../LinkItem'
@@ -17,6 +17,7 @@ const NavigationAuth = (props) => {
 						handleChange={props.handleChange} 
 						handleYearChange={props.handleYearChange}
 						onToggleMenu={props.onToggleMenu}
+						auth={props.firebase.authorized}
 					/>
 			:'')}
 				<li><SignOut button={props.button}/></li>

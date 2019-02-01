@@ -7,10 +7,8 @@ const LinkItem = props => {
             (
                 <Link 
                     onClick={props.onToggleMenu} 
-                    to={{
-                        pathname: props.path,
-                        state: props.state
-                    }}
+                    to={props.path}
+                    state={{...props.state}}
                 >
                     <button type="button" className='button'>
                         {props.text}
@@ -19,10 +17,8 @@ const LinkItem = props => {
             ):(
                 <Link 
                     onClick={props.onToggleMenu} 
-                    to={{
-                        pathname: props.path,
-                        state: props.state
-                    }}
+                    to={props.path}
+                    state={{...props.state}}
                 >
                     {props.text}
                 </Link>

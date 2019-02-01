@@ -1,10 +1,13 @@
 import * as React from "react";
+// import { graphql } from 'graphql';
 import Helmet from 'react-helmet';
+import Layout from '../components/layout'
 import BannerLanding from '../components/BannerLanding/';
 import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
 import { philosophy, location, information, program } from '../constants/variables';
+import { withFirebase } from '../components/FirebaseContext';
 
 
 class HomeIndex extends React.Component {
@@ -18,7 +21,7 @@ class HomeIndex extends React.Component {
         const siteTitle = "Summer In The Woods"
         const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"
         return (
-            <div>
+            <Layout location={this.props.location.pathname="/"} children={this.props.children}>
                 <Helmet>
                     <title>{siteTitle}</title>
                     <meta name="description" content={siteDescription} />
@@ -87,20 +90,20 @@ class HomeIndex extends React.Component {
                         </section>
                     </section>
                 </div>
-            </div>
+            </Layout>
         )
     }
 }
 
-export default HomeIndex
+export default HomeIndex;
 
-export const pageQuery = graphql`
-    query PageQuery {
-        site {
-            siteMetadata {
-                title
-                description
-            }
-        }
-    }
-`
+// export const pageQuery = graphql`
+//     query PageQuery {
+//         site {
+//             siteMetadata {
+//                 title
+//                 description
+//             }
+//         }
+//     }
+// `

@@ -1,5 +1,9 @@
 import * as React from "react";
 import { parseQuery } from '../constants/helper';
+import Layout from '../components/layout'
+import { Redirect } from "react-router";
+import { withFirebase } from '../components/FirebaseContext';
+
 class Mail extends React.Component {
     state={
         totalCost:0,
@@ -25,7 +29,7 @@ class Mail extends React.Component {
     render() {
         let message = this.getMessage();
         return (
-                <div>
+                <Layout>
                     <p>Add any additional information below. Once this form is submitted, we will email you the bill. Thank you for choosing summer in the woods.</p>
                     <div id="main">
                         <div className="inner">
@@ -43,10 +47,10 @@ class Mail extends React.Component {
                                         <input type="text" name="spam" className="hide" />
                                         <input type="hidden" name="_redirect" value="/" />
                                     </div>
-                                    <div className="field" className="hide">
+                                    <div className="field hide">
                                         <textarea name="message" id="message" rows="6">{message}</textarea>
                                     </div>
-                                    <div className="field" className="hide">
+                                    <div className="field hide">
                                         <label htmlFor="additionalInformation">Additional information</label>
                                         <textarea name="additionalInformation" id="additionalInformation" rows="6">{message}</textarea>
                                     </div>
@@ -59,7 +63,7 @@ class Mail extends React.Component {
                             </section>
                         </div>
                     </div>
-                </div>
+                </Layout>
         )
     }
 }

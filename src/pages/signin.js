@@ -1,11 +1,11 @@
-import React from 'react';
-
+import * as React from 'react';
+import Layout from '../components/layout';
 import SignInForm from '../components/SignIn';
 
 const SignInPage = () =>
-  <div>
+  <Layout>
     <h1>SignIn</h1>
     <SignInForm />
-  </div>
+  </Layout>
 
 export default SignInPage;

@@ -1,9 +1,10 @@
 import * as React from "react";
-import Helmet from 'react-helmet'
-import BannerLanding from '../components/BannerLanding'
+import Helmet from 'react-helmet';
+import BannerLanding from '../components/BannerLanding';
+import Layout from '../components/layout';
 
 const Landing = (props) => (
-    <div>
+    <Layout>
         <Helmet>
             <title></title>
             <meta name="description" content="Landing Page" />
@@ -14,7 +15,7 @@ const Landing = (props) => (
         <div id="main">
         </div>
 
-    </div>
+    </Layout>
 )
 
 export default Landing

@@ -1,40 +1,39 @@
-import React from 'react'
-import AuthUserContext from '../Session/AuthUserContext'
+import * as React from 'react'
 import NavigationAuth from '../NavigationAuth'
 import NavigationNonAuth from '../NavigationNonAuth'
 
-export default class Navigation extends React.Component {
-    
+
+
+class Navigation extends React.Component {
+    componentDidMount() {
+        console.log('navigation context', this.props.context)
+    }
     render () {
         return(
-            <AuthUserContext.Consumer>
-                {authUser => authUser
-                ?
-                 <NavigationAuth 
-                    auth={authUser} 
-                    admin={this.props.admin} 
-                    email={authUser.email} 
-                    onToggleMenu={this.props.onToggleMenu}
-                    pathname={this.props.pathname} 
-                    button={this.props.button}
-                    state={this.props.state}
-                    handleChange={this.props.handleChange}
-                    handleYearChange={this.props.handleYearChange}
-                    />
-                    : 
-                    <NavigationNonAuth 
-                        // auth={authUser} 
-                        onToggleMenu={this.props.onToggleMenu} 
-                        pathname={this.props.pathname} 
-                        button={this.props.button}
-                        state={this.props.state}
-                        handleChange={this.props.handleChange}
-                        handleYearChange={this.props.handleYearChange}
-                    />
-                }
-            </AuthUserContext.Consumer>
+            this.props.authorized
+            ?
+             <NavigationAuth 
+                auth={this.props.authorized} 
+                admin={this.props.admin} 
+                onToggleMenu={this.props.onToggleMenu}
+                pathname={this.props.pathname} 
+                button={this.props.button}
+                state={this.props.state}
+                handleChange={this.props.handleChange}
+                handleYearChange={this.props.handleYearChange}
+                />
+                :  
+            <NavigationNonAuth 
+                onToggleMenu={this.props.onToggleMenu} 
+                pathname={this.props.pathname} 
+                button={this.props.button}
+                state={this.props.state}
+                handleChange={this.props.handleChange}
+                handleYearChange={this.props.handleYearChange}
+                />
+                
       )
     }
 }
-
+export default Navigation;
 

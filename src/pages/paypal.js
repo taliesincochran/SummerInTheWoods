@@ -1,6 +1,9 @@
-import React from 'react'
-import { paypalMessage, paypalAction } from '../constants/variables';
-import {parseQuery} from '../constants/helper'
+import * as React from 'react';
+import { paypalMessage } from '../constants/variables';
+import {parseQuery} from '../constants/helper';
+import Layout from '../components/layout';
+import { Redirect } from "react-router";
+
 
 const PaypalButton = props => {
     return (
@@ -69,28 +72,25 @@ class Paypal extends React.Component {
     }
     render() {
         return (
-            this.props.location.search?
-                <div>
-                    <p>{paypalMessage}</p>
-                    <div id="main">
-                        <div className="inner">
-                            <section>
-                            <p>Pay amount due of ${this.state.amountDue + '.00'} to reserve your childs spot</p>
-                                <PaypalButton 
-                                    cost={this.state.amountDue} 
-                                    week={this.state.totalWeeks} 
-                                    hash={this.state.amountDueHash} />
-                                <p>...or pay the total cost of ${this.props.location.search.slice(this.props.location.search.indexOf("c=") + 2, this.props.location.search.indexOf("+d="))}.</p>
+            <Layout>
+                <p>{paypalMessage}</p>
+                <div id="main">
+                    <div className="inner">
+                        <section>
+                        <p>Pay amount due of ${this.state.amountDue + '.00'} to reserve your childs spot</p>
                             <PaypalButton 
-                                    cost={this.state.totalCost}
-                                    week={this.state.totalWeeks}
-                                    hash={this.state.totalCostHash} />
-                        </section>
-                    </div>
+                                cost={this.state.amountDue} 
+                                week={this.state.totalWeeks} 
+                                hash={this.state.amountDueHash} />
+                            <p>...or pay the total cost of ${this.props.location.search.slice(this.props.location.search.indexOf("c=") + 2, this.props.location.search.indexOf("+d="))}.</p>
+                        <PaypalButton 
+                                cost={this.state.totalCost}
+                                week={this.state.totalWeeks}
+                                hash={this.state.totalCostHash} />
+                    </section>
                 </div>
             </div>
-            :
-            null
+        </Layout>
         )
     }
 }

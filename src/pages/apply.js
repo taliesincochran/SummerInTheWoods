@@ -1,16 +1,13 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
-import { Redirect } from "react-router-dom";
-import Link from 'gatsby-link';
+import { Redirect } from "react-router";
 import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
+import Layout from '../components/layout'
 import { paymentMethodMessage } from '../constants/variables';
-import { changeWeekAttendanceValueFromArray, setTargetChild  } from "../firebase/db";
-
-const gotchaStyle = {
-    display: 'none'
-}
+import { changeTargetChild, getChildValue, ref  } from "../constants/db";
+import { BrowserRouter } from 'react-router-dom';
 
 class Application extends React.Component {
     constructor(props) {
@@ -123,8 +120,7 @@ class Application extends React.Component {
         let childsName = this.state.childFirstName.replace(/\s+/g, '_') + this.state.childLastName.replace(/\s+/g, '_'); 
         if(paymentMethod === "paypal") {
             let hash = this.getHash();
-            let hash2 = parseInt(hash) + 2;
-            redirectString+= "paypal/?t=" + (hash===1?3:hash===2?4:0) + "+a=" + hash + "+";
+            redirectString+= "paypal/?t=" + (hash === 1? 3 : hash === 2 ? 4 : 0) + "+a=" + hash + "+";
         } else {
             redirectString += "mail/?";
         }
@@ -156,11 +152,6 @@ class Application extends React.Component {
         this.setState({ [name]: value });
     }
 
-    handleEmail = e => {
-        let { name, value } = e.target;
-        this.setState({ [name]: value })
-    }
-
     handlePaymentMethod = paymentMethod => {
         let redirectString;
         if(paymentMethod === "paypal") {
@@ -181,8 +172,8 @@ class Application extends React.Component {
         let string = value.replace(/[^0-9]+/g, '').toString();
         let firstPart = string.slice(0, 3)
         let secondPart = string.slice(3, 6)
-        let thirdPart = string.slice(6, length)
         let length = string.length
+        let thirdPart = string.slice(6, length)
         if (length > 0 && length < 4) {
             temp = "(" + string
         } else if (length > 3 && string.length < 7) {
@@ -292,8 +283,14 @@ class Application extends React.Component {
             }
             getWeeksAttending(application).then(
                 weeks => {
-                    setTargetChild('applications', application, key)
-                    changeWeekAttendanceValueFromArray('pending', year, weeks, add);
+                    let db = this.props.firebase.database();
+                    changeTargetChild('applications', application, key, db)
+                    weeks.forEach(week=> {
+                        let weekRef = ref(`campTimes/year/${chosenYear}/${week}/pending`);
+                        getChildValue(weekRef, 'pending').then(pending=> {
+                            changeTargetChild(weekRef, 'pending', pending + 1);
+                        })
+                    })
                     this.setState({ submitted: true, page: 5 });
                 }
             )
@@ -329,7 +326,7 @@ class Application extends React.Component {
                 this.setState({ page: 2 });
                 break;
             case 'submitPage2':
-                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email == this.state.parent1EmailVerify) ?
+                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email === this.state.parent1EmailVerify) ?
                     this.setState({ page: 3, error2: '' }) :
                     this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly." });
                 break;
@@ -350,11 +347,13 @@ class Application extends React.Component {
             case 'previousPage4':
                 this.setState({ page: 4 });
                 break;
+            default: 
+                this.setState({page: 1});
         }
     }
 
     handleWeekSelect = (week, value) => {
-        if (this.state[week] == value) {
+        if (this.state[week] === value) {
             this.setState({ [week]: 0 }, () => this.getCost())
         }
         else {
@@ -407,10 +406,12 @@ class Application extends React.Component {
     render() {
         return (
             !this.props.location.state ? 
-            <Redirect to="/" /> 
+            <BrowserRouter>
+                <Redirect to="/" /> 
+            </BrowserRouter>
             :
             (
-                <div>
+                <Layout location={this.props.location} children={this.props.children}>
                     <Helmet>
                         <title>Summer In The Woods</title>
                         <meta name="daescription" content="Application Page" />
@@ -443,9 +444,8 @@ class Application extends React.Component {
                                                                 name="year1" 
                                                                 value={this.props.location.state.yearsArray[0]} 
                                                                 onChange={this.handleYearSelect} 
-                                                                checked={this.state.chosenYear == this.props.location.state.yearsArray[0]} 
+                                                                checked={this.state.chosenYear === this.props.location.state.yearsArray[0]} 
                                                                 className='float-left' 
-                                                                value={this.props.location.state.yearsArray[0]} 
                                                                 onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} 
                                                                 text={this.props.location.state.yearsArray[0]} 
                                                             />
@@ -454,8 +454,8 @@ class Application extends React.Component {
                                                                 name="year2"
                                                                 value={this.props.location.state.yearsArray[1]} 
                                                                 onChange={this.handleYearSelect} 
-                                                                checked={this.state.chosenYear == this.props.location.state.yearsArray[1]} 
-                                                                className='float-left' value={this.props.location.state.yearsArray[0]} 
+                                                                checked={this.state.chosenYear === this.props.location.state.yearsArray[1]} 
+                                                                className='float-left' 
                                                                 onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[1])} 
                                                                 text={this.props.location.state.yearsArray[1]} 
                                                             />
@@ -467,7 +467,6 @@ class Application extends React.Component {
                                                                 value={this.props.location.state.yearsArray[0]}     
                                                                 onChange={this.handleYearSelect} checked={true} 
                                                                 className='float-left' 
-                                                                value={this.props.location.state.yearsArray[0]} 
                                                                 onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} 
                                                                 text={this.props.location.state.yearsArray[0]} 
                                                             />
@@ -488,7 +487,7 @@ class Application extends React.Component {
                                                                             name={week.week} 
                                                                             value={true}
                                                                             onChange={() => this.handleWeekSelect(week.week, true)} 
-                                                                            checked={this.state[week.week] == true} 
+                                                                            checked={this.state[week.week] === true} 
                                                                             onClick={() => this.handleWeekSelect(week.week, true)} 
                                                                             text={`Sign up for the week of ${week.start}`}
                                                                         />
@@ -499,8 +498,9 @@ class Application extends React.Component {
                                                                             labelStyle={{ textDecoration: 'line-through' }} 
                                                                             disabled={true} 
                                                                             name={`${week.week}`} 
-                                                                            value={true} onChange={() => this.handleWeekSelect(week.week, true)} 
-                                                                            checked={false} value={true} 
+                                                                            value={true} 
+                                                                            onChange={() => this.handleWeekSelect(week.week, true)} 
+                                                                            checked={false} 
                                                                             onClick={() => this.handleWeekSelect(week.week, true)} 
                                                                             text="No Camp" 
                                                                         />
@@ -625,7 +625,7 @@ class Application extends React.Component {
                                                         name="parent1Email" 
                                                         placeholder="Required" 
                                                         required 
-                                                        onChange={this.handleEmail} 
+                                                        onChange={this.handleChange} 
                                                         value={this.state.parent1Email}
                                                     />
                                                     <Input 
@@ -635,7 +635,7 @@ class Application extends React.Component {
                                                         name="parent1EmailVerify" 
                                                         placeholder="Required" 
                                                         required 
-                                                        onChange={this.handleEmail} 
+                                                        onChange={this.handleChange} 
                                                         value={this.state.parent1EmailVerify} 
                                                     />
                                                 </div>
@@ -665,7 +665,7 @@ class Application extends React.Component {
                                                         type="email" 
                                                         name="parent2Email" 
                                                         placeholder="Optional" 
-                                                        onChange={this.handleEmail} 
+                                                        onChange={this.handleChange} 
                                                         value={this.state.parent2Email} 
                                                     />
                                                 </div>
@@ -884,7 +884,7 @@ class Application extends React.Component {
                             </section>
                         </div>
                     </div>
-                </div>
+                </Layout>
             )
         )
     }

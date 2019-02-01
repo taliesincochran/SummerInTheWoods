@@ -1,28 +1,29 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import '../assets/scss/main.scss';
-import Navigation from '../components/Navigation/';
-import withAuthentication from '../components/Session/withAuthentication';
-import Header from '../components/Header/';
-import Footer from '../components/Footer/';
-import Menu from '../components/Menu/';
-import PropTypes from 'prop-types';
-import { Link, withPrefix } from 'gatsby-link';
-import { getValue } from '../firebase/db';
-import { auth } from '../firebase';
+import { withPrefix } from 'gatsby-link'
+import Navigation from './Navigation';
+import '../assets/scss/main.scss';
+import Header from './Header';
+import Menu from './Menu';
+import Footer from './Footer';
+import getFirebase from '../firebase';
+import FirebaseContext from './FirebaseContext';
+import { getValue } from '../constants/db';
 
 // const CLIENT = {
 //   sandbox: process.env.PAYPAL_CLIENT_ID_SANDBOX,
 //   production: process.env.PAYPAL_CLIENT_ID_PRODUCTION,
 // };
 
-class TemplateWrapper extends Component {
+class Layout extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            firebase: null,
+            authenticated: false,
             isMenuVisible: false,
             loading: 'is-loading',
-            auth: null,
             date: '',
             month: '',
             year: '',
@@ -35,14 +36,34 @@ class TemplateWrapper extends Component {
         this.handleToggleMenu = this.handleToggleMenu.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
-    componentDidMount() {
+    componentDidMount () {
+        console.log('layout')
         this.timeoutId = setTimeout(() => {
-            this.setState({ loading: '', });
-            this.getCalendar()
+            this.setState({loading: ''});
         }, 100);
+        const app = import('firebase/app')
+        const auth = import('firebase/auth')
+        const database = import('firebase/database')
+
+        Promise.all([app, auth, database]).then(values => {
+            const firebase = getFirebase(values[0]);
+            this.setState({ firebase });
+            firebase.auth().onAuthStateChanged(user => {
+                if (!user) {
+                    this.setState({ authenticated: false })
+                } else {
+                    this.setState({ authenticated: true })
+                }
+            })
+        })
     }
-    getCalendar() {
-        getValue('campTimes/year').then(snapshot => {
+    componentWillUnmount() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+        }
+    }
+    getCalendar = () => {
+        getValue('campTimes/year', this.state.database).then(snapshot => {
             // get current date, month, year
             let dateObject = new Date();
             let date = dateObject.getDate();
@@ -92,11 +113,6 @@ class TemplateWrapper extends Component {
             this.setState({ localTimezoneOffset, rawCampTimes, campTimes, yearsArray, chosenYear, month, year, date });
         })
     }
-    componentWillUnmount() {
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-        }
-    }
 
     handleToggleMenu() {
         this.setState({
@@ -111,7 +127,7 @@ class TemplateWrapper extends Component {
     handleYearChange(event) {
         this.setState({ yearChosen: event.target.value });
     }
-    calculateCost() {
+    calculateCost =() => {
         let weeksArray = [this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8];
         let threeDayArray = weeksArray.filter(value => value == 3);
         let fiveDayArray = weeksArray.filter(value => value == 5);
@@ -130,38 +146,41 @@ class TemplateWrapper extends Component {
     }
     render() {
         const { children } = this.props;
+        const { firebase, authenticated } = this.state;
         return (
+        this.state?
+        <FirebaseContext.Provider value={firebase}>                
             <div className={`body ${this.state.loading} ${this.state.isMenuVisible ? 'is-menu-visible' : ''}`}>
                 <Helmet>
                     <link rel="stylesheet" href={withPrefix('skel.css')} />
-                </Helmet>
-                <div id="wrapper">
-                    <Header onToggleMenu={this.handleToggleMenu} />
-                    {children()}
-                    <hr />
-                    <Footer
-                        pathname={this.props.location.pathname}
-                        auth={this.state.auth}
-                        state={this.state}
-                        handleChange={this.handleChange}
-                        handleYearChange={this.handleYearChange}
-                    />
-                </div>
-                <Menu onToggleMenu={this.handleToggleMenu}>
-                    <Navigation
-                        pathname={this.props.location.pathname}
-                        handleChange={this.handleChange}
-                        handleYearChange={this.handleYearChange}
-                        button={false}
-                        onToggleMenu={this.handleToggleMenu}
-                        auth={this.state.auth}
-                        state={this.state} />
-                </Menu>
+                    </Helmet>
+                    <div id="wrapper">
+                        <Header onToggleMenu={this.handleToggleMenu} />
+                            {children}
+                        <hr />
+                        <Footer
+                            pathname={this.props.location.pathname}
+                            authorized={()=> this.state.firebase.auth()}
+                            state={this.state}
+                            handleChange={this.handleChange}
+                            handleYearChange={this.handleYearChange}
+                            />
+                    </div>
+                    <Menu onToggleMenu={this.handleToggleMenu}>
+                        <Navigation
+                            authorized={this.state.authorized}
+                            pathname={this.props.location.pathname}
+                            handleChange={this.handleChange}
+                            handleYearChange={this.handleYearChange}
+                            button={false}
+                            onToggleMenu={this.handleToggleMenu}
+                            state={this.state} />
+                    </Menu>
             </div>
-        );
+        </FirebaseContext.Provider>:null
+        )
     }
 };
-TemplateWrapper.propTypes = {
-    children: PropTypes.func
-};
-export default withAuthentication(TemplateWrapper);
+
+export default Layout;
+

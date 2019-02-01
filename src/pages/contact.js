@@ -1,12 +1,11 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/';
-import { Redirect } from "react-router-dom";
+import Layout from '../components/layout'
 
 const Contact = (props) => {
     return(
-    !props.location.state?<Redirect to="/"/>:
-        <div>
+        <Layout>
             <Helmet>
                 <title>Summer In The Woods</title>
                 <meta name="description" content="Contact Page" />
@@ -15,8 +14,8 @@ const Contact = (props) => {
             <div id="main">
                 <div className="inner">
                     <section>
-                        <form method="post" method={process.env.GATSBY_EMAIL_CONTACT_TO}>
-                            <div className="name" className="hide">
+                        <form method="post" action={process.env.GATSBY_EMAIL_CONTACT_TO}>
+                            <div className="name hide">
                                 <input type="hidden" name="_redirect" value="/" />
                             </div>
                             <div className="field">
@@ -65,8 +64,8 @@ const Contact = (props) => {
                     </section>
                 </div>
             </div>
-        </div>
+        </Layout>
     )
 }
 
-export default Contact
+export default Contact;

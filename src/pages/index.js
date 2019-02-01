@@ -1,12 +1,12 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/';
-import { db } from '../firebase';
 import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
 import { philosophy, location, information, program } from '../constants/variables';
-
+import Layout from '../components/layout';
+import { withFirebase } from '../components/FirebaseContext';
 
 class index extends React.Component {
     constructor(props) {
@@ -16,10 +16,11 @@ class index extends React.Component {
         }
     }
     render() {
+        console.log('props', this.props);
         const siteTitle = "Summer In The Woods"
         const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"
         return (
-            <div>
+            <Layout>
                 <Helmet>
                     <title>{siteTitle}</title>
                     <meta name="description" content={siteDescription} />
@@ -97,9 +98,9 @@ class index extends React.Component {
                         </section>
                     </section>
                 </div>
-            </div>
+            </Layout>
         )
     }
 }
 
-export default index
+export default index;

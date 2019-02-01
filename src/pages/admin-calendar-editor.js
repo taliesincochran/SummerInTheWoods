@@ -1,10 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/';
-import Selectable from '../components/Selectable';
-import { Redirect } from "react-router-dom";
-import { db } from '../firebase/firebase';
-import Input from '../components/Input';
+import { ref } from '../constants/db';
+import Layout from '../components/layout';
 
 class AdminCalendarEditor extends React.Component {
 	constructor(props) {
@@ -29,21 +27,9 @@ class AdminCalendarEditor extends React.Component {
     }
     handleSubmit = (event) => {
     	event.preventDefault();
-    	let { firstDay, lastDay, july4th, attending } = this.state;
-    	let weeks = this.getValue('campTimes/year')(firstDay, lastDay);
+    	let { firstDay, numberOfWeeks, year } = this.state;
+    	let weeks = this.setUpNewYear(firstDay, numberOfWeeks, year);
     }
-    // This function is used to get the date of a day of the week near another date.  
-	// getDateOfTargetNearX = (year, month, date, day, canBeNegative) => {
-	// 	const dateString = new Date(year, month, date);
-	// 	const dayOfWeekBeforeDate = dateString.getDate() - dateString.getDay() + day;
-	// 	let dayDate;
-	// 	if(dayOfWeekBeforeDate < 0 && !canBeNegative) {
-	// 		dayDate = this.getDateString(year, month, dayOfWeekBeforeDate + 7);
-	// 	} else {
-	// 		dayDate = this.getDateString(year, month, dayOfWeekBeforeDate);
-	// 	}
-	// 	return dayDate;
-	// };
 	isJuly4thWeek = (date, month) => {
 	    const testDate1 = date - 1;
 	    const testDate2 = date + 6;
@@ -59,6 +45,7 @@ class AdminCalendarEditor extends React.Component {
 	    return dateString;
 	};
 	setupNewYear = (firstDay, numberOfWeeks, year) => {
+		let db = this.props.firebase.database();
 		// Get dates as javascript date string
 		let firstFullDate = this.getDateString(year, 5, firstDay);
 		// Get the date, month, and year of the first day
@@ -155,7 +142,7 @@ class AdminCalendarEditor extends React.Component {
 	        }
 	        weeks.push(weekObject);
 	    });
-	    const weeksRef = db.ref(`campTimes/year/${campYear}`);	
+	    const weeksRef =  ref(`campTimes/year/${campYear}`);	
 	   	weeks.forEach((week,i) => {
 	   		weeksRef.child(`${week.title}`).update(week);
 	   	})
@@ -174,14 +161,13 @@ class AdminCalendarEditor extends React.Component {
 		    const rawCampTimes= this.props.location.state.rawCampTimes
 	    	const months = ["June", "July", "August"];
 	    	const weeks = ['Week01', 'Week02', 'Week03', 'Week04', 'Week05', 'Week06', 'Week07', 'Week08', 'Week09', 'Week10'];
-	    	const weeksRef = db.ref('campTimes/year/2019');
+	    	const weeksRef = ref('campTimes/year/2019');
 	    	const minDate = new Date()
 	    }
 	};
 	render() {	
 		return(
-		!this.props.location.state?<Redirect to="/"/>:	
-	        <div>
+		<Layout>
 	            <Helmet>
 	                <title>Summer In The Woods</title>
 	                <meta name="description" content="Admin Calendar Page" />
@@ -202,9 +188,9 @@ class AdminCalendarEditor extends React.Component {
 		                </div>
 		            </form>
 	            </div>
-	        </div>
+	        </Layout>	
 		)
 	}
 }
 
-export default AdminCalendarEditor
+export default AdminCalendarEditor;

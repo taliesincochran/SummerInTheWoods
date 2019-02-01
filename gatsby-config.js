@@ -1,36 +1,31 @@
+var path = require('path');
 module.exports = {
-  siteMetadata: {
-    title: `Gatsby Firebase Authentication`,
-    author: `Taliesin Cochran`,
-    description: "A Montessori Inspired Summer Camp in Carrboro, NC"
-  },
-  pathPrefix: '/',
-  plugins: [
-  	`gatsby-plugin-react-helmet`, 
-  	`gatsby-plugin-react-next`,
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
-    `gatsby-plugin-sass`,
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/assets/images`,
-      },
-    },
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {
-        plugins: [
-          {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 630,
-            },
-          },
-          "gatsby-remark-copy-linked-files",
-        ],
-      },
-    },
-  ],
+	siteMetadata: {
+		title: "Summer In The Woods",
+		author: "Taliesin Cochran",
+		description: "A summer camp in Carrboro, NC based on Forty by HTML5 UP"
+	},
+	plugins: [
+		'gatsby-plugin-react-helmet',
+		{
+			resolve: `gatsby-plugin-manifest`,
+			options: {
+				name: 'summer-in-the-woods-camp',
+				short_name: 'summerinthewoods',
+				start_url: '/',
+				background_color: '#663399',
+				theme_color: '#663399',
+				display: 'minimal-ui',
+			},
+		},
+		'gatsby-plugin-sass',
+		'gatsby-plugin-offline',
+		{
+			resolve: `gatsby-plugin-layout`,
+			options: {
+				component: require.resolve(`./src/components/layout`)
+			}
+
+		}
+	]
 }

@@ -10,11 +10,17 @@ import '../../assets/scss/calendar/_event.scss';
 import '../../assets/scss/calendar/_agenda.scss';
 import '../../assets/scss/calendar/_time-column.scss';
 import '../../assets/scss/calendar/_time-grid.scss';
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(Moment));
+import { withFirebase } from '../FirebaseContext';
+
+let localizer = BigCalendar.momentLocalizer(Moment);
 function Event({ event }) {
   return (
     <span>
-      <button className={event.className} style={{boxShadow: 'none', whiteSpace: 'pre'}}>{event.title}</button>
+      <button 
+        className={event.className} 
+        style={{boxShadow: 'none', whiteSpace: 'pre'}}>
+            {event.title}
+        </button>
     </span>
   )
 }
@@ -75,9 +81,10 @@ const Selectable = (props) => {
                     defaultDate={props.defaultDate}
                     components={{event: Event}}
                     toolbar={false}
+                    localizer={localizer}
                 />
             </div>
         </div>
 )};    
-export default Selectable
+export default withFirebase(Selectable)
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import linkArray from '../../constants/linkArray'
 import LinkItem from '../LinkItem'
+
 
 const NavigationNonAuth = (props) => {
     return(

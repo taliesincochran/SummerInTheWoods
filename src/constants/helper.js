@@ -7,26 +7,30 @@ export const parseQuery = (query, that) => {
         let paramValue = parameter.split("=")[1];
         console.log(paramValue);
         let totalCostButtonHash, amountDueButtonHash, totalWeeks, totalCost, amountDue, name, email, childName, phone;
-        if(paramName='t'){
+        if(paramName === 't'){
             totalCostButtonHash = paramValue;
-        } else if(paramName='a'){
+        } else if(paramName === 'a'){
             amountDueButtonHash = paramValue;
-        } else if (paramName = 'w') {
+        } else if (paramName === 'w') {
             totalWeeks = paramValue;
-        } else if (paramName = 'c') {
+        } else if (paramName === 'c') {
             totalCost = paramValue;
-        } else if (paramName = 'd') {
+        } else if (paramName === 'd') {
             amountDue = paramValue;
-        } else if (paramName = 'n') {
+        } else if (paramName === 'n') {
             name = paramValue;
-        } else if (paramName = 'e') {
+        } else if (paramName === 'e') {
             email = paramValue;
             console.log(this.state);
-        } else if(paramName = 'cn') {
+        } else if(paramName === 'cn') {
             childName = paramValue;
-        } else if(paramName = 'p') {
-            phone = parmValue
+        } else if(paramName === 'p') {
+            phone = paramValue
         }
         that.setState({totalCostButtonHash, amountDueButtonHash, totalWeeks, totalCost, amountDue, name, email, childName, phone});
     })
+}
+export const handleChange = (target, that) => {
+    const { name, value } = target;
+    that.setState({[name]: value});
 }

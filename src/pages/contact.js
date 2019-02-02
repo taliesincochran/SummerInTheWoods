@@ -31,15 +31,15 @@ class Contact extends React.Component {
                                 <form method="post" action={process.env.GATSBY_EMAIL_CONTACT_TO}>
                                     <div className="field">
                                         <label htmlFor="name">name</label>
-                                        <input type="text" name="name" id="name" value={this.state.name}></input>
+                                        <input type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}></input>
                                     </div>
                                     <div className="field">
                                         <label htmlFor="email">email</label>
-                                        <input type="email" name="email" id="email" value={this.state.email}></input>
+                                        <input type="email" name="email" id="email" onChange={this.onChange} value={this.state.email}></input>
                                     </div>
                                     <div className="field">
                                         <label htmlFor="message">Message</label>
-                                        <textarea name="message" id="message" rows="6" value={this.state.message}></textarea>
+                                        <textarea name="message" id="message" rows="6" onChange={this.onChange} value={this.state.message}></textarea>
                                     </div>
                                     <ul className="actions">
                                         <li><input type="submit" value="Send Message" className="special" /></li>

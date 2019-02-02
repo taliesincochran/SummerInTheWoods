@@ -7,12 +7,9 @@ import Footer from '../components/Footer/';
 import Menu from '../components/Menu/';
 import PropTypes from 'prop-types';
 import { withPrefix } from 'gatsby-link';
-import { db } from '../firebase';
+import { getValue } from '../firebase/db';
 
-// const CLIENT = {
-//   sandbox: process.env.PAYPAL_CLIENT_ID_SANDBOX,
-//   production: process.env.PAYPAL_CLIENT_ID_PRODUCTION,
-// };
+
 
 class TemplateWrapper extends Component {
     constructor(props) {
@@ -41,7 +38,7 @@ class TemplateWrapper extends Component {
         }, 100);
     }
     getCalendar() {
-        db.getWeeks().then(snapshot => {
+        getValue('campTimes/year').then(rawCampTimes => {
             // get current date, month, year
             let dateObject = new Date(); 
             let date = dateObject.getDate();
@@ -50,7 +47,6 @@ class TemplateWrapper extends Component {
             // get the timezone of the applicant for security purposes
             let localTimezoneOffset = dateObject.getTimezoneOffset() 
             // data from firebase to be processed into the year or years to be displayed
-            let rawCampTimes = snapshot.val();
             let rawYearsArray = Object.keys(rawCampTimes);
             rawYearsArray.sort((a, b) => a - b);
             let yearIndex = 0;

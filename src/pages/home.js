@@ -1,25 +1,18 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/';
-import { db } from '../firebase'
 import pic08 from '../assets/images/pic08.jpg';
 import pic09 from '../assets/images/pic09.jpg';
 import pic10 from '../assets/images/pic10.jpg';
-import { philosophy, location, information, program } from '../constants/homeVariables';
+import { philosophy, location, information, program } from '../constants/variables';
 
 
 class HomeIndex extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            textObj: {}
         }
       }
-    componentDidMount() {
-        db.getText().then(snapshot=> {
-            this.setState({textObj: snapshot.val()})
-        })
-    }
     render() {
         const siteTitle = "Summer In The Woods"
         const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"

@@ -1,132 +1,75 @@
-import React from 'react';
+import * as React from "react";
 
-import { Redirect } from "react-router-dom"
+class Mail extends React.Component {
+    
+    state = {
+        additionalInformation: '',
+        location: '/'
 
-const Mail = (props) => {
-    let message = '';
-    if(props.state) {
-        let { 
-                amountDue,
-                localTimezoneOffset,
-                Week0,
-                Week1,
-                Week2,
-                Week3,
-                Week4,
-                Week5,
-                Week6,
-                Week7,
-                Week8,
-                Week9,
-                childFirstName,
-                childLastName,
-                age,
-                birthday,
-                allergies,
-                parent1Name,
-                parent1Phone,
-                parent1Email,
-                parent2Name,
-                parent2Phone,
-                parent2Email,
-                emergency1Name,
-                emergency1Relationship,
-                emergency1Phone,
-                emergency2Name,
-                emergency2Relationship,
-                emergency2Phone,
-                physicianName,
-                physicianPhone,
-                dentistName,
-                dentistPhone,
-                address
-            } = this.props.state;    
-        if(props.location.state) {
-            message = parent1Name + "has filled out an application for your camp. Please email them at " + parent1Email + ". Send them the address so that they can mail thier check for the $" + amountDue + " and a paypal bill to confirm the hold.\n" +
-                "amountDue:" + amountDue + "\n" + 
-                "Week 1:" + Week0 + " days\n" + 
-                "Week 2:" + Week1 + " days\n" + 
-                "Week 3:" + Week2 + " days\n" + 
-                "Week 4:" + Week3 + " days\n" + 
-                "Week 5:" + Week4 + " days\n" + 
-                "Week 6:" + Week5 + " days\n" + 
-                "Week 7:" + Week6 + " days\n" + 
-                "Week 8:" + Week7 + " days\n" + 
-                "Week 9:" + Week8 + " days\n" + 
-                "Week 10:" + Week9 + " days\n" + 
-                "child's first name:" + childFirstName + "\n" + 
-                "child's last name:" +  childLastName + "\n" + 
-                "age:" + age + "\n" + 
-                "birthday:" + birthday + "\n" + 
-                "allergies:" + allergies + "\n" + 
-                "parent name:" + parent1Name + "\n" + 
-                "parent phone:" + parent1Phone + "\n" + 
-                "parent email:" + parent1Email + "\n" + 
-                "second parent name:" +  parent2Name + "\n" + 
-                "second parent phone:" + parent2Phone + "\n" + 
-                "second parent email:" + parent2Email + "\n" + 
-                "emergency contact name:" + emergency1Name + "\n" + 
-                "first emergency contact relationship:" + emergency1Relationship + "\n" + 
-                "first emergency contact phone:" +    emergency1Phone + "\n" + 
-                "second emergency contact name:" + emergency2Name + "\n" + 
-                "second emergency contact relationship:" + emergency2Relationship + "\n" + 
-                "second emergency contact phone:" +    emergency2Phone + "\n" + 
-                "physician name:" +  physicianName + "\n" + 
-                "physician phone:" + physicianPhone + "\n" + 
-                "dentist name:" +    dentistName + "\n" + 
-                "dentist phone:" +   dentistPhone + "\n" + 
-                "address:" + address + "\n"
-                "timezone offset:" + localTimezoneOffset + "\n" 
+    }
+    componentDidMount () {
+        if (window !== undefined) {
+            location = window.location;
+        } else {
+            location = process.env.NODE_ENV === 'production' ? "https://www.summerinthewoodscamp.com/mail" : "https://localhost:8000/mail";
         }
     }
-    const gotchaStyle = {
-        display: 'none'
-    } 
-    return(
-        !props.location.state?<Redirect to="/"/>:
-        <div>
-            <p>Once the application is submitted, we will email you a bill.</p>
-            <div id="main">
-                <div className="inner">
-                    <section>
-                        <form method="post" action="https://formspree.io/summerinthewoodscamp@gmail.com">
-                            <div className="gotcha" style={gotchaStyle}>
-                                <input type="text" name="_gotcha" style={gotchaStyle} className="gotcha" />
-                                <input type="hidden" name="_next" value="/" />
-                            </div>
-                            <div className="field" style={{display:"none"}}>
-                                <label htmlFor="message">Additional information</label>
-                                <textarea name="message" id="message" rows="6">{message}</textarea>
-                            </div>
-                            <ul className="actions">
-                                <li><input type="submit" value="Send" className="special" /></li>
-                                <li><input type="reset" value="Clear" /></li>
-                            </ul>
-                        </form>
-                    </section>
-                    <section className="split">
+    getRedirect = () => {
+        let ref;
+        if (this.state.location !== undefined && this.state.location.href !== undefined) {
+            ref = this.state.location.href.split('/mail')[0] + '/thankyou';
+            return ref;
+        } else {
+            ref = process.env.NODE_ENV === "production"? "https://www.summerinthewoodscamp/mail": "https://localhost:8000/mail";
+        }
+    }
+    getMessage = () => {
+        let message = this.props.location.search.slice((this.props.location.search.indexOf("n=") + 2), this.props.location.search.indexOf("+e")) + " has submitted an aplication and has elected to pay by mail.  Their email is " + this.props.location.search.slice((this.props.location.search.indexOf("e=") + 2), this.props.location.search.indexOf("+f")) + ". Their phone number is " + this.props.location.search.slice(this.props.location.search.indexOf("p=") + 2) + ". Their amount due is " + this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w")) + "for " + this.props.location.search.slice((this.props.location.search.indexOf("w=") + 2), this.props.location.search.indexOf("+n")) + ". Please send them a bill via email so they can save " + this.props.location.search.slice((this.props.location.search.indexOf("f=") + 2), this.props.location.search.indexOf("+l=")) + " spot.";
+        return message;
+    }
+    handleChange = e => {
+        let { name, value } = e.target;
+        this.setState({ [name]: value });
+    }
+
+    render() {
+        let message = this.getMessage();
+        let redirect = this.getRedirect();
+        return (
+            <div>
+                <div id="main">
+                    <div className="inner">
+                        <h2>Add any additional information below. Once this form is submitted, we will email you the bill. Thank you for choosing summer in the woods.</h2>
                         <section>
-                            <div className="contact-method">
-                                <span className="icon alt fa-envelope"></span>
-                                <h3>Email</h3>
-                            {/*The long string of ASCII is to confuse scraping bots*/}
-                                <a className="email" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#117;&#109;&#109;&#101;&#114;&#105;&#110;&#116;&#104;&#101;&#119;&#111;&#111;&#100;&#115;&#99;&#97;&#109;&#112;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
-                            </div>
+                            <form action={process.env.GATSBY_EMAIL_CONTACT_TO} method="POST" accept-charset="utf-8">
+                                <div className="hide">
+                                    <label htmlFor="name">Name</label>
+                                    <input type="text" name="name" id="name" value={this.props.location.search.slice((this.props.location.search.indexOf("n=") + 2), this.props.location.search.indexOf("+e"))} />
+                                </div>
+                                <div className="hide">
+                                    <input type="text" name="spam" className="hide" />
+                                    <input type="hidden" name="_redirect" value={redirect} />
+                                </div>
+                                <div className="field" className="hide">
+                                    <textarea name="message" id="message" rows="6">{message}</textarea>
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="additionalInformation">Additional information</label>
+                                    <textarea name="additionalInformation" onChange={this.handleChange} id="additionalInformation" rows="6"></textarea>
+                                </div>
+                                <ul className="actions">
+                                    <li><input type="submit" value="Send" className="special" /></li>
+                                    <li><input type="reset" value="Clear" /></li>
+                                </ul>
+                            </form>
                         </section>
-                        <section>
-                            <div className="contact-method">
-                                <span className="icon alt fa-home"></span>
-                                <h3>Location</h3>
-                                <span>
-                                    Located on 1.4 acres off of Hillsboro Road, near McDougal Elementary in Carrboro, North Carolina
-                                </span>
-                            </div>
-                        </section>
-                    </section>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
-export default Mail
+
+
+export default Mail;

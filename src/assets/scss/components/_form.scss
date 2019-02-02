@@ -11,6 +11,18 @@
 			border: 5px solid white;
 			margin-bottom: 50px;
 		}
+		.hide {
+			visibility: hidden;
+			overflow: hidden;
+			position: absolute;
+		}
+		.displayNone {
+			display: none;
+		}
+		.firstButton {
+			position: relative;
+			bottom: 3em;
+		}
 		.yearBox {
 			margin-bottom: 30px;
 			overflow: auto;
@@ -196,12 +208,6 @@
 		&:focus + label {
 			&:before {
 				box-shadow: 0 0 0 2px _palette(highlight);
-			}
-		}
-	}
-	input[type="checkbox"] {
-		& + label {
-			&:before {
 			}
 		}
 	}

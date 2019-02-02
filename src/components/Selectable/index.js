@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from "react";
 import BigCalendar from 'react-big-calendar';
 import Moment from 'moment';
 import '../../assets/scss/calendar/_reset.scss';
@@ -11,14 +11,14 @@ import '../../assets/scss/calendar/_agenda.scss';
 import '../../assets/scss/calendar/_time-column.scss';
 import '../../assets/scss/calendar/_time-grid.scss';
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(Moment));
-function Event({ event }) {
+const Event = ({ event }) => {
   return (
     <span>
       <button className={event.className} style={{boxShadow: 'none', whiteSpace: 'pre'}}>{event.title}</button>
     </span>
   )
 }
-function EventWithCheckbox ({event}) {
+const EventWithCheckbox = ({event}) => {
     return(
         <span className={event.className}/>)
 }
@@ -34,21 +34,26 @@ let eventPopulate = (props)=>{
         if(!campWeek.noCamp){     
             switch(available) {
                 case 0:
-                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: No slots available.                                   `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: No slots available.                                   `
                     break;
                 case 1: 
-                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: 1 slot available.                                     `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: 1 slot available.                                     `
                     break;
                 default: 
-                    campWeek.title = `Week ${parseInt(week.slice(4)) + 1}: ${available} slots available.                         `
+                    campWeek.title = `Week ${parseInt(week.slice(4)), 16}: Limited slots available.                         `
                     break;
             }
         } else if (campWeek.noCamp && campWeek.noCampDescription) {
             campWeek.title = campWeek.noCampDescription
         } else {
-            campWeek.title = "No camp this week."
+            campWeek.title = "No camp this week.                                                                          "
         }
-        available>0?campWeek.className = "available":campWeek.className = "no-vacancy";
+        available > 0 
+            ? 
+            campWeek.className = "available" 
+            : 
+            campWeek.className = "no-vacancy";
+        
         eventTemp.push(campWeek);
     }
     return eventTemp;
@@ -70,7 +75,6 @@ const Selectable = (props) => {
                     defaultDate={props.defaultDate}
                     components={{event: Event}}
                     toolbar={false}
-
                 />
             </div>
         </div>

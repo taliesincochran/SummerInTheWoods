@@ -5,7 +5,7 @@ import LinkItem from '../LinkItem'
 const Navigation = (props) => {
     return(
         <ul className="links">
-            {/*linkArray.map((listItem, i) => (listItem.nonAuth && props.pathname !== listItem.path) ?
+            {linkArray.map((listItem, i) => (listItem.nonAuth && props.pathname !== listItem.path) ?
                 <LinkItem
                     key={i}
                     path={listItem.path}
@@ -17,7 +17,7 @@ const Navigation = (props) => {
                     onToggleMenu={props.onToggleMenu}
                 />
                 : '')
-            */}
+            }
         </ul>
     )
 }

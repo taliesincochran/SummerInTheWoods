@@ -6,7 +6,8 @@ import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
 import { paymentMethodMessage } from '../constants/variables';
-import { changeWeekAttendanceValueFromArray, setTargetChild  } from "../firebase/db";
+import { changeTargetChild, changeTarget, getRef, getValue } from "../firebase/db";
+import { db } from "../firebase";
 
 const gotchaStyle = {
     display: 'none'
@@ -113,14 +114,16 @@ class Application extends React.Component {
     }
     makeRedirectString = (paymentMethod) => {
         let redirectString = '';
-        if(window !== undefined) {
+        if(this.props.location.pathname !== undefined) {
             redirectString = window.location.href.slice(0, (window.location.href.indexOf('/apply') + 1));
+            console.log('pathname base', redirectString, this.props.location, window)
         } else {
             redirectString = 'www.summerinthewoodscamp.com/'
         }
         let name = this.state.parent1Name.replace(/\s+/g, '_');
         let email = this.state.parent1Email.replace(/\s+/g, '_');
-        let childsName = this.state.childFirstName.replace(/\s+/g, '_') + this.state.childLastName.replace(/\s+/g, '_'); 
+        let childFirstName = this.state.childFirstName.replace(/\s+/g, '_'); 
+        let childLastName = this.state.childLastName.replace(/\s+/g, '_');
         if(paymentMethod === "paypal") {
             let hash = this.getHash();
             let hash2 = parseInt(hash) + 2;
@@ -128,13 +131,13 @@ class Application extends React.Component {
         } else {
             redirectString += "mail/?";
         }
-        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+cn=" + childsName;
+        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+f=" + childFirstName + "+l=" + childLastName + "+p=" + this.state.parent1phone ;
         console.log(redirectString);
         this.setState({redirectString});
         return redirectString;
     }
-
-
+    
+    
     getWeekArray = (yearString) => {
         let yearChosen = this.props.location.state.rawCampTimes[this.props.location.state.chosenYear]
         let weekArray = [];
@@ -150,12 +153,12 @@ class Application extends React.Component {
         }
         return weekArray
     }
-
+    
     handleChange = e => {
         let { name, value } = e.target;
         this.setState({ [name]: value });
     }
-
+    
     handleEmail = e => {
         let { name, value } = e.target;
         this.setState({ [name]: value })
@@ -200,7 +203,8 @@ class Application extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName && window !== undefined) {
+        console.log(this.props.location.pathname, this.state);
+        if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName && this.props.location.pathname !== undefined) {
             let { 
                 childFirstName, 
                 childLastName, 
@@ -282,24 +286,30 @@ class Application extends React.Component {
                 key 
             }
             let weeksAttending = [];
-            async function getWeeksAttending (application) {
+            getValue('test').then(test => {
+                console.log(test);
                 for(let item in application) {
+                    console.log('item', item, application[item]);
                     if(item.slice(0,4) === "Week" && application[item] !== 0) {
                         weeksAttending.push(item);
                     } 
                 }
                 return weeksAttending;
-            }
-            getWeeksAttending(application).then(
-                weeks => {
-                    setTargetChild('applications', application, key)
-                    changeWeekAttendanceValueFromArray('pending', year, weeks, add);
-                    this.setState({ submitted: true, page: 5 });
+            }).then(weeks => {
+                    changeTargetChild('applications', key, application)
+                    .then(()=> {
+                        weeks.forEach(week => {
+                            let pendingPath = `campTimes/year/${chosenYear}/${week}/pending`;
+                            console.log('pendingPath', pendingPath);
+                            let pendingRef = getRef(pendingPath);
+                            getValue(pendingRef).then(pending=> {
+                                changeTarget(`campTimes/${key.slice(0,4)}/${week}/pending`, parseInt(pending) + 1);
+                                this.setState({ submitted: true, page: 5 }, ()=> console.log('page 5'));
+                            })
+                        })
+                    })
                 }
             )
-            .catch((err) => {
-                this.setState({ error4: "There was an error with the database, please try again." })
-            })
         } else {
             this.setState({ error4: "Please fill out all required fields." })
         }
@@ -313,7 +323,7 @@ class Application extends React.Component {
                 this.setState({ page: 0 });
                 break;
             case 'submitPage0':
-                this.state.firstWeek !== -1 ?
+                this.state.amountDue > 0 ?
                     this.setState({ page: 1, error0: "" }) :
                     this.setState({ error0: "Please select at least one week." });
                 break;
@@ -435,7 +445,7 @@ class Application extends React.Component {
                                             <div>
                                                 <p className='errorMessage'>{this.state.error0}</p>
                                                 <p>Year {this.props.location.state.yearsArray[0]}</p>
-                                                <div className="yearBox">
+                                                <div className="yearBox infoBox">
                                                     <h2>Select the weeks you would your child to attend.</h2>
                                                     {this.props.location.state.yearsArray.length > 1 ?
                                                         <div>
@@ -512,7 +522,7 @@ class Application extends React.Component {
                                                 <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                                 <h2>Total Cost ${this.state.totalCost}</h2>
                                                 <button 
-                                                    className="button" 
+                                                    className="button nextPage firstButton" 
                                                     id="submitPage0" 
                                                     onClick={this.handleNext}
                                                 >
@@ -847,7 +857,7 @@ class Application extends React.Component {
                                                 onClick={this.handleSubmit}
                                             >Next</button>
                                         </div>
-                                        <div className={this.state.page === 5 ? '' : 'displayNone'}>
+                                        <div className={this.state.page === 5 ? 'main' : 'displayNone'}>
                                             <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
                                             <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
                                             <h2>{paymentMethodMessage}</h2>
@@ -875,6 +885,7 @@ class Application extends React.Component {
                                                 Previous
                                             </button>
                                             <button 
+                                                className="nextPage"
                                                 disabled={!this.state.paymentMethod}
                                                 type="submit" 
                                             >Submit</button>

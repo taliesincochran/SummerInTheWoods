@@ -9,7 +9,7 @@ import Menu from '../components/Menu/';
 import PropTypes from 'prop-types';
 import { Link, withPrefix } from 'gatsby-link';
 import { getValue } from '../firebase/db';
-import { auth } from '../firebase';
+import { db } from '../firebase';
 
 // const CLIENT = {
 //   sandbox: process.env.PAYPAL_CLIENT_ID_SANDBOX,
@@ -42,7 +42,7 @@ class TemplateWrapper extends Component {
         }, 100);
     }
     getCalendar() {
-        getValue('campTimes/year').then(snapshot => {
+        getValue('campTimes/year').then(rawCampTimes => {
             // get current date, month, year
             let dateObject = new Date();
             let date = dateObject.getDate();
@@ -51,7 +51,6 @@ class TemplateWrapper extends Component {
             // get the timezone of the applicant for security purposes
             let localTimezoneOffset = dateObject.getTimezoneOffset()
             // data from firebase to be processed into the year or years to be displayed
-            let rawCampTimes = snapshot.val();
             let rawYearsArray = Object.keys(rawCampTimes);
             rawYearsArray.sort((a, b) => a - b);
             let yearIndex = 0;

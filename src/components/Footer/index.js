@@ -13,7 +13,7 @@ const Footer = (props) => {
                 <Navigation button={true} pathname={props.pathname} state={props.state} />
             </ul>
             <ul className="copyright">
-                <li>&copy; Trakai Web Development</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+                <li>&copy; Taliesin Cochran and Vytas Rudinskas</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
             </ul>
         </div>
     </footer>

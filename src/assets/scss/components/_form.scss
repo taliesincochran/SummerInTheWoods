@@ -182,7 +182,7 @@
 			position: relative;
 
 			&:before {
-				background: _palette(border-bg);
+				background: _palette(fg);
 				content: '';
 				display: inline-block;
 				height: (_size(element-height) * 0.6);

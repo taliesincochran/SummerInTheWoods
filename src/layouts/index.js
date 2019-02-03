@@ -92,7 +92,6 @@ class TemplateWrapper extends Component {
             clearTimeout(this.timeoutId);
         }
     }
-
     handleToggleMenu() {
         this.setState({
             isMenuVisible: !this.state.isMenuVisible
@@ -101,27 +100,6 @@ class TemplateWrapper extends Component {
     handleChange(event) {
         let { name, value } = event.target;
         this.setState({ [name]: value });
-        this.calculateCost();
-    }
-    handleYearChange(event) {
-        this.setState({ yearChosen: event.target.value });
-    }
-    calculateCost() {
-        let weeksArray = [this.state.week0,this.state.week1, this.state.week2, this.state.week3, this.state.week4, this.state.week5, this.state.week6, this.state.week7, this.state.week8,this.week9];
-        let threeDayArray = weeksArray.filter(value=> value == 3);
-        let fiveDayArray = weeksArray.filter(value=> value == 5);
-        let threeDayCount = threeDayArray.length() + 1;
-        let fiveDayCount = fiveDayArray.length() + 1;
-        let threeDayCost = threeDayCount * 120;
-        let cost = 0;
-        if(fiveDayCount > 5) {
-            cost = threeDayCost + fiveDayCount * 135;
-        } else if (fiveDayCount > 3) {
-            cost = threeDayCost + fiveDayCount * 150;
-        } else {
-            cost = threeDayCost + fiveDayCount * 175;
-        }
-        this.setState({cost: cost});
     }
     render() {
         const { children } = this.props;
@@ -139,14 +117,12 @@ class TemplateWrapper extends Component {
                         auth={this.state.auth} 
                         state={this.state}
                         handleChange={this.handleChange} 
-                        handleYearChange={this.handleYearChange}
                     />
                 </div>
                 <Menu onToggleMenu={this.handleToggleMenu}>
                     <Navigation 
                         pathname={this.props.location.pathname} 
                         handleChange={this.handleChange} 
-                        handleYearChange={this.handleYearChange} 
                         button={false} 
                         onToggleMenu={this.handleToggleMenu} 
                         auth={this.state.auth} 

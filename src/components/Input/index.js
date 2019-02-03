@@ -6,12 +6,19 @@ const Input = props => {
 		        <label htmlFor={props.name}>{props.text}</label>
 		        <input type={props.type} name={props.name} placeholder={props.placeholder} required onChange={props.onChange} value={props.value}></input>
 		    </div>
-		:   
+		:
+		props.readonly?
+			<div className={props.className}>
+				<label htmlFor={props.name}>{props.text}</label>
+				<input type={props.type} readonly name={props.name} placeholder={props.placeholder} onChange={props.onChange} value={props.value}></input>
+
+			</div>
+		:
 			<div className={props.className}>
 		        <label htmlFor={props.name}>{props.text}</label>
 		        <input type={props.type} name={props.name} placeholder={props.placeholder} onChange={props.onChange} value={props.value}></input>
 
-		    </div>		
+			</div>		
 	)
 }
 export default Input;

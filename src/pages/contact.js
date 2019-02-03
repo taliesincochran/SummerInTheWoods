@@ -9,7 +9,7 @@ class Contact extends React.Component {
             messasge: '',
             email: '',
             name: '',
-            location: '/'
+            location: 'https://summerinthewoodscamp.com'
         }
     }
     componentDidMount () {
@@ -24,6 +24,13 @@ class Contact extends React.Component {
         this.setState({ [name]: value });
     }
     render() {
+        let location = typeof this.state.location === 'string'? 
+            this.state.location? 
+                this.state.location
+            : 
+                'https://summerinthewoodscamp.com/contact' 
+        :   
+            'https://summerinthewoodscamp.com/contact';
         return(
             <div>
                 <Helmet>
@@ -37,7 +44,7 @@ class Contact extends React.Component {
                             <form method="post" action={process.env.GATSBY_EMAIL_CONTACT_TO}>
                                 <input
                                     type="hidden"
-                                    value={this.state.location}
+                                    value={`${location.split(0, location.indexOf('/contact'))[0]}/contactRecieved`}
                                     name="_redirect"
                                 />
                                 <div className="field">

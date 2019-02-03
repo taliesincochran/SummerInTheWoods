@@ -1,17 +1,13 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
 import { Redirect } from "react-router-dom";
-import Link from 'gatsby-link';
 import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
 import { paymentMethodMessage } from '../constants/variables';
 import { changeTargetChild, changeTarget, getRef, getValue } from "../firebase/db";
-import { db } from "../firebase";
 
-const gotchaStyle = {
-    display: 'none'
-}
+
 
 class Application extends React.Component {
     constructor(props) {
@@ -82,7 +78,7 @@ class Application extends React.Component {
         let weekArray = this.getWeekArray(chosenYear);
         let location;
         if(window !== undefined) {
-            location = window.location;
+            location = window.location.href;
         } else {
             location = process.env.NODE_ENV === 'production'? "https://www.summerinthewoodscamp.com/apply":"https://localhost:8000/apply";
         }
@@ -108,7 +104,7 @@ class Application extends React.Component {
     makeRedirectString = (paymentMethod, window) => {
         let redirectString = '';
         if (this.props.location.pathname !== undefined) {
-            redirectString = this.state.location.href.slice(0, (this.state.location.href.indexOf('/apply') + 1));
+            redirectString = this.state.location.slice(0, (this.state.location.indexOf('/apply') + 1));
             console.log('pathname base', redirectString, this.props.location, window)
         } else {
             redirectString = 'www.summerinthewoodscamp.com/'
@@ -124,7 +120,7 @@ class Application extends React.Component {
         } else {
             redirectString += "mail/?";
         }
-        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+f=" + childFirstName + "+l=" + childLastName + "+p=" + this.state.parent1phone;
+        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+f=" + childFirstName + "+l=" + childLastName + "+p=" + this.state.parent1Phone;
         console.log(redirectString);
         this.setState({ redirectString });
         return redirectString;
@@ -152,7 +148,7 @@ class Application extends React.Component {
         this.setState({ [name]: value });
     }
 
-    handleEmail = e => {
+    handleChange = e => {
         let { name, value } = e.target;
         this.setState({ [name]: value })
     }
@@ -188,6 +184,7 @@ class Application extends React.Component {
             temp = temp.slice(0, 13)
         }
         this.setState({ [name]: temp });
+        console.log('phone', temp.length)
     }
 
     handleYearSelect = year => {
@@ -196,7 +193,6 @@ class Application extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        console.log(this.props.location.pathname, this.state);
         if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName && this.props.location.pathname !== undefined) {
             let {
                 childFirstName,
@@ -333,20 +329,33 @@ class Application extends React.Component {
                 this.setState({ page: 2 });
                 break;
             case 'submitPage2':
-                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email == this.state.parent1EmailVerify) ?
-                    this.setState({ page: 3, error2: '' }) :
-                    this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly." });
+                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email == this.state.parent1EmailVerify && this.validateEmail(this.state.parent1Email) && this.validatePhone(this.state.parent1Phone)) ?
+                    this.state.parent2Email?
+                        this.validateEmail(this.state.parent2Email)?
+                            this.state.parent2Phone?
+                                this.validatePhone(this.state.parent2Phone)?
+                                    this.setState({ page: 3, error2: '' }) 
+                                :
+                                    this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc, and phone numbers must be 10 digits." })
+                            :
+                                this.setState({ page: 3, error2: '' }) 
+                        :
+                            this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc, and phone numbers must be 10 digits." })
+                    :
+                        this.setState({ page: 3, error2: '' }) 
+                :
+                    this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc" });
                 break;
             case 'previousPage3':
                 this.setState({ page: 3 });
                 break;
             case 'submitPage3':
-                (this.state.emergency1Name && this.state.emergency2Name && this.state.emergency1Phone && this.state.emergency2Phone && this.state.emergency1Relationship && this.state.emergency2Relationship) ?
+                (this.state.emergency1Name && this.state.emergency2Name && this.state.emergency1Phone && this.state.emergency2Phone && this.state.emergency1Relationship && this.state.emergency2Relationship && this.validatePhone(this.state.emergency1Phone) && this.validatePhone(this.state.emergency2Phone)) ?
                     this.setState({ page: 4, error3: '' }) :
-                    this.setState({ error3: "Please fill out all required fields." });
+                    this.setState({ error3: "Please fill out all required fields. Phone numbers must be 10 digits" });
                 break;
             case 'submitPage4':
-                (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName) ?
+                (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName && this.validatePhone(this.state.dentistPhone) && this.validatePhone(this.state.physicianPhone)) ?
                     this.setState({ page: 5, error4: '' })
                     :
                     this.setState({ error4: "Please fill out all required fields." })
@@ -356,7 +365,6 @@ class Application extends React.Component {
                 break;
         }
     }
-
     handleWeekSelect = (week, value) => {
         if (this.state[week] == value) {
             this.setState({ [week]: 0 }, () => this.getCost())
@@ -369,12 +377,12 @@ class Application extends React.Component {
             }
         }
     }
-
+    
     makeWeekArray = () => {
         let weekArray = [this.state.Week1, this.state.Week2, this.state.Week3, this.state.Week4, this.state.Week5, this.state.Week6, this.state.Week7, this.state.Week8, this.state.Week9, this.state.WeekA, this.state.WeekB];
         return weekArray
     }
-
+    
     getAge = (birthdate) => {
         if (parseInt(birthdate.slice(0, 4)) > 1000 && parseInt(birthdate.slice(0, 4)) < Moment().year()) {
             let age = Moment().diff(birthdate, 'years') || 0;
@@ -383,7 +391,7 @@ class Application extends React.Component {
             return 0;
         }
     }
-
+    
     getCost = () => {
         let weekArray = this.makeWeekArray()
         let totalWeeksSelected = weekArray.filter(value => value === 1).length;
@@ -411,7 +419,26 @@ class Application extends React.Component {
         console.log("totalCost", totalCost, "amountDue", amountDue);
         this.setState({ totalCost, amountDue, initialCost, totalWeeksSelected });
     }
-
+    validateEmail = email => {
+        if(typeof email === "string") {
+            let indexOfAt = email.indexOf('@');
+            let indexOfDot = email.indexOf('.');
+            if(indexOfAt !== -1 && indexOfDot !== -1 && indexOfDot > indexOfAt) {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    validatePhone = phoneNumber => {
+        if (phoneNumber.length === 13) {
+            return true
+        } else {
+            return false
+        }
+    }
     render() {
         return (
             !this.props.location.state ?
@@ -421,7 +448,7 @@ class Application extends React.Component {
                     <div>
                         <Helmet>
                             <title>Summer In The Woods</title>
-                            <meta name="daescription" content="Application Page" />
+                            <meta name="description" content="Application Page" />
                         </Helmet>
                         <div id="main">
                             <div className="inner">
@@ -442,9 +469,8 @@ class Application extends React.Component {
                                             <div className={`${this.state.page === 5 ? 'hide' : ''} ${this.state.page === 0 || this.state.page === 5 ? '' : 'displayNone'}`}>
                                                 <div>
                                                     <p className='errorMessage'>{this.state.error0}</p>
-                                                    <p>Year {this.props.location.state.yearsArray[0]}</p>
-                                                    <div className="yearBox infoBox">
-                                                        <h2>Select the weeks you would your child to attend.</h2>
+                                                    <h2>Year</h2>
+                                                    <div className="yearBox">
                                                         {this.props.location.state.yearsArray.length > 1 ?
                                                             <div>
                                                                 <Checkbox
@@ -456,7 +482,7 @@ class Application extends React.Component {
                                                                     value={this.props.location.state.yearsArray[0]}
                                                                     onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])}
                                                                     text={this.props.location.state.yearsArray[0]}
-                                                                />
+                                                                    />
                                                                 <Checkbox
                                                                     type="checkbox"
                                                                     name="year2"
@@ -466,7 +492,7 @@ class Application extends React.Component {
                                                                     className='float-left' value={this.props.location.state.yearsArray[0]}
                                                                     onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[1])}
                                                                     text={this.props.location.state.yearsArray[1]}
-                                                                />
+                                                                    />
                                                             </div>
                                                             :
                                                             <div>
@@ -478,10 +504,11 @@ class Application extends React.Component {
                                                                     value={this.props.location.state.yearsArray[0]}
                                                                     onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])}
                                                                     text={this.props.location.state.yearsArray[0]}
-                                                                />
+                                                                    />
                                                             </div>
                                                         }
                                                     </div>
+                                                    <h2>Select the weeks you would your child to attend.</h2>
                                                     <div className="infoBox">
                                                         {this.state.weekArray.map((week, i) =>
                                                             week.noCamp ?
@@ -554,7 +581,7 @@ class Application extends React.Component {
                                                         required
                                                     />
                                                     <Input
-                                                        className="field half"
+                                                        className="field half first"
                                                         text="Birthdate"
                                                         type="date"
                                                         name="birthday"
@@ -564,14 +591,16 @@ class Application extends React.Component {
                                                         required
                                                     />
                                                     <Input
-                                                        className="field half first"
-                                                        text="Age"
-                                                        type="number"
+                                                        className="field half"
+                                                        text=""
+                                                        type="hidden"
                                                         name="age"
                                                         onChange={this.handleChange}
                                                         value={this.getAge(this.state.birthday)}
                                                         readOnly={true}
                                                     />
+                                                </div>
+                                                <div className='infoBox'>
                                                     <div className="field">
                                                         <label htmlFor="allergies">Allergies</label>
                                                         <textarea
@@ -627,13 +656,13 @@ class Application extends React.Component {
                                                             value={this.state.parent1Phone}
                                                         />
                                                         <Input
-                                                            className="field half"
+                                                            className="field half first"
                                                             text="Parent or Guardian's Email"
                                                             type="email"
                                                             name="parent1Email"
                                                             placeholder="Required"
                                                             required
-                                                            onChange={this.handleEmail}
+                                                            onChange={this.handleChange}
                                                             value={this.state.parent1Email}
                                                         />
                                                         <Input
@@ -643,7 +672,7 @@ class Application extends React.Component {
                                                             name="parent1EmailVerify"
                                                             placeholder="Required"
                                                             required
-                                                            onChange={this.handleEmail}
+                                                            onChange={this.handleChange}
                                                             value={this.state.parent1EmailVerify}
                                                         />
                                                     </div>
@@ -668,12 +697,12 @@ class Application extends React.Component {
                                                             value={this.state.parent2Phone}
                                                         />
                                                         <Input
-                                                            className="field half"
+                                                            className="field half first"
                                                             text="Parent or Guardian's Email"
                                                             type="email"
                                                             name="parent2Email"
                                                             placeholder="Optional"
-                                                            onChange={this.handleEmail}
+                                                            onChange={this.handleChange}
                                                             value={this.state.parent2Email}
                                                         />
                                                     </div>
@@ -733,7 +762,7 @@ class Application extends React.Component {
                                                             value={this.state.emergency1Phone}
                                                         />
                                                         <Input
-                                                            className="field half"
+                                                            className="field half first"
                                                             text="Contact's Relationship"
                                                             type="text"
                                                             name="emergency1Relationship"
@@ -767,7 +796,7 @@ class Application extends React.Component {
                                                             value={this.state.emergency2Phone}
                                                         />
                                                         <Input
-                                                            className="field half"
+                                                            className="field half first"
                                                             text="Contact's Relationship"
                                                             type="text"
                                                             name="emergency2Relationship"

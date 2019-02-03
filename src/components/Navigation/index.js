@@ -18,6 +18,24 @@ const Navigation = (props) => {
                 />
                 : '')
             }
+            <li>
+                {props.button?
+                    <button type="button">
+                        <a href="https://www.facebook.com/freeplayisparamount/" target="_blank">
+                            <span className="label">
+                                Facebook Page
+                            </span>
+                        </a>
+                    </button>
+                : 
+                    <a href="https://www.facebook.com/freeplayisparamount/" target="_blank">
+                        <span className="label">
+                            Facebook Page
+                        </span>
+                    </a>
+                }
+                    
+            </li>
         </ul>
     )
 }

@@ -12,12 +12,12 @@ const PaypalButton = props => {
                 name="hosted_button_id"
                 value={props.hash === '1' ? process.env.GATSBY_PAYPAL_AMOUNTDUE1_BUTTON_HASH : props.hash === '2' ? process.env.GATSBY_PAYPAL_AMOUNTDUE2_BUTTON_HASH : props.hash === '3' ? process.env.GATSBY_PAYPAL_TOTALCOST1_BUTTON_HASH : props.hash === '4' ? process.env.GATSBY_PAYPAL_TOTALCOST2_BUTTON_HASH : 'error'} />
             <table className='hide'>
-                <tr><td><input type="hidden" name="on0" value="Number of Weeks" />Number of Weeks</td></tr><tr><td>
+                <tbody><tr><td><input type="hidden" name="on0" value="Number of Weeks" />Number of Weeks</td></tr><tr><td>
                     <select name="os0">
                         <option
                             value={props.week} defaultValue={props.week}>{`${props.week} $${props.cost}.00 USD`}</option>
                     </select>
-                </td></tr>
+                </td></tr></tbody>
             </table>
             <input type="hidden" name="currency_code" value="USD" />
             <input type="image" src={props.hash ? "https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" : "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_960_720.png"} border="0" name={props.hash ? "submit" : "error"} alt="PayPal - The safer, easier way to pay online!" />

@@ -74,20 +74,59 @@ class Calendar extends React.Component {
                         </div>
                     :
                         <div>
-                            <Checkbox style={{display: "inline-block"}} name="year1" value={this.props.location.state.yearsArray[0]} onChange={this.handleYearSelect} checked={true} className='float-left' value={this.props.location.state.yearsArray[0]} onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} text={this.props.location.state.yearsArray[0]} />
+                            <Checkbox 
+                                style={{display: "inline-block"}} 
+                                name="year1" 
+                                value={this.props.location.state.yearsArray[0]} 
+                                onChange={this.handleYearSelect} 
+                                checked={true} 
+                                className='float-left' 
+                                value={this.props.location.state.yearsArray[0]} 
+                                onClick={() => this.handleYearSelect(this.props.location.state.yearsArray[0])} 
+                                text={this.props.location.state.yearsArray[0]} 
+                            />
                         </div>
                     }
                     <div>
-                        <Checkbox name="June" value={5} onChange={()=> this.handleMonthSelect(5)} checked={this.state.month == 5} style={{display: "inline-block"}} value={5} onClick={() => this.handleMonthSelect(5)} text="June"/>
-                        <Checkbox name="July" value={6} onChange={()=> this.handleMonthSelect(6)} checked={this.state.month == 6} style={{display: "inline-block"}} value={6} onClick={() => this.handleMonthSelect(6)} text="July"/>
-                        <Checkbox name="August" value={7} onChange={()=> this.handleMonthSelect(7)} checked={this.state.month == 7} style={{display: "inline-block"}} value={7} onClick={() => this.handleMonthSelect(7)} text="August"/>
+                        <Checkbox 
+                            name="June" 
+                            value={5} 
+                            onChange={()=> this.handleMonthSelect(5)} 
+                            checked={this.state.month == 5} 
+                            style={{display: "inline-block"}} 
+                            value={5} 
+                            onClick={() => this.handleMonthSelect(5)} 
+                            text="June"
+                        />
+                        
+                        <Checkbox 
+                            name="July" 
+                            value={6} 
+                            onChange={()=> this.handleMonthSelect(6)} 
+                            checked={this.state.month == 6} 
+                            style={{display: "inline-block"}} 
+                            value={6} 
+                            onClick={() => this.handleMonthSelect(6)} 
+                            text="July"
+                        />
+                        <Checkbox 
+                            name="August" 
+                            value={7} 
+                            onChange={()=> this.handleMonthSelect(7)} 
+                            checked={this.state.month == 7} 
+                            style={{display: "inline-block"}} 
+                            value={7} 
+                            onClick={() => this.handleMonthSelect(7)} 
+                            text="August"
+                        />
                     </div>
                     <div className="inner">
                         {this.state.views?
                             this.state.chosenYear==this.props.location.state.yearsArray[0]?
                                 this.state.views.map((view, i)=>
                                     this.state.month == i + 5?
-                                        <Selectable {...this.props} key={i} campTimes={this.props.location.state.campTimes[0]} year={this.props.location.state.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
+                                        <Sele
+                                            ctable {...this.props} key={i} campTimes={this.props.location.state.campTimes[0]} year={this.props.location.state.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
                                     :null
                             ):null
                         :null

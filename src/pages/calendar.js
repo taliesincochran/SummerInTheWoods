@@ -125,8 +125,7 @@ class Calendar extends React.Component {
                             this.state.chosenYear==this.props.location.state.yearsArray[0]?
                                 this.state.views.map((view, i)=>
                                     this.state.month == i + 5?
-                                        <Sele
-                                            ctable {...this.props} key={i} campTimes={this.props.location.state.campTimes[0]} year={this.props.location.state.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
+                                        <Selectable {...this.props} key={i} campTimes={this.props.location.state.campTimes[0]} year={this.props.location.state.yearsArray[0]} index={0} title={view.month} defaultDate={view.date} />                        
                                     :null
                             ):null
                         :null

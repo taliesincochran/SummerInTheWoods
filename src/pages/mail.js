@@ -6,15 +6,17 @@ class Contact extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: this.props.location.search.split("+e=")[1].split("+f=")[0],
-            name: this.props.location.search.split("+n=")[1].split("+e=")[0],
+            email: '',
+            name: '',
             location: 'https://summerinthewoodscamp.com'
         }
     }
     componentDidMount() {
         if (window !== undefined) {
-            let location = window.location;
-            this.setState({ location })
+            let location = window.location.href;
+            let email = location.split("+e=")[1].split("+f=")[0];
+            let name = location.split("+n=")[1].split("+e=")[0];
+            this.setState({ location, name, email });
         }
 
     }

@@ -77,7 +77,8 @@ class index extends React.Component {
                                         <h3>Information</h3>
                                     </header>
                                     <p>
-                                        {information}
+                                        {information} 
+                                        <a href={process.env.GATSBY_CAMP_EMAIL} target="_blank">{process.env.GATSBY_CAMP_EMAIL}</a>.
                                     </p>
                                     {/*<ul className="actions">
                                         <li><Link to="/generic" className="button">Learn more</Link></li>

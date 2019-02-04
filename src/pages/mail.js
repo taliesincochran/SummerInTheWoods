@@ -46,7 +46,7 @@ class Contact extends React.Component {
                             <form method="post" action={process.env.GATSBY_EMAIL_MAIL_TO}>
                                 <input
                                     type="hidden"
-                                    value={`${location.split(0, location.indexOf('/mail'))[0]}`}
+                                    value={`${location.slice(0, location.indexOf('/mail'))}`}
                                     name="_redirect"
                                 />
                                 <div>

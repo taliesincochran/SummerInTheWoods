@@ -293,7 +293,7 @@ class Application extends React.Component {
                             console.log('pendingPath', pendingPath);
                             let pendingRef = getRef(pendingPath);
                             getValue(pendingRef).then(pending => {
-                                changeTarget(`campTimes/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + 1);
+                                changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + 1);
                                 this.setState({ submitted: true, page: 5 }, () => console.log('page 5'));
                             })
                         })

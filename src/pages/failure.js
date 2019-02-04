@@ -1,12 +1,12 @@
 import * as React from "react";
 
-class ThankYou extends React.Component {
+class Failure extends React.Component {
     render() {
         return (
             <div>
                 <div id="main">
                     <div className="inner">
-                        <h2>You paypal payment has succeeded. Thanks for choosing Summer in the Woods.</h2>
+                        <h2>Your paypal payment failed.  Please contact us through the contact form and arrange another way to pay.</h2>
                     </div>
                 </div>
             </div>
@@ -16,4 +16,4 @@ class ThankYou extends React.Component {
 
 
 
-export default ThankYou;
+export default Failure;

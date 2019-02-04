@@ -15,9 +15,12 @@
     @extend .rbc-ellipsis;
       & > span > button.available {
             background-color: $event-available;
+            font-size: .4em;
+            width: 100%;
           }
       & > span > button.no-vacancy {
             background-color: $event-no-vacancy;
+            font-size: .4em;
             width:100%;
       }
   }

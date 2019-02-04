@@ -20,8 +20,8 @@ const PaypalButton = props => {
                 </td></tr></tbody>
             </table>
             <input type="hidden" name="currency_code" value="USD" />
-            <input type="image" src={props.hash ? "https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" : "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_960_720.png"} border="0" name={props.hash ? "submit" : "error"} alt="PayPal - The safer, easier way to pay online!" />
-            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+            <input type="image" src={process.env.GATSBY_PAYPAL_IMAGE_2} alt="PayPal - The safer, easier way to pay online!" />
+            <img alt="" border="0" src={process.env.GATSBY_PAYPAL_IMAGE_1} width="1" height="1" />
         </form>
     )
 }

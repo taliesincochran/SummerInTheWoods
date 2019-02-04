@@ -43,7 +43,7 @@ class Contact extends React.Component {
                     <div className="inner">
                         <section>
                             <h2>Your application has been recieved, please submit this form and we will email you the bill.  Thank you for choosing Summer in the woods.</h2> 
-                            <form method="post" action={process.env.GATSBY_EMAIL_CONTACT_TO}>
+                            <form method="post" action={process.env.GATSBY_EMAIL_MAIL_TO}>
                                 <input
                                     type="hidden"
                                     value={`${location.split(0, location.indexOf('/mail'))[0]}`}

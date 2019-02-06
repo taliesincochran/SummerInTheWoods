@@ -4,6 +4,5 @@ export const program = "Our days at camp will vary based on the interests of the
 export const location = "Our camp is located off of Hillsborough road, near McDougle school in Chapel Hill in an area surrounded by nature.  Children spend many mornings playing in in the creek, creating games in the woods, and building creations with mud.";
 export const information = `We welcome children ages 3-7. Camp runs weekly from June 10th through August 23rd, 2019. Each week cost $180. Receive a discount $25/week discount when you sign up for four or more weeks! For more information, fill out our application or contact us at `;
 export const paypalMessage = "Please click the paypal button to be redirected to paypal to complete this transaction.  Thank you for choosing Summer in the Woods.";
-export const paypalAction = process.env.NODE_ENV === "production" ? "" : "https://www.sandbox.paypal.com/cgi-bin/webscr";
 export const paymentMethodMessage = "Please choose your payment method. Please note that your childs spot will be reserved once payment is recieved.";
 export const applicationMessage = "To reserve your child’s spot, please submit this completed application Form and a deposit of your first week’s payment plus $25 per additional week.";

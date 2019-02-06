@@ -18,7 +18,7 @@ const linkArray = [
     path: routes.CONTACT,
     text: 'Contact Us',
     auth: true,
-    nonAuth:true
+    nonAuth: true
   },
   {
     path: routes.CALENDAR,
@@ -27,5 +27,12 @@ const linkArray = [
     auth: true,
     nonAuth: true
   },
+  {
+    path: routes.PRICES,
+    text: 'Prices',
+    admin: true,
+    auth: true,
+    nonAuth: true
+  }
 ]
 export default linkArray

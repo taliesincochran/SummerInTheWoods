@@ -19,7 +19,6 @@ class Calendar extends React.Component {
         }
     }
     componentDidMount () {
-
         if(this.props.location.state) {                                       
             let {year, yearsArray, chosenYear, rawCampTimes} = this.props.location.state;
             this.setState({year: year, yearsArray: yearsArray, chosenYear:chosenYear, rawCampTimes: rawCampTimes, views: this.getViews(this.props.location.state.chosenYear), views2: this.getViews(parseInt(this.props.location.state.chosenYear) + 1)})      
@@ -60,7 +59,7 @@ class Calendar extends React.Component {
     render() {
         return(
 
-            !this.props.location.state?<Redirect to="/"/>:
+            !(this.props.location.state && this.props.location.state.campTimes.length > 0)?<Redirect to="/"/>:
             <div>
                 <Helmet>
                     <title>Summer In The Woods</title>

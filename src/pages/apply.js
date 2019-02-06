@@ -398,6 +398,7 @@ class Application extends React.Component {
         console.log('getcost being called', totalWeeksSelected)
         let totalCost = 0;
         let initialCost = 0;
+        let amountDue = 0;
         if (totalWeeksSelected > 3) {
             totalCost = 155 * totalWeeksSelected;
             initialCost = 155;
@@ -409,7 +410,6 @@ class Application extends React.Component {
             initialCost = 0;
         }
         let test = weekArray.filter(value => value === 0);
-        let amountDue = 0;
         if (test.length === weekArray.length) {
             amountDue = 0;
         }

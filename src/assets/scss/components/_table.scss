@@ -15,13 +15,11 @@
 		//margin: 0 0 1em 0;
 		margin: 0 0 _size(element-margin) 0;
 		width: 100%;
-
 		tbody {
 			tr {
 				border: solid 1px _palette(border);
 				border-left: 0;
 				border-right: 0;
-
 				&:nth-child(2n + 1) {
 					background-color: _palette(border-bg);
 				}
@@ -30,6 +28,7 @@
 
 		td {
 			width: (100%/8); 
+			text-align: center;
 			// color: black;
 			// font-weight: bold;
 			// padding: 0.75em 0.75em;
@@ -57,7 +56,7 @@
 			font-size: 0.9em;
 			font-weight: _font(weight-bold);
 			padding: 0 0.75em 0.75em 0.75em;
-			text-align: left;
+			text-align: center;
 		}
 
 		thead {

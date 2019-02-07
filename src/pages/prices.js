@@ -11,7 +11,7 @@ class PriceTable extends React.Component {
                 </Helmet>
                 <BannerLanding bannerClass="contactBanner" />
                 <div className="inner">
-                    <p>The cost of Summer in the Woods Camp is $180.00 per week.  If you sign up for more than four weeks, the price is $155.00 a week.  The amount due to reserve your childs space is the cost of the first week plue $25.00 for each additional week.</p>
+                    <p>The cost of Summer in the Woods Camp is $180 per week.  If you sign up for more than four weeks, the price is $155 a week.  The amount due to reserve your child's space is the cost of the first week plus $25.00 for each additional week.</p>
                     <h3>Prices</h3>
                     <table class="priceTable">
                         <thead>

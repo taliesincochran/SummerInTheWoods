@@ -121,7 +121,6 @@ class Application extends React.Component {
             redirectString += "mail/?";
         }
         redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+f=" + childFirstName + "+l=" + childLastName + "+p=" + this.state.parent1Phone;
-        console.log(redirectString);
         this.setState({ redirectString });
         return redirectString;
     }
@@ -160,7 +159,6 @@ class Application extends React.Component {
         } else {
             redirectString = this.makeRedirectString("mail");
         }
-        console.log(redirectString);
         this.setState({
             redirectString: redirectString,
             paymentMethod: paymentMethod
@@ -184,7 +182,6 @@ class Application extends React.Component {
             temp = temp.slice(0, 13)
         }
         this.setState({ [name]: temp });
-        console.log('phone', temp.length)
     }
 
     handleYearSelect = year => {
@@ -276,25 +273,21 @@ class Application extends React.Component {
             }
             let weeksAttending = [];
             getValue('test').then(test => {
-                console.log(test);
                 for (let item in application) {
-                    console.log('item', item, application[item]);
                     if (item.slice(0, 4) === "Week" && application[item] !== 0) {
                         weeksAttending.push(item);
                     }
                 }
                 return weeksAttending;
             }).then(weeks => {
-                console.log(weeks);
                 changeTargetChild('applications', key, application)
                     .then(() => {
                         weeks.forEach(week => {
                             let pendingPath = `campTimes/year/${chosenYear}/${week}/pending`;
-                            console.log('pendingPath', pendingPath);
                             let pendingRef = getRef(pendingPath);
                             getValue(pendingRef).then(pending => {
                                 changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + 1);
-                                this.setState({ submitted: true, page: 5 }, () => console.log('page 5'));
+                                this.setState({ submitted: true, page: 5 });
                             })
                         })
                     })
@@ -318,7 +311,7 @@ class Application extends React.Component {
                     this.setState({ error0: "Please select at least one week." });
                 break;
             case 'previousPage1':
-                this.setState({ page: 1 });
+                this.setState({ page: 1, error0: '' });
                 break;
             case 'submitPage1':
                 (this.state.childFirstName && this.state.childLastName && this.state.birthday) ?
@@ -326,28 +319,17 @@ class Application extends React.Component {
                     this.setState({ error1: "Please fill out all required fields." });
                 break;
             case 'previousPage2':
-                this.setState({ page: 2 });
+                this.setState({ page: 2 , error1: ''});
                 break;
             case 'submitPage2':
                 (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email == this.state.parent1EmailVerify && this.validateEmail(this.state.parent1Email) && this.validatePhone(this.state.parent1Phone)) ?
-                    this.state.parent2Email?
-                        this.validateEmail(this.state.parent2Email)?
-                            this.state.parent2Phone?
-                                this.validatePhone(this.state.parent2Phone)?
-                                    this.setState({ page: 3, error2: '' }) 
-                                :
-                                    this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc, and phone numbers must be 10 digits." })
-                            :
-                                this.setState({ page: 3, error2: '' }) 
-                        :
-                            this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc, and phone numbers must be 10 digits." })
-                    :
-                        this.setState({ page: 3, error2: '' }) 
+                    this.setState({ page: 3, error2: '' }) 
                 :
+                    console.log(!!this.state.parent1Phone, !!this.state.parent1Name, !!this.state.address,this.state.parent1Email == this.state.parent1EmailVerify, this.validateEmail(this.state.parent1Email), this.validatePhone(this.state.parent1Phone));
                     this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc" });
                 break;
             case 'previousPage3':
-                this.setState({ page: 3 });
+                this.setState({ page: 3, error2: '' });
                 break;
             case 'submitPage3':
                 (this.state.emergency1Name && this.state.emergency2Name && this.state.emergency1Phone && this.state.emergency2Phone && this.state.emergency1Relationship && this.state.emergency2Relationship && this.validatePhone(this.state.emergency1Phone) && this.validatePhone(this.state.emergency2Phone)) ?
@@ -361,7 +343,7 @@ class Application extends React.Component {
                     this.setState({ error4: "Please fill out all required fields." })
                 break;
             case 'previousPage4':
-                this.setState({ page: 4 });
+                this.setState({ page: 4, error3: '' });
                 break;
         }
     }
@@ -395,7 +377,6 @@ class Application extends React.Component {
     getCost = () => {
         let weekArray = this.makeWeekArray()
         let totalWeeksSelected = weekArray.filter(value => value === 1).length;
-        console.log('getcost being called', totalWeeksSelected)
         let totalCost = 0;
         let initialCost = 0;
         let amountDue = 0;
@@ -416,13 +397,12 @@ class Application extends React.Component {
         else {
             amountDue = initialCost + (totalWeeksSelected - 1) * 25;
         }
-        console.log("totalCost", totalCost, "amountDue", amountDue);
         this.setState({ totalCost, amountDue, initialCost, totalWeeksSelected });
     }
     validateEmail = email => {
         if(typeof email === "string") {
             let indexOfAt = email.indexOf('@');
-            let indexOfDot = email.indexOf('.');
+            let indexOfDot = email.lastIndexOf('.');
             if(indexOfAt !== -1 && indexOfDot !== -1 && indexOfDot > indexOfAt) {
                 return true
             } else {

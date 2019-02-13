@@ -33,13 +33,33 @@ class Application extends React.Component {
             Week9: 0,
             WeekA: 0,
             WeekB: 0,
+            numberOfChildren: 1,
+            childArray1: [1],
+            childArray2: [1,2],
+            childArray3: [1,2,3],
+            childArray4: [1,2,3,4],
             totalWeeksSelected: 0,
             weekArray: [],
-            childFirstName: '',
-            childLastName: '',
-            age: 0,
-            birthday: '',
-            allergies: '',
+            childFirstName1: '',
+            childLastName1: '',
+            age1: 0,
+            birthday1: '',
+            allergies1: '',
+            childFirstName2: '',
+            childLastName2: '',
+            age2: '',
+            birthday2: '',
+            allergies2: '',
+            childFirstName3: '',
+            childLastName3: '',
+            age3: '',
+            birthday3: '',
+            allergies3: '',
+            childFirstName4: '',
+            childLastName4: '',
+            age4: '',
+            birthday4: '',
+            allergies4: '',
             parent1Name: '',
             parent1Phone: '',
             parent1Email: '',
@@ -111,8 +131,9 @@ class Application extends React.Component {
         }
         let name = this.state.parent1Name.replace(/\s+/g, '_');
         let email = this.state.parent1Email.replace(/\s+/g, '_');
-        let childFirstName = this.state.childFirstName.replace(/\s+/g, '_');
-        let childLastName = this.state.childLastName.replace(/\s+/g, '_');
+        let childFirstName1 = this.state.childFirstName1.replace(/\s+/g, '_');
+        let childLastName1 = this.state.childLastName1.replace(/\s+/g, '_');
+        let numberOfChildren = this.state.numberOfChildern;
         if (paymentMethod === "paypal") {
             let hash = this.getHash();
             let hash2 = parseInt(hash) + 2;
@@ -120,7 +141,7 @@ class Application extends React.Component {
         } else {
             redirectString += "mail/?";
         }
-        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+f=" + childFirstName + "+l=" + childLastName + "+p=" + this.state.parent1Phone;
+        redirectString += "c=" + this.state.totalCost + "+d=" + this.state.amountDue + "+w=" + this.state.totalWeeksSelected + "+n=" + name + "+e=" + email + "+f=" + childFirstName1 + "+l=" + childLastName1 + "+x=" + this.state.numberOfChildren + "+p=" + this.state.parent1Phone;
         this.setState({ redirectString });
         return redirectString;
     }
@@ -142,9 +163,9 @@ class Application extends React.Component {
         return weekArray
     }
 
-    handleChange = e => {
-        let { name, value } = e.target;
-        this.setState({ [name]: value });
+    handleChangeNumberOfChildren = e => {
+        let { value } = e.target;
+        this.setState({ numberOfChildren: value }, ()=> this.getCost());
     }
 
     handleChange = e => {
@@ -192,11 +213,27 @@ class Application extends React.Component {
         event.preventDefault();
         if (this.state.physicianPhone && this.state.physicianName && this.state.dentistPhone && this.state.dentistName && this.props.location.pathname !== undefined) {
             let {
-                childFirstName,
-                childLastName,
-                age,
-                birthday,
-                allergies,
+                numberOfChildren,
+                childFirstName1,
+                childLastName1,
+                age1,
+                birthday1,
+                allergies1,
+                childFirstName2,
+                childLastName2,
+                age2,
+                birthday2,
+                allergies2,
+                childFirstName3,
+                childLastName3,
+                age3,
+                birthday3,
+                allergies3,
+                childFirstName4,
+                childLastName4,
+                age4,
+                birthday4,
+                allergies4,
                 parent1Name,
                 parent1Phone,
                 parent1Email,
@@ -229,15 +266,29 @@ class Application extends React.Component {
                 WeekB,
                 paymentMethod
             } = this.state;
-
-            age = this.getAge(this.state.birthday);
-            const key = chosenYear + "_" + childFirstName + "_" + childLastName + "_" + age;
+            const key = chosenYear + "_" + childFirstName1 + "_" + childLastName1 + "_" + age1;
             const application = {
-                childFirstName,
-                childLastName,
-                age,
-                birthday,
-                allergies,
+                numberOfChildren,
+                childFirstName1,
+                childLastName1,
+                age1,
+                birthday1,
+                allergies1,
+                childFirstName2,
+                childLastName2,
+                age2,
+                birthday2,
+                allergies2,
+                childFirstName3,
+                childLastName3,
+                age3,
+                birthday3,
+                allergies3,
+                childFirstName4,
+                childLastName4,
+                age4,
+                birthday4,
+                allergies4,
                 parent1Name,
                 parent1Phone,
                 parent1Email,
@@ -286,7 +337,7 @@ class Application extends React.Component {
                             let pendingPath = `campTimes/year/${chosenYear}/${week}/pending`;
                             let pendingRef = getRef(pendingPath);
                             getValue(pendingRef).then(pending => {
-                                changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + 1);
+                                changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + this.state.numberOfChildren);
                                 this.setState({ submitted: true, page: 5 });
                             })
                         })
@@ -300,6 +351,7 @@ class Application extends React.Component {
 
     handleNext = event => {
         event.preventDefault();
+        console.log(this.state[`childArray${this.state.numberOfChildren}`]);
         window.scrollTo(0, 0);
         switch (event.target.id) {
             case 'previousPage0':
@@ -314,7 +366,7 @@ class Application extends React.Component {
                 this.setState({ page: 1, error0: '' });
                 break;
             case 'submitPage1':
-                (this.state.childFirstName && this.state.childLastName && this.state.birthday) ?
+                (this.state.childFirstName1 && this.state.childLastName1 && this.state.birthday1) ?
                     this.setState({ page: 2, error1: "" }) :
                     this.setState({ error1: "Please fill out all required fields." });
                 break;
@@ -380,11 +432,12 @@ class Application extends React.Component {
         let totalCost = 0;
         let initialCost = 0;
         let amountDue = 0;
+        let numberOfChildren = this.state.numberOfChildren;
         if (totalWeeksSelected > 3) {
-            totalCost = 155 * totalWeeksSelected;
+            totalCost = 155 * totalWeeksSelected * numberOfChildren;
             initialCost = 155;
         } else if (totalWeeksSelected) {
-            totalCost = 180 * totalWeeksSelected;
+            totalCost = 180 * totalWeeksSelected * numberOfChildren;
             initialCost = 180;
         } else {
             totalCost = 0;
@@ -395,7 +448,7 @@ class Application extends React.Component {
             amountDue = 0;
         }
         else {
-            amountDue = initialCost + (totalWeeksSelected - 1) * 25;
+            amountDue = (initialCost + (totalWeeksSelected - 1) * 25) * numberOfChildren;
         }
         this.setState({ totalCost, amountDue, initialCost, totalWeeksSelected });
     }
@@ -488,7 +541,16 @@ class Application extends React.Component {
                                                             </div>
                                                         }
                                                     </div>
-                                                    <h2>Select the weeks you would your child to attend.</h2>
+                                                    <h2>How many children are you signing up for these weeks?</h2>
+                                                    <div className='yearBox'>
+                                                        <select className="select-wrapper" name="numberOfChildren" onChange={this.handleChangeNumberOfChildren}>
+                                                            <option selected value='1'>1</option>
+                                                            <option value='2'>2</option>
+                                                            <option value='3'>3</option>
+                                                            <option value='4'>4</option>
+                                                        </select>
+                                                    </div>
+                                                    <h2>Select the weeks you would your child(ren) to attend.</h2>
                                                     <div className="infoBox">
                                                         {this.state.weekArray.map((week, i) =>
                                                             week.noCamp ?
@@ -537,76 +599,141 @@ class Application extends React.Component {
                                             </div>
                                             <div className={`${this.state.page === 5 ? 'hide' : ''} ${this.state.page === 1 || this.state.page === 5 ? '' : 'displayNone'}`}>
                                                 <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
-                                                <h2>Child's Information</h2>
-                                                <p className='errorMessage'>{this.state.error1}</p>
-                                                <div className="infoBox">
-                                                    <Input
-                                                        className="field half first"
-                                                        text="Child's First Name"
-                                                        type="text"
-                                                        name="childFirstName"
-                                                        placeholder="Required"
-                                                        onChange={this.handleChange}
-                                                        value={this.state.childFirstName}
-                                                        required
-                                                    />
-                                                    <Input
-                                                        className="field half"
-                                                        text="Child's Last Name"
-                                                        type="text"
-                                                        name="childLastName"
-                                                        placeholder="Required"
-                                                        onChange={this.handleChange}
-                                                        value={this.state.childLastName}
-                                                        required
-                                                    />
-                                                    <Input
-                                                        className="field half first"
-                                                        text="Birthdate"
-                                                        type="date"
-                                                        name="birthday"
-                                                        placeholder="Required"
-                                                        onChange={this.handleChange}
-                                                        value={this.state.birthday}
-                                                        required
-                                                    />
-                                                    <Input
-                                                        className="field half"
-                                                        text=""
-                                                        type="hidden"
-                                                        name="age"
-                                                        onChange={this.handleChange}
-                                                        value={this.getAge(this.state.birthday)}
-                                                        readOnly={true}
-                                                    />
-                                                </div>
-                                                <div className='infoBox'>
-                                                    <div className="field">
-                                                        <label htmlFor="allergies">Allergies</label>
-                                                        <textarea
-                                                            name="allergies"
-                                                            rows="6"
-                                                            placeholder="Optional"
-                                                            onChange={this.handleChange}
-                                                            value={this.state.allergies}
-                                                        >
-                                                        </textarea>
+                                                {this.state.numberOfChildren === 1?
+                                                    <div>
+                                                        <h2>Child's Information</h2>
+                                                        <p className='errorMessage'>{this.state.error1}</p>
+                                                        <div className="infoBox">
+                                                            <Input
+                                                                className="field half first"
+                                                                text="Child's First Name"
+                                                                type="text"
+                                                                name="childFirstName1"
+                                                                placeholder="Required"
+                                                                onChange={this.handleChange}
+                                                                value={this.state.childFirstName1}
+                                                                required
+                                                            />
+                                                            <Input
+                                                                className="field half"
+                                                                text="Child's Last Name"
+                                                                type="text"
+                                                                name="childLastName1"
+                                                                placeholder="Required"
+                                                                onChange={this.handleChange}
+                                                                value={this.state.childLastName1}
+                                                                required
+                                                            />
+                                                            <Input
+                                                                className="field half first"
+                                                                text="Birthdate"
+                                                                type="date"
+                                                                name="birthday1"
+                                                                placeholder="Required"
+                                                                onChange={this.handleChange}
+                                                                value={this.state.birthday1}
+                                                                required
+                                                            />
+                                                            <Input
+                                                                className="field half"
+                                                                text=""
+                                                                type="hidden"
+                                                                name="age1"
+                                                                onChange={this.handleChange}
+                                                                value={this.getAge(this.state.birthday1)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className='infoBox'>
+                                                            <div className="field">
+                                                                <label htmlFor="allergies1">Allergies</label>
+                                                                <textarea
+                                                                    name="allergies1"
+                                                                    rows="6"
+                                                                    placeholder="Optional"
+                                                                    onChange={this.handleChange}
+                                                                    value={this.state.allergies1}
+                                                                >
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    :
+                                                    this.state[`childArray${this.state.numberOfChildren}`].map(child => {
+                                                        return (
+                                                            <div>
+                                                                <h2>{child === 1?"First ":child ===2?"Second ":child===3?"Third ": child===4?"Fourth":""} Child's Information</h2>
+                                                                <p className='errorMessage'>{this.state.error1}</p>
+                                                                <div className="infoBox">
+                                                                    <Input
+                                                                        className="field half first"
+                                                                        text="Child's First Name"
+                                                                        type="text"
+                                                                        name={`childFirstName${child}`}
+                                                                        placeholder="Required"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state[`childFirstName${child}`]}
+                                                                        required
+                                                                    />
+                                                                    <Input
+                                                                        className="field half"
+                                                                        text="Child's Last Name"
+                                                                        type="text"
+                                                                        name={`childLastName${child}`}
+                                                                        placeholder="Required"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state[`childLastName${child}`]}
+                                                                        required
+                                                                    />
+                                                                    <Input
+                                                                        className="field half first"
+                                                                        text="Birthdate"
+                                                                        type="date"
+                                                                        name={`birthday${child}`}
+                                                                        placeholder="Required"
+                                                                        onChange={this.handleChange}
+                                                                        value={this.state[`birthday${child}`]}
+                                                                        required
+                                                                    />
+                                                                    <Input
+                                                                        className="field half"
+                                                                        text=""
+                                                                        type="hidden"
+                                                                        name={`age${child}`}
+                                                                        onChange={this.handleChange}
+                                                                        value={this.getAge(this.state[`birthday${child}`])}
+                                                                        readOnly={true}
+                                                                    />
+                                                                </div>
+                                                                <div className='infoBox'>
+                                                                    <div className="field">
+                                                                        <label htmlFor="allergies">Allergies</label>
+                                                                        <textarea
+                                                                            name={`allergies${child}`}
+                                                                            rows="6"
+                                                                            placeholder="Optional"
+                                                                            onChange={this.handleChange}
+                                                                            value={this.state[`allergies${child}`]}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })}
                                                 <button
                                                     className="button"
                                                     id="previousPage0"
                                                     onClick={this.handleNext}
                                                 >
                                                     Previous
-                                            </button>
+                                                </button>
                                                 <button
                                                     className="button nextPage"
                                                     id="submitPage1"
                                                     onClick={this.handleNext}
                                                 >
                                                     Next
-                                            </button>
+                                                </button>
                                             </div>
                                             <div className={`${this.state.page === 5 ? 'hide' : ''} ${this.state.page === 2 || this.state.page === 5 ? '' : 'displayNone'}`}>
                                                 <h2>Total Amount Due To Reserve Selected Weeks: ${this.state.amountDue}</h2>
@@ -890,12 +1017,14 @@ class Application extends React.Component {
                                                     id="previousPage4"
                                                 >
                                                     Previous
-                                            </button>
+                                                </button>
                                                 <button
                                                     className="nextPage"
                                                     disabled={!this.state.paymentMethod}
                                                     type="submit"
-                                                >Submit</button>
+                                                >
+                                                    Submit
+                                                </button>
                                             </div>
                                         </div>
                                     </form>

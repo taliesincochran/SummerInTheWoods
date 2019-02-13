@@ -10,7 +10,55 @@ const PaypalButton = props => {
             <input
                 type="hidden"
                 name="hosted_button_id"
-                value={props.hash === '1' ? process.env.GATSBY_PAYPAL_AMOUNTDUE1_BUTTON_HASH : props.hash === '2' ? process.env.GATSBY_PAYPAL_AMOUNTDUE2_BUTTON_HASH : props.hash === '3' ? process.env.GATSBY_PAYPAL_TOTALCOST1_BUTTON_HASH : props.hash === '4' ? process.env.GATSBY_PAYPAL_TOTALCOST2_BUTTON_HASH : 'error'} />
+                value={
+                    (props.hash === '1' && props.numberOfChildren === '1' ) ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE1_BUTTON_HASH 
+                    :
+                    (props.hash === '2' && props.numberOfChildren === '1') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE2_BUTTON_HASH 
+                    :
+                    (props.hash === '3' && props.numberOfChildren === '1') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST1_BUTTON_HASH 
+                    : 
+                    (props.hash === '4' && props.numberOfChildren === '1') ? 
+                        process.env.GATSBY_PAYPAL_TOTALCOST2_BUTTON_HASH 
+                    :
+                    (props.hash === '1' && props.numberOfChildren === '2') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE1_2Children_BUTTON_HASH
+                    :
+                    (props.hash === '2' && props.numberOfChildren === '2') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE2_2Children_BUTTON_HASH
+                    :
+                    (props.hash === '3' && props.numberOfChildren === '2') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST1_2Children_BUTTON_HASH
+                    :
+                    (props.hash === '4' && props.numberOfChildren === '2') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST2_2Children_BUTTON_HASH
+                    :
+                    (props.hash === '1' && props.numberOfChildren === '3') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE1_3Children_BUTTON_HASH
+                    :
+                    (props.hash === '2' && props.numberOfChildren === '3') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE2_3Children_BUTTON_HASH
+                    :
+                    (props.hash === '3' && props.numberOfChildren === '3') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST1_3Children_BUTTON_HASH
+                    :
+                    (props.hash === '4' && props.numberOfChildren === '3') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST2_3Children_BUTTON_HASH
+                    :
+                    (props.hash === '1' && props.numberOfChildren === '4') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE1_4Children_BUTTON_HASH
+                    :
+                    (props.hash === '2' && props.numberOfChildren === '4') ?
+                        process.env.GATSBY_PAYPAL_AMOUNTDUE2_4Children_BUTTON_HASH
+                    :
+                    (props.hash === '3' && props.numberOfChildren === '4') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST1_4Children_BUTTON_HASH
+                    :
+                    (props.hash === '4' && props.numberOfChildren === '4') ?
+                        process.env.GATSBY_PAYPAL_TOTALCOST2_4Children_BUTTON_HASH
+                    : 'error'} />
             <table className='hide'>
                 <tbody><tr><td><input type="hidden" name="on0" value="Number of Weeks" />Number of Weeks</td></tr><tr><td>
                     <select name="os0">
@@ -35,16 +83,20 @@ class Paypal extends React.Component {
                 <div id="main">
                     <div className="inner">
                         <section>
-                                <p>Pay amount due of ${this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}.00 to reserve {this.props.location.search.slice((this.props.location.search.indexOf("f=") + 2), this.props.location.search.indexOf('+l=')).replace(/_/g, ' ')}'s spot</p>
+                            <p>Pay amount due of ${this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}.00 to reserve {this.props.location.search.slice((this.props.location.search.indexOf("f=") + 2), this.props.location.search.indexOf('+l=')).replace(/_/g, ' ')}'s spot</p>
                             <PaypalButton
                                 cost={this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}
                                 week={this.props.location.search.slice((this.props.location.search.indexOf("w=") + 2), this.props.location.search.indexOf("+n="))}
-                                hash={this.props.location.search.slice((this.props.location.search.indexOf("a=") + 2), this.props.location.search.indexOf("+c="))} />
+                                hash={this.props.location.search.slice((this.props.location.search.indexOf("a=") + 2), this.props.location.search.indexOf("+c="))} 
+                                numberOfChildren={this.props.location.search.slice((this.props.location.search.indexOf('x=') + 2), this.props.location.search.indexOf("+p="))} 
+                            />
                             <p>...or pay the total cost of ${this.props.location.search.slice((this.props.location.search.indexOf("c=") + 2), this.props.location.search.indexOf("+d="))}.</p>
                             <PaypalButton
                                 cost={this.props.location.search.slice((this.props.location.search.indexOf("c=") + 2), this.props.location.search.indexOf("+d="))}
                                 week={this.props.location.search.slice((this.props.location.search.indexOf("w=") + 2), this.props.location.search.indexOf("+n="))}
-                                hash={this.props.location.search.slice((this.props.location.search.indexOf("t=") + 2), this.props.location.search.indexOf("+a="))} />
+                                hash={this.props.location.search.slice((this.props.location.search.indexOf("t=") + 2), this.props.location.search.indexOf("+a="))}
+                                numberOfChildren={this.props.location.search.slice((this.props.location.search.indexOf('x=') + 2), this.props.location.search.indexOf("+p="))} 
+                            />                       
                         </section>
                     </div>
                 </div>

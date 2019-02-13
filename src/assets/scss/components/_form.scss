@@ -128,7 +128,7 @@
 		@include icon;
 		display: block;
 		position: relative;
-
+		width: _size(element-height);
 		&:before {
 			color: _palette(border);
 			content: '\f078';
@@ -147,7 +147,10 @@
 			display: none;
 		}
 	}
-
+	option {
+		background-color: _palette(bg);
+		width: _size(element-height);
+	}
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],

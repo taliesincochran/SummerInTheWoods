@@ -543,8 +543,8 @@ class Application extends React.Component {
                                                     </div>
                                                     <h2>How many children are you signing up for these weeks?</h2>
                                                     <div className='yearBox'>
-                                                        <select className="select-wrapper" name="numberOfChildren" onChange={this.handleChangeNumberOfChildren}>
-                                                            <option selected value='1'>1</option>
+                                                        <select defaultValue='1' className="select-wrapper" name="numberOfChildren" onChange={this.handleChangeNumberOfChildren}>
+                                                            <option value='1'>1</option>
                                                             <option value='2'>2</option>
                                                             <option value='3'>3</option>
                                                             <option value='4'>4</option>

@@ -79,11 +79,11 @@ class Paypal extends React.Component {
         return (
             !this.props.location.search?<Redirect to="/"/>:
             <div>
-                <p>{paypalMessage}</p>
                 <div id="main">
                     <div className="inner">
+                        <p>{paypalMessage}</p>
                         <section>
-                            <p>Pay amount due of ${this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}.00 to reserve {this.props.location.search.slice((this.props.location.search.indexOf("f=") + 2), this.props.location.search.indexOf('+l=')).replace(/_/g, ' ')}'s spot</p>
+                                <p>Pay amount due of ${this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}.00 to reserve your {this.props.location.search.slice((this.props.location.search.indexOf('x=') + 2), this.props.location.search.indexOf("+p=")) === '1'?"child\'s space at camp.":"children\'s spaces at camp."}</p>
                             <PaypalButton
                                 cost={this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}
                                 week={this.props.location.search.slice((this.props.location.search.indexOf("w=") + 2), this.props.location.search.indexOf("+n="))}

@@ -30,7 +30,7 @@ let eventPopulate = (props)=>{
     for (var week in props.campTimes){
         let campWeek = props.campTimes[week];
         campWeek.id = week + year;
-        let available = campWeek.available - campWeek.pending;
+        let available = campWeek.available - campWeek.approved;
         if(!campWeek.noCamp){     
             switch(available) {
                 case 0:

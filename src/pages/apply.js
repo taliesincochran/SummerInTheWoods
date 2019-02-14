@@ -153,13 +153,14 @@ class Application extends React.Component {
         let year = yearString;
         for (let weekChosen in yearChosen) {
             let week = weekChosen;
-            let { start, end, available, pending, noCamp } = yearChosen[week]
+            let { start, end, available, pending, noCamp, approved } = yearChosen[week]
             start = new Date(start);
             start = (parseInt(start.getMonth()) + 1) + "/" + start.getDate();
             end = new Date(end);
             end = (parseInt(end.getMonth()) + 1) + "/" + end.getDate();
-            weekArray.push({ week, year, start, end, available, pending, noCamp })
+            weekArray.push({ week, year, start, end, available, approved, pending, noCamp })
         }
+        console.log(weekArray)
         return weekArray
     }
 
@@ -337,7 +338,8 @@ class Application extends React.Component {
                             let pendingPath = `campTimes/year/${chosenYear}/${week}/pending`;
                             let pendingRef = getRef(pendingPath);
                             getValue(pendingRef).then(pending => {
-                                changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + this.state.numberOfChildren);
+                                pending = parseInt(pending);
+                                changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + parseInt(this.state.numberOfChildren));
                                 this.setState({ submitted: true, page: 5 });
                             })
                         })
@@ -351,7 +353,6 @@ class Application extends React.Component {
 
     handleNext = event => {
         event.preventDefault();
-        console.log(this.state[`childArray${this.state.numberOfChildren}`]);
         window.scrollTo(0, 0);
         switch (event.target.id) {
             case 'previousPage0':
@@ -550,7 +551,7 @@ class Application extends React.Component {
                                                             <option value='4'>4</option>
                                                         </select>
                                                     </div>
-                                                    <h2>Select the weeks you would your child(ren) to attend.</h2>
+                                                    <h2>Select the weeks you would your {this.state.numberOfChildren > 1?'children':'child'} to attend.</h2>
                                                     <div className="infoBox">
                                                         {this.state.weekArray.map((week, i) =>
                                                             week.noCamp ?
@@ -558,8 +559,8 @@ class Application extends React.Component {
                                                                     <p style={{ fontSize: "1.5em" }}>{week.start}-{week.end}<br /> No Camp This Week</p>
                                                                 </div> :
                                                                 <div key={week.week} className='smallBox'>
-                                                                    <p style={week.available - week.pending > 0 ? { fontSize: "1.5em" } : { fontSize: "1.5em", textDecoration: "line-through" }}>{week.start}-{week.end} <br />{(week.available - week.pending) ? "Limited spaces available" : "No spaces availble"}</p>
-                                                                    {(week.available - week.pending) > 0 ?
+                                                                    <p style={(parseInt(week.available) - parseInt(week.approved) - parseInt(this.state.numberOfChildren) + 1) > 0 ? { fontSize: "1.5em" } : { fontSize: "1.25em", textDecoration: "none" }}>{week.start}-{week.end} <br />{(week.available - week.approved) === 1? "One space available": (week.available - week.approved > 1) ? "Limited spaces available" : "No spaces availble"}</p>
+                                                                    {(parseInt(week.available) - parseInt(week.approved) - parseInt(this.state.numberOfChildren) + 1) > 0 ?
                                                                         <div key={i}>
                                                                             <Checkbox
                                                                                 name={week.week}
@@ -570,16 +571,40 @@ class Application extends React.Component {
                                                                                 text={`Sign up for the week of ${week.start}`}
                                                                             />
                                                                         </div>
-                                                                        :
+                                                                        :((parseInt(week.available) - parseInt(week.approved) - parseInt(this.state.numberOfChildren)) < 0 && (parseInt(week.available) - parseInt(week.approved)) > 0)?
                                                                         <div key={i}>
                                                                             <Checkbox
-                                                                                labelStyle={{ textDecoration: 'line-through' }}
+                                                                                labelStyle={{ textDecoration: 'bold' }}
                                                                                 disabled={true}
                                                                                 name={`${week.week}`}
                                                                                 value={true} onChange={() => this.handleWeekSelect(week.week, true)}
                                                                                 checked={false} value={true}
                                                                                 onClick={() => this.handleWeekSelect(week.week, true)}
-                                                                                text="No Camp"
+                                                                                text="Not enough spaces for the number of children selected"
+                                                                            />
+                                                                        </div>
+                                                                        :week.noCamp?
+                                                                        <div key={i}>
+                                                                            <Checkbox
+                                                                                labelStyle={{ textDecoration: 'bold' }}
+                                                                                disabled={true}
+                                                                                name={`${week.week}`}
+                                                                                value={true} onChange={() => this.handleWeekSelect(week.week, true)}
+                                                                                checked={false} value={true}
+                                                                                onClick={() => this.handleWeekSelect(week.week, true)}
+                                                                                text="No Camp This Week"
+                                                                            />
+                                                                        </div>
+                                                                        :
+                                                                        <div key={i}>
+                                                                            <Checkbox
+                                                                                labelStyle={{ textDecoration: 'bold' }}
+                                                                                disabled={true}
+                                                                                name={`${week.week}`}
+                                                                                value={true} onChange={() => this.handleWeekSelect(week.week, true)}
+                                                                                checked={false} value={true}
+                                                                                onClick={() => this.handleWeekSelect(week.week, true)}
+                                                                                text="Camp is full for this week"
                                                                             />
                                                                         </div>
                                                                     }
@@ -662,7 +687,7 @@ class Application extends React.Component {
                                                     this.state[`childArray${this.state.numberOfChildren}`].map(child => {
                                                         return (
                                                             <div>
-                                                                <h2>{child === 1?"First ":child ===2?"Second ":child===3?"Third ": child===4?"Fourth":""} Child's Information</h2>
+                                                                <h2>{child === '1'?"First ":child ==='2'?"Second ":child==='3'?"Third ": child==='4'?"Fourth":""} Child's Information</h2>
                                                                 <p className='errorMessage'>{this.state.error1}</p>
                                                                 <div className="infoBox">
                                                                     <Input

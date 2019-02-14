@@ -90,7 +90,7 @@ class Paypal extends React.Component {
                                 hash={this.props.location.search.slice((this.props.location.search.indexOf("a=") + 2), this.props.location.search.indexOf("+c="))} 
                                 numberOfChildren={this.props.location.search.slice((this.props.location.search.indexOf('x=') + 2), this.props.location.search.indexOf("+p="))} 
                             />
-                            <p>...or pay the total cost of ${this.props.location.search.slice((this.props.location.search.indexOf("c=") + 2), this.props.location.search.indexOf("+d="))}.</p>
+                            <p>...or pay the total cost of ${this.props.location.search.slice((this.props.location.search.indexOf("c=") + 2), this.props.location.search.indexOf("+d="))}.00</p>
                             <PaypalButton
                                 cost={this.props.location.search.slice((this.props.location.search.indexOf("c=") + 2), this.props.location.search.indexOf("+d="))}
                                 week={this.props.location.search.slice((this.props.location.search.indexOf("w=") + 2), this.props.location.search.indexOf("+n="))}

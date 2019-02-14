@@ -2,21 +2,21 @@ import firebase from '@firebase/app';
 import '@firebase/database';
 
 const prodConfig = {
-  apiKey: "AIzaSyDvzDG6RSdBNFP2jaPLc-ezJfIqnkpJAZk",
-  authDomain: "jlernercamp.firebaseapp.com",
-  databaseURL: "https://jlernercamp.firebaseio.com",
-  projectId: "jlernercamp",
-  storageBucket: "jlernercamp.appspot.com",
-  messagingSenderId: "231699552517",
+  apiKey: process.env.GATSBY_DB_KEY,
+  authDomain: process.env.GATSBY_DB_AUTH_DOMAIN,
+  databaseURL: process.env.GATSBY_DB_URL,
+  projectId: process.env.GATSBY_DB_PROJECT_ID,
+  storageBucket: process.env.GATSBY_DB_STORAGE_BUCKET,
+  messagingSenderId: process.env.GATSBY_DB_MESSAGING_SENDER_ID,
 };
 
 const devConfig = {
-  apiKey: "AIzaSyDvzDG6RSdBNFP2jaPLc-ezJfIqnkpJAZk",
-  authDomain: "jlernercamp.firebaseapp.com",
-  databaseURL: "https://jlernercamp.firebaseio.com",
-  projectId: "jlernercamp",
-  storageBucket: "jlernercamp.appspot.com",
-  messagingSenderId: "231699552517",
+  apiKey: process.env.GATSBY_DB_KEY,
+  authDomain: process.env.GATSBY_DB_AUTH_DOMAIN,
+  databaseURL: process.env.GATSBY_DB_URL,
+  projectId: process.env.GATSBY_DB_PROJECT_ID,
+  storageBucket: process.env.GATSBY_DB_STORAGE_BUCKET,
+  messagingSenderId: process.env.GATSBY_DB_MESSAGING_SENDER_ID,
 };
 
 const config = process.env.NODE_ENV === 'production'

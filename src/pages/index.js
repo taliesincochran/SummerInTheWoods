@@ -31,7 +31,9 @@ class index extends React.Component {
                 <Helmet>
                     <title>{siteTitle}</title>
                     <meta name="description" content={siteDescription} />
+                    
                 </Helmet>
+                
 
                 <BannerLanding
                     bannerClass="indexBanner"

@@ -105,8 +105,14 @@ class TemplateWrapper extends Component {
         const { children } = this.props;
         return (
             <div  className={`body ${this.state.loading} ${this.state.isMenuVisible ? 'is-menu-visible' : ''}`}>
-                <Helmet>
-                <link rel="stylesheet" href={withPrefix('skel.css')} />
+                <Helmet
+                    title="Summer in the Woods Camp"
+                    meta={[
+                        { name: 'description', content: 'A Montessori inspired summer camp in Carrboro, NC'},
+                        { name: 'google-site-verification', content: 'zyT7Or4KfDcNlRsIhnybGosmb3rQWHLOTLYiVhtn8R0' }
+                    ]}
+                >
+                    <link rel="stylesheet" href={withPrefix('skel.css')} />
                 </Helmet>
                 <div id="wrapper">
                     <Header onToggleMenu={this.handleToggleMenu} />

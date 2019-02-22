@@ -79,6 +79,7 @@ class Application extends React.Component {
             dentistPhone: '',
             address: '',
             option: '',
+            howDidYouHear: '',
             firstWeek: 0,
             page: 0,
             buttonHash: '',
@@ -1021,6 +1022,24 @@ class Application extends React.Component {
                                                 <h3>Total Remaining After Payment: ${this.state.totalCost - this.state.amountDue}</h3>
                                                 <h2>{paymentMethodMessage}</h2>
                                                 <h4>Payment Method</h4>
+                                                <div className="infoBox">
+                                                    <label forHtml="howDidYouHear">How did you hear about us?</label>
+                                                    <select 
+                                                        name="howDidYouHear" 
+                                                        className='select-wrapper wideOption' 
+                                                        value={this.state.howDidYouHear} 
+                                                        required
+                                                        onChange={this.handleChange}
+                                                    >
+                                                        <option className='wideOption' value="Previously Attended">Previously Attended</option>
+                                                        <option className='wideOption' value="Flyer">Flyer</option>
+                                                        <option className='wideOption' value="sign">Sign</option>
+                                                        <option className='wideOption' value="Through a friend">Through a friend</option>
+                                                        <option className='wideOption' value="Website">Website</option>
+                                                        <option className='wideOption' value="Facebook">Facebook</option>
+                                                        <option className='wideOption' value="Other">Other</option>                                                       
+                                                    </select>
+                                                </div>
                                                 <Checkbox
                                                     name='paypal'
                                                     value='paypal'

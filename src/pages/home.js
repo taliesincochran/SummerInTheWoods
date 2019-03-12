@@ -15,7 +15,7 @@ class HomeIndex extends React.Component {
       }
     render() {
         const siteTitle = "Summer In The Woods"
-        const siteDescription = "A Montessori Inspired Summer Camp in Carrbor, NC"
+        const siteDescription = "A Montessori Inspired Summer Camp in Carrboro, NC"
         return (
             <div>
                 <Helmet>

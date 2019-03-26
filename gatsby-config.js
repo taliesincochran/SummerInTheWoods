@@ -2,7 +2,8 @@ module.exports = {
   siteMetadata: {
     title: `Gatsby Firebase Authentication`,
     author: `Taliesin Cochran`,
-    description: "A Montessori Inspired Summer Camp in Carrboro, North Carolina"
+    description: "A Montessori Inspired Summer Camp in Carrboro, North Carolina",
+    siteUrl: `https://www.summerinthewoodscamp.com`
   },
   pathPrefix: '/',
   plugins: [
@@ -32,5 +33,26 @@ module.exports = {
         ],
       },
     },
-  ],
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: `/sitemap.xml`,
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+            allSitePage {
+              edges {
+                node {
+                  path
+                }
+              }
+            }
+        }`
+      }
+    }
+  ]
 }

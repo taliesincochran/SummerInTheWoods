@@ -9,20 +9,21 @@ import { philosophy, location, information, program } from '../constants/variabl
 
 class HomeIndex extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
         }
       }
     render() {
-        const siteTitle = "Summer In The Woods"
+        const siteTitle = "Summer In The Woods";
         const siteDescription = "A forest school summer camp inspired by Montessori and Reggio Emilia philosophies in Carrboro, NC.  Located close to Chapel Hill, Hillsborough, and Durham in Orange County, North Carolina."
+        const siteURL = "https://www.summerinthewoodscamp.com";
         return (
             <div>
                 <Helmet>
                     <title>{siteTitle}</title>
                     <meta name="description" content={siteDescription} />
                     <meta name="title" content={siteTitle} />
-                    <meta name="url" content="https://www.summerinthewoods.com" />
+                    <meta name="siteUrl" content={siteURL}/>
 
                 </Helmet>
 
@@ -102,6 +103,7 @@ export const pageQuery = graphql`
             siteMetadata {
                 title
                 description
+                siteUrl
             }
         }
     }

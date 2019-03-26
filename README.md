@@ -1,1 +1,1 @@
-A Montesorri inspired summer camp in Carrboro, NC.
+A Montesorri inspired summer camp in Carrboro, NC.  Developed by Trakai Web Development.

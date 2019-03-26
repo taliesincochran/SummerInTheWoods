@@ -20,30 +20,31 @@ function pagesToSitemap(pages) {
   return urls.filter(u => u !== undefined)
 };
 
-// function generateSiteMap(pages) {
-//   const sitemap = sm.createSitemap({
-//     hostname: 'https://www.summerintthewoodscamp.com',
-//     cacheTime: '60000',
-//     urls: pagesToSitemap(pages),
-//   })
-//   console.log('Generating sitemap.xml')
-//   fsPromise.writeFileSync(
-//     `${__dirname}/public/sitemap.xml`,
-//     sitemap.toString()
-//   )
-// };
+function generateSiteMap(pages) {
+  const sitemap = sm.createSitemap({
+    hostname: 'https://www.summerintthewoodscamp.com',
+    cacheTime: '60000',
+    urls: pagesToSitemap(pages),
+  })
+  console.log(`building xml sitemap to ${__dirname}/public/sitemap.xml`)
+  fsPromise.writeFileSync(
+    `${__dirname}/public/sitemap.xml`,
+    sitemap.toString()
+  )
+};
 
-exports.postBuild = (pages, callback) => {
+const postBuild = (pages, callback) => {
   generateSiteMap(pages)
   callback()
 };
+
 const env = process.env.NODE_ENV || 'development';
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
 
-exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+const onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   if (stage === "build-html") {
     actions.setWebpackConfig({
       module: {
@@ -58,3 +59,4 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   }
 }
 
+module.exports = { postBuild, onCreateWebpackConfig };

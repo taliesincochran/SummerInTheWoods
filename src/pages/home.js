@@ -15,7 +15,7 @@ class HomeIndex extends React.Component {
       }
     render() {
         const siteTitle = "Summer In The Woods"
-        const siteDescription = "A montessori inspired summer camp in Carrboro, NC."
+        const siteDescription = "A forest school summer camp inspired by Montessori and Reggio Emilia philosophies in Carrboro, NC.  Located close to Chapel Hill, Hillsborough, and Durham in Orange County, North Carolina."
         return (
             <div>
                 <Helmet>

@@ -307,7 +307,9 @@ class Application extends React.Component {
 
     handleNext = event => {
         event.preventDefault();
-        window.scrollTo(0, 0);
+        if(typeof window !== undefined) {
+            window.scrollTo(0, 0);
+        }
         switch (event.target.id) {
             case 'previousPage0':
                 this.setState({ page: 0 });

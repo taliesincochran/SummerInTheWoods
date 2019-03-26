@@ -86,7 +86,9 @@ class Application extends React.Component {
             submitted: false,
             message: '',
             redirectString: '',
-            paymentMethod: ''
+            paymentMethod: '',
+            other: '',
+            website: ''
         }
     }
 
@@ -98,7 +100,7 @@ class Application extends React.Component {
         } = this.props.location.state;
         let weekArray = this.getWeekArray(chosenYear);
         let location;
-        if(window !== undefined) {
+        if(typeof window !== undefined) {
             location = window.location.href;
         } else {
             location = process.env.NODE_ENV === 'production'? "https://www.summerinthewoodscamp.com/apply":"https://localhost:8000/apply";
@@ -266,7 +268,9 @@ class Application extends React.Component {
                 Week9,
                 WeekA,
                 WeekB,
-                paymentMethod
+                paymentMethod,
+                other,
+                website
             } = this.state;
             const key = chosenYear + "_" + childFirstName1 + "_" + childLastName1 + "_" + age1;
             const application = {
@@ -322,7 +326,9 @@ class Application extends React.Component {
                 WeekA,
                 WeekB,
                 paymentMethod,
-                key
+                key,
+                other,
+                website
             }
             let weeksAttending = [];
             getValue('test').then(test => {
@@ -354,7 +360,9 @@ class Application extends React.Component {
 
     handleNext = event => {
         event.preventDefault();
-        window.scrollTo(0, 0);
+        if(typeof window !== undefined) {
+            window.scrollTo(0, 0);
+        }
         switch (event.target.id) {
             case 'previousPage0':
                 this.setState({ page: 0 });
@@ -1039,6 +1047,36 @@ class Application extends React.Component {
                                                         <option className='wideOption' value="Facebook">Facebook</option>
                                                         <option className='wideOption' value="Other">Other</option>                                                       
                                                     </select>
+                                                    {
+                                                        this.state.howDidYouHear === "Other" ?
+                                                            <Input
+                                                                className="field half first"
+                                                                text="Please let us know how you heard about us."
+                                                                type="text"
+                                                                name="other"
+                                                                placeholder="Required"
+                                                                required
+                                                                onChange={this.handleChange}
+                                                                value={this.state.other}
+                                                            />
+                                                        :
+                                                            null                                                    
+                                                    }
+                                                    {
+                                                        this.state.howDidYouHear === "Website"?
+                                                            <Input
+                                                                className="field half first"
+                                                                text="Which website?"
+                                                                type="text"
+                                                                name="website"
+                                                                placeholder="Required"
+                                                                required
+                                                                onChange={this.handleChange}
+                                                                value={this.state.other}
+                                                            />
+                                                            :
+                                                            null    
+                                                    }
                                                 </div>
                                                 <Checkbox
                                                     name='paypal'

@@ -13,7 +13,7 @@ class Contact extends React.Component {
         }
     }
     componentDidMount () {
-        if(window !== undefined) {
+        if(typeof window !== undefined) {
             let location = window.location;
             this.setState({location})
         }

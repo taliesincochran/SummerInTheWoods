@@ -15,13 +15,15 @@ class HomeIndex extends React.Component {
       }
     render() {
         const siteTitle = "Summer In The Woods"
-        const siteDescription = "A Montessori Inspired Summer Camp in Carrboro, NC"
+        const siteDescription = "A montessori inspired summer camp in Carrboro, NC."
         return (
             <div>
                 <Helmet>
                     <title>{siteTitle}</title>
                     <meta name="description" content={siteDescription} />
                     <meta name="title" content={siteTitle} />
+                    <meta name="url" content="https://www.summerinthewoods.com" />
+
                 </Helmet>
 
                 <BannerLanding 

@@ -9,6 +9,7 @@
     "@firebase/database": "0.3.9",
     "dotenv": "^6.0.0",
     "fs": "0.0.1-security",
+    "fs-extra-promise": "^1.0.1",
     "gatsby": "1.9.273",
     "gatsby-link": "1.6.44",
     "gatsby-plugin-google-analytics": "1.0.31",
@@ -28,7 +29,8 @@
     "prop-types": "15.6.2",
     "react": "15.6.0",
     "react-big-calendar": "0.19.1",
-    "react-helmet": "5.2.0"
+    "react-helmet": "5.2.0",
+    "sitemap": "^2.1.0"
   },
   "keywords": [
     "gatsby"

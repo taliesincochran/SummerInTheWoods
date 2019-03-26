@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Gatsby Firebase Authentication`,
     author: `Taliesin Cochran`,
-    description: "A Montessori Inspired Summer Camp in Carrboro, NC"
+    description: "A Montessori Inspired Summer Camp in Carrboro, North Carolina"
   },
   pathPrefix: '/',
   plugins: [

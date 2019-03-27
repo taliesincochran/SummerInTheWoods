@@ -8,3 +8,4 @@ export const THANKYOU = '/thankyou';
 export const FAILURE = '/failure';
 export const CONTACTRECIEVED = '/contactRecieved';
 export const PRICES = '/prices';
+export const ViewApp = '/admin/ViewApp';

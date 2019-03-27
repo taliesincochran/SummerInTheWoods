@@ -1,8 +1,9 @@
+import * as React from 'react';
 import AppRow from '../components/SubmittedApplication/AppRow'
 import TableHeaders from '../components/Table/TableHeader';
 
-const ApplicationTable = props => {
-    const { applications } = props;
+const ViewApps = props => {
+    
     const fields = [
         'numberOfChildren',
         'childFirstName1',
@@ -60,15 +61,21 @@ const ApplicationTable = props => {
         'other',
         'website'
     ];
-    <table>
-        <TableHeaders
-            headerClass='firstRow'
-            headers={fields}
-        />
-        {applications.forEach(application => {
-            <AppRow
-                application={application}
+    const { applications } = props || [];
+    return (
+        <table>
+            <TableHeaders
+                headerClass='firstRow'
+                headers={fields}
             />
-        })}            
-    </table>
+            {
+                applications?applications.forEach(application => {
+                    <AppRow
+                        application={application}
+                    />
+            }): null}            
+        </table>
+    )
 }
+
+export default ViewApps;

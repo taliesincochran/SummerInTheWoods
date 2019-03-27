@@ -106,10 +106,11 @@ class TemplateWrapper extends Component {
         return (
             <div  className={`body ${this.state.loading} ${this.state.isMenuVisible ? 'is-menu-visible' : ''}`}>
                 <Helmet
-                    title="Summer in the Woods Camp"
+                    title='Summer in the Woods Camp'
                     meta={[
-                        { name: 'description', content: 'A Montessori inspired summer camp in Carrboro, NC'},
-                        { name: 'google-site-verification', content: 'zyT7Or4KfDcNlRsIhnybGosmb3rQWHLOTLYiVhtn8R0' }
+                        { name: 'description', content: 'A forest school summer camp inspired by Montessori and Reggio Emilia philosophies in Carrboro, NC.  Located close to Chapel Hill, Hillsborough, and Durham in Orange County, North Carolina.'},
+                        { name: 'google-site-verification', content: 'zyT7Or4KfDcNlRsIhnybGosmb3rQWHLOTLYiVhtn8R0' },
+                        { name: 'siteUrl', content: "https://summerinthewoodscamp.com"},
                     ]}
                 >
                     <link rel="stylesheet" href={withPrefix('skel.css')} />

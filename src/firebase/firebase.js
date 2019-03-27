@@ -1,5 +1,6 @@
 import firebase from '@firebase/app';
 import '@firebase/database';
+import '@firebase/auth';
 
 const prodConfig = {
   apiKey: process.env.GATSBY_DB_KEY,

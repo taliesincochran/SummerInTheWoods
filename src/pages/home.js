@@ -14,18 +14,18 @@ class HomeIndex extends React.Component {
         }
       }
     render() {
-        const siteTitle = "Summer In The Woods";
-        const siteDescription = "A forest school summer camp inspired by Montessori and Reggio Emilia philosophies in Carrboro, NC.  Located close to Chapel Hill, Hillsborough, and Durham in Orange County, North Carolina."
-        const siteURL = "https://www.summerinthewoodscamp.com";
+        // const siteTitle = "Summer In The Woods";
+        // const siteDescription = "A forest school summer camp inspired by Montessori and Reggio Emilia philosophies in Carrboro, NC.  Located close to Chapel Hill, Hillsborough, and Durham in Orange County, North Carolina."
+        // const siteURL = "https://www.summerinthewoodscamp.com";
         return (
             <div>
-                <Helmet>
+                {/* <Helmet>
                     <title>{siteTitle}</title>
                     <meta name="description" content={siteDescription} />
                     <meta name="title" content={siteTitle} />
                     <meta name="siteUrl" content={siteURL}/>
 
-                </Helmet>
+                </Helmet> */}
 
                 <BannerLanding 
                     bannerClass="indexBanner" 

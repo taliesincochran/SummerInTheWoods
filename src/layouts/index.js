@@ -8,6 +8,7 @@ import Menu from '../components/Menu/';
 import PropTypes from 'prop-types';
 import { withPrefix } from 'gatsby-link';
 import { getValue } from '../firebase/db';
+import { withAuthorization } from '../components/Session/withAuthorization';
 
 
 

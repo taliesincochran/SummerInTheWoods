@@ -1,61 +1,54 @@
 import React from 'react';
-import linkArray from '../../constants/linkArray'
-import LinkItem from '../LinkItem'
-const linkList = [
-    {
-        href: 'https://www.facebook.com/freeplayisparamount/',
-        text: 'Facebook Page'
-    }, 
-    {
-        href: 'https://www.instagram.com/explore/tags/summerinthewoodscamp/top/?hl=en',
-        text: 'Instagram'
+import { Link } from 'gatsby';
+
+import { AuthUserContext } from '../Session';
+import SignOutButton from '../SignOut';
+import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
+
+const Navigation = () => (
+  <AuthUserContext.Consumer>
+    {authUser =>
+      authUser ? (
+        <NavigationAuth authUser={authUser} />
+      ) : (
+        <NavigationNonAuth />
+      )
     }
-];
-const Navigation = (props) => {
-    return(
-        <ul className="links">
-            {  
-                linkArray.map((listItem, i) => (listItem.nonAuth && props.pathname !== listItem.path) ?
-                    <LinkItem
-                        key={i}
-                        path={listItem.path}
-                        button={props.button}
-                        text={listItem.text}
-                        state={props.state}
-                        handleChange={props.handleChange}
-                        handleYearChange={props.handleYearChange}
-                        onToggleMenu={props.onToggleMenu}
-                    />
-                : 
-                ''
-                )
-            }
-            { 
-                linkList.map(item => {
-                    return (
-                        <li>
-                            {props.button?
-                                <button type="button">
-                                    <a href={item.href} target="_blank">
-                                        <span className="label">
-                                            {item.text}
-                                        </span>
-                                    </a>
-                                </button>
-                                :
-                                <a href={item.href} target="_blank">
-                                    <span className="label">
-                                        {item.text}
-                                    </span>
-                                </a>
-                            }
-                        </li>
-                    )
-                })
-            }
-        </ul>
-    )
-}
-export default Navigation
+  </AuthUserContext.Consumer>
+);
 
+const NavigationAuth = ({ authUser }) => (
+  <ul>
+    <li>
+      <Link to={ROUTES.LANDING}>Landing</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.HOME}>Home</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.ACCOUNT}>Account</Link>
+    </li>
+    {authUser.roles.includes(ROLES.ADMIN) && (
+      <li>
+        <Link to={ROUTES.ADMIN}>Admin</Link>
+      </li>
+    )}
+    <li>
+      <SignOutButton />
+    </li>
+  </ul>
+);
 
+const NavigationNonAuth = () => (
+  <ul>
+    <li>
+      <Link to={ROUTES.LANDING}>Landing</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+    </li>
+  </ul>
+);
+
+export default Navigation;

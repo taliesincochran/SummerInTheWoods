@@ -1,6 +1,6 @@
 import * as React from "react";
 import BigCalendar from 'react-big-calendar';
-import Moment from 'moment';
+import * as  Moment from 'moment/moment';
 import '../../assets/scss/calendar/_reset.scss';
 import '../../assets/scss/calendar/_variables.scss';
 import '../../assets/scss/calendar/_styles.scss';
@@ -10,7 +10,9 @@ import '../../assets/scss/calendar/_event.scss';
 import '../../assets/scss/calendar/_agenda.scss';
 import '../../assets/scss/calendar/_time-column.scss';
 import '../../assets/scss/calendar/_time-grid.scss';
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(Moment));
+// BigCalendar.setLocalizer(
+    BigCalendar.momentLocalizer(Moment);
+    // );
 const Event = ({ event }) => {
   return (
     <span>

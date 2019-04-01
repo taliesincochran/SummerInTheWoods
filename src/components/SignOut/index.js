@@ -1,20 +1,14 @@
-import React from 'react'
-import Link from 'gatsby-link'
-import { auth } from '../../firebase'
+import React from 'react';
 
-const SignOutButton = props =>
-    props.button?
-    <button 
-  		type="button" 
-  		onClick={auth.doSignOut}
-  	>
-  		Sign Out
-  	</button>:
-    <Link
-    	onClick={auth.doSignOut}
-    	to='/'
-    >
-    	Sign Out
-    </Link>
+import { withFirebase } from '../Firebase';
 
-export default SignOutButton;
+const SignOutButton = ({ firebase }) => (
+  <button
+    type="button"
+    onClick={firebase ? firebase.doSignOut : () => {}}
+  >
+    Sign Out
+  </button>
+);
+
+export default withFirebase(SignOutButton);

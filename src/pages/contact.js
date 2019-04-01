@@ -25,11 +25,11 @@ class Contact extends React.Component {
     }
     render() {
         let location = typeof this.state.location === 'string'? 
-            this.state.location? 
+            this.state.location?
                 this.state.location
-            : 
-                'https://summerinthewoodscamp.com/contact' 
-        :   
+            :
+                'https://summerinthewoodscamp.com/contact'
+        :
             'https://summerinthewoodscamp.com/contact';
         return(
             <div>
@@ -72,4 +72,8 @@ class Contact extends React.Component {
     }
 }
 
-export default Contact
+export default () => 
+    <Layout>
+        <Contact />
+    </Layout>
+

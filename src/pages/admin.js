@@ -1,24 +1,33 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import BannerLanding from '../components/BannerLanding/'
-import { Redirect } from "react-router-dom"
+import React, { Fragment } from 'react';
+import { compose } from 'recompose';
 
-const Admin = (props) => {
-    return(
-    !props.location.state?<Redirect to="/"/>:
-        <div>
-            <Helmet>
-                <title>Summer In The Woods</title>
-                <meta name="description" content="Admin Page" />
-            </Helmet>
-            <BannerLanding bannerClass="contactBanner" />
-            <div id="main">
-                <div className="inner">
-                    To Do
-                </div>
-            </div>
-        </div>
-    )
-}
+import Layout from '../components/layout';
+import {
+  withAuthorization,
+  withEmailVerification,
+} from '../components/Session';
+import { UserList } from '../components/Users';
+import * as ROLES from '../constants/roles';
 
-export default Admin
+const AdminPageBase = () => (
+  <Fragment>
+    <h1>Admin</h1>
+    <p>The Admin Page is accessible by every signed in admin user.</p>
+
+    <UserList />
+  </Fragment>
+);
+
+const condition = authUser =>
+  authUser && authUser.roles.includes(ROLES.ADMIN);
+
+const AdminPage = compose(
+  withEmailVerification,
+  withAuthorization(condition),
+)(AdminPageBase);
+
+export default () => (
+  <Layout>
+    <AdminPage />
+  </Layout>
+);

@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
-
-import Layout from '../components/layout';
 import {
   AuthUserContext,
   withAuthorization,
@@ -33,8 +31,4 @@ const AccountPage = compose(
   withAuthorization(condition),
 )(AccountPageBase);
 
-export default () => (
-  <Layout>
-    <AccountPage />
-  </Layout>
-);
+export default AccountPage;

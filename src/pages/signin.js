@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react';
-
-import Layout from '../components/layout';
 import SignInForm, {
   SignInGoogle,
   SignInFacebook,
@@ -21,8 +19,4 @@ const SignInPage = () => (
   </Fragment>
 );
 
-export default () => (
-  <Layout>
-    <SignInPage />
-  </Layout>
-);
+export default SignInPage;

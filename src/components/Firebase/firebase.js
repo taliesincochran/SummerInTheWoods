@@ -28,6 +28,18 @@ class Firebase {
     this.twitterProvider = new app.auth.TwitterAuthProvider();
   }
 
+  // Generic Database Functions
+
+  changeTarget = (target, value) => this.db.ref(target).set(value);
+
+  changeTargetChild = (target, child, value) => this.db.ref(target).child(child).set(value);
+
+  getValue = (target) => this.db.ref(target).once('value').then(snapshot => snapshot.val());
+
+  getChildValue = (target, child) => this.db.ref(target).child(child).once('value').then(snapshot => snapshot.val());
+
+  getRef = (target) => this.db.ref(target);
+
   // *** Auth API ***
 
   doCreateUserWithEmailAndPassword = (email, password) =>
@@ -58,6 +70,13 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
 
   // *** Merge Auth and DB User API *** //
+  doCreateUser = (id, username, email) =>
+    //consider using email instead of id for setting the user id
+    this.db.ref(`users/${id}`).set({
+      username: username,
+      email: email,
+      admin: false
+    });
 
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
@@ -94,11 +113,19 @@ class Firebase {
 
   users = () => this.db.ref('users');
 
-  // *** Message API ***
+  getAdmin = db =>
+    db.ref('adminlist/').once('value');
 
+  // *** Message API ***
   message = uid => this.db.ref(`messages/${uid}`);
 
   messages = () => this.db.ref('messages');
+
+  // *** Application API ***
+  applicationSubmit = (obj, key) => this.db.ref('applications');
+
+  getApplications = () => this.db.ref('applications').once('value');
+
 }
 
 let firebase;

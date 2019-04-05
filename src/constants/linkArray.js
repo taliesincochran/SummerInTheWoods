@@ -3,7 +3,7 @@ import * as routes from './routes'
 
 const linkArray = [
   {
-    path: routes.HOME, 
+    path: routes.HOME,
     text: "Home",
     admin: true,
     auth: true,
@@ -33,6 +33,16 @@ const linkArray = [
     admin: true,
     auth: true,
     nonAuth: true
+  },
+  {
+    path: routes.SIGN_IN,
+    text: 'Sign In',
+    nonAuth: true
+  },
+  {
+    path: routes.ADMIN_APPLICATION_VIEW,
+    text: 'View Applications',
+    admin: true
   }
 ]
 export default linkArray

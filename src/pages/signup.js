@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react';
-
-import Layout from '../components/layout';
 import SignUpForm from '../components/SignUp';
 
 const SignUpPage = () => (
@@ -10,8 +8,4 @@ const SignUpPage = () => (
   </Fragment>
 );
 
-export default () => (
-  <Layout>
-    <SignUpPage />
-  </Layout>
-);
+export default SignUpPage;

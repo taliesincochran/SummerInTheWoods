@@ -1,8 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import BannerLanding from '../components/BannerLanding/'
-
-class Contact extends React.Component {
+import BannerLanding from '../components/BannerLanding/';
+import { withFirebase } from '../components/Firebase';
+class ContactBase extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -72,8 +72,5 @@ class Contact extends React.Component {
     }
 }
 
-export default () => 
-    <Layout>
-        <Contact />
-    </Layout>
-
+const Contact = withFirebase(ContactBase);
+export default Contact;

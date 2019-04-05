@@ -1,6 +1,6 @@
 import * as React from "react";
 
-class ContactThankYou extends React.Component {
+class ThankYou extends React.Component {
     render() {
         return (
             <div>
@@ -16,4 +16,4 @@ class ContactThankYou extends React.Component {
 
 
 
-export default ContactThankYou;
+export default ThankYou;

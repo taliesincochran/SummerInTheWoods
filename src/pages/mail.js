@@ -1,8 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/'
-
-class Contact extends React.Component {
+class Mail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -82,4 +81,4 @@ class Contact extends React.Component {
     }
 }
 
-export default Contact
+export default Mail;

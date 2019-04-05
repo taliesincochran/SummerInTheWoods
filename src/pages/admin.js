@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
-
-import Layout from '../components/layout';
 import {
   withAuthorization,
   withEmailVerification,
@@ -26,8 +24,4 @@ const AdminPage = compose(
   withAuthorization(condition),
 )(AdminPageBase);
 
-export default () => (
-  <Layout>
-    <AdminPage />
-  </Layout>
-);
+export default AdminPage;

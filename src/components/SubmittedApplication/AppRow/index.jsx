@@ -1,17 +1,15 @@
 import * as React from 'react';
+import TableRow from '../../../components/Table/TableRow';
+import { fields } from '../../../constants/variables';
 
 const AppRow = props => {
     const { application, className } = props;
     let rowClass = className || '';
-    let app = application || {}
     let applicationData = [];
-    // for (let applicationDatum in application) {
-    //     if (application.hasOwnProperty(applicationDatum)) {
-    //         applicationData.push([application[applicationDatum]]);
-    //     }
-    // }
+    fields.forEach(key => applicationData.push(application[key]));
     return (
         <TableRow
+            className = {rowClass}
             data={applicationData}
         />
     )

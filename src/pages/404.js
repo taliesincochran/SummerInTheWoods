@@ -2,8 +2,6 @@ import React from 'react'
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/';
 import Link from 'gatsby-link';
-import Layout from "../components/layout";
-
 const NotFoundPage = () => (
   <div>
     <Helmet>
@@ -19,8 +17,4 @@ const NotFoundPage = () => (
     </div>
 )
 
-export default () => (
-  <Layout>
-    <NotFoundPage />
-  </Layout>
-);
+export default NotFoundPage;

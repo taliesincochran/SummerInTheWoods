@@ -2,7 +2,6 @@ import * as React from 'react';
 import { paypalMessage } from '../constants/variables';
 // import { Redirect } from "react-router";
 
-
 const PaypalButton = props => {
     return (
         <form action={process.env.GATSBY_PAYPAL_ACTION} method="post" target="_top">
@@ -84,7 +83,7 @@ class Paypal extends React.Component {
                         <p>{paypalMessage}</p>
                         {(this.props.location && this.props.location.search)?
                             <section>
-                                    <p>Pay amount due of ${this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}.00 to reserve your {this.props.location.search.slice((this.props.location.search.indexOf('x=') + 2), this.props.location.search.indexOf("+p=")) === '1'?"child\'s space at camp.":"children\'s spaces at camp."}</p>
+                                <p>Pay amount due of ${this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}.00 to reserve your {this.props.location.search.slice((this.props.location.search.indexOf('x=') + 2), this.props.location.search.indexOf("+p=")) === '1'?"child's space at camp.":"children's spaces at camp."}</p>
                                 <PaypalButton
                                     cost={this.props.location.search.slice((this.props.location.search.indexOf("d=") + 2), this.props.location.search.indexOf("+w="))}
                                     week={this.props.location.search.slice((this.props.location.search.indexOf("w=") + 2), this.props.location.search.indexOf("+n="))}
@@ -108,7 +107,5 @@ class Paypal extends React.Component {
         )
     }
 }
-
-
 
 export default Paypal;

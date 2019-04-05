@@ -5,7 +5,7 @@ const Menu = (props) => {
 	return(
 	    <nav id="menu">
 	        <div className="inner">
-	                {props.children}            
+	                {props.children}
 	            <ul className="actions vertical">
 	            </ul>
 	        </div>

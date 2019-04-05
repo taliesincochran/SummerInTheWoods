@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { compose } from 'recompose';
 
-import Layout from '../components/layout';
 import {
   withAuthorization,
   withEmailVerification,
@@ -33,15 +32,15 @@ class HomePageBase extends Component {
   };
 
   componentDidMount() {
-    this.firebaseInit();
+    // this.firebaseInit();
   }
 
   componentDidUpdate() {
-    this.firebaseInit();
+    // this.firebaseInit();
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
+    // this.props.firebase.users().off();
   }
 
   render() {
@@ -64,8 +63,4 @@ const HomePage = compose(
   withAuthorization(condition),
 )(HomePageBase);
 
-export default () => (
-  <Layout>
-    <HomePage />
-  </Layout>
-);
+export default HomePage;

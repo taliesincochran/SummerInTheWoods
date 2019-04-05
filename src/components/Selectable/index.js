@@ -10,9 +10,9 @@ import '../../assets/scss/calendar/_event.scss';
 import '../../assets/scss/calendar/_agenda.scss';
 import '../../assets/scss/calendar/_time-column.scss';
 import '../../assets/scss/calendar/_time-grid.scss';
-// BigCalendar.setLocalizer(
-    BigCalendar.momentLocalizer(Moment);
-    // );
+
+BigCalendar.momentLocalizer(Moment);
+
 const Event = ({ event }) => {
   return (
     <span>
@@ -25,6 +25,7 @@ const EventWithCheckbox = ({event}) => {
         <span className={event.className}/>)
 }
 let eventPopulate = (props)=>{
+    console.log('event fired')
     let year = props.year
     let _props = props.location.state
     let eventTemp = [];
@@ -33,15 +34,15 @@ let eventPopulate = (props)=>{
         let campWeek = props.campTimes[week];
         campWeek.id = week + year;
         let available = campWeek.available - campWeek.approved;
-        if(!campWeek.noCamp){     
+        if(!campWeek.noCamp){
             switch(available) {
                 case 0:
                     campWeek.title = `Week ${parseInt(week.slice(4), 16)}: No spaces available.                                   `
                     break;
-                case 1: 
+                case 1:
                     campWeek.title = `Week ${parseInt(week.slice(4), 16)}: 1 space available.                                     `
                     break;
-                default: 
+                default:
                     campWeek.title = `Week ${parseInt(week.slice(4), 16)}: Limited spaces available.                         `
                     break;
             }
@@ -50,12 +51,12 @@ let eventPopulate = (props)=>{
         } else {
             campWeek.title = "No camp this week.                                                                          "
         }
-        available > 0 
-            ? 
-            campWeek.className = "available" 
-            : 
+        available > 0
+            ?
+            campWeek.className = "available"
+            :
             campWeek.className = "no-vacancy";
-        
+
         eventTemp.push(campWeek);
     }
     return eventTemp;
@@ -65,7 +66,7 @@ const Selectable = (props) => {
     let eventArray = eventPopulate(props);
     const events = eventArray;
     const date = new Date(props.year, 5, 1);
-    return(    
+    return(
          <div>
             <h3 className="callout">
                 {props.title}
@@ -80,6 +81,6 @@ const Selectable = (props) => {
                 />
             </div>
         </div>
-)};    
+)};
 export default Selectable
 

@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import TableRow from '../components/Table/TableRow';
 import TableHeader from '../components/Table/TableHeader'
 import BannerLanding from '../components/BannerLanding';
-
 class PriceTable extends React.Component {
     render() {
         return (
@@ -57,4 +56,5 @@ class PriceTable extends React.Component {
         )
     }
 }
+
 export default PriceTable;

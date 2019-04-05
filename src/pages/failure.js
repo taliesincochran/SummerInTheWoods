@@ -1,7 +1,6 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
 import BannerLanding from '../components/BannerLanding/';
-
 class Failure extends React.Component {
     render() {
         return (
@@ -23,7 +22,5 @@ class Failure extends React.Component {
         )
     }
 }
-
-
 
 export default Failure;

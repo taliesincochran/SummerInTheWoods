@@ -1,6 +1,5 @@
 import * as React from "react";
-
-class ThankYou extends React.Component {
+class PayPalThankYou extends React.Component {
     render() {
         return (
             <div>
@@ -14,6 +13,4 @@ class ThankYou extends React.Component {
     }
 }
 
-
-
-export default ThankYou;
+export default PayPalThankYou;

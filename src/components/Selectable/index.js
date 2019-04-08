@@ -11,7 +11,7 @@ import '../../assets/scss/calendar/_agenda.scss';
 import '../../assets/scss/calendar/_time-column.scss';
 import '../../assets/scss/calendar/_time-grid.scss';
 
-BigCalendar.momentLocalizer(Moment);
+let localizer = BigCalendar.momentLocalizer(Moment);
 
 const Event = ({ event }) => {
   return (
@@ -25,25 +25,28 @@ const EventWithCheckbox = ({event}) => {
         <span className={event.className}/>)
 }
 let eventPopulate = (props)=>{
-    console.log('event fired')
-    let year = props.year
-    let _props = props.location.state
-    let eventTemp = [];
+    console.log('event fired', props)
+    const { index, campTimes } = props;
+    console.log('index', index, campTimes)
+    let year = props.year;
     //let propsToPass = [];
-    for (var week in props.campTimes){
-        let campWeek = props.campTimes[week];
-        campWeek.id = week + year;
+    let thisYearCampTimes = campTimes[index]
+    let events = Object.keys(campTimes).map(week=> {
+        console.log('event week', week)
+        let campWeek = campTimes[week];
+        let idNumber = parseInt(week.slice(4), 16);
+        campWeek.id = 'week' + idNumber + year;
         let available = campWeek.available - campWeek.approved;
         if(!campWeek.noCamp){
             switch(available) {
                 case 0:
-                    campWeek.title = `Week ${parseInt(week.slice(4), 16)}: No spaces available.                                   `
+                    campWeek.title = `Week ${idNumber}: No spaces available.                                   `
                     break;
                 case 1:
-                    campWeek.title = `Week ${parseInt(week.slice(4), 16)}: 1 space available.                                     `
+                    campWeek.title = `Week ${idNumber}: 1 space available.                                     `
                     break;
                 default:
-                    campWeek.title = `Week ${parseInt(week.slice(4), 16)}: Limited spaces available.                         `
+                    campWeek.title = `Week ${idNumber}: Limited spaces available.                         `
                     break;
             }
         } else if (campWeek.noCamp && campWeek.noCampDescription) {
@@ -57,15 +60,14 @@ let eventPopulate = (props)=>{
             :
             campWeek.className = "no-vacancy";
 
-        eventTemp.push(campWeek);
-    }
-    return eventTemp;
+        return campWeek;
+    });
+    return events;
 }
 
 const Selectable = (props) => {
-    let eventArray = eventPopulate(props);
-    const events = eventArray;
-    const date = new Date(props.year, 5, 1);
+    const events = eventPopulate(props);
+    console.log('selectable props', props, events)
     return(
          <div>
             <h3 className="callout">
@@ -73,11 +75,14 @@ const Selectable = (props) => {
             </h3>
             <div style={{margin: "50px", height: '50em'}}>
                 <BigCalendar
+                    localizer={localizer}
                     events={events}
                     defaultView={BigCalendar.Views.MONTH}
                     defaultDate={props.defaultDate}
                     components={{event: Event}}
                     toolbar={false}
+                    startAccessor="start"
+                    endAccessor="end"
                 />
             </div>
         </div>

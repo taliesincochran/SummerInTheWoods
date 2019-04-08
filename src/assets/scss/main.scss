@@ -66,6 +66,27 @@
 	@import 'components/tiles';
 	@import 'components/contact-method';
 	@import 'components/spotlights';
+	@import 'calendar/_agenda';
+	@import 'calendar/_event';
+	@import 'calendar/_month';
+	@import 'calendar/_monthevent';
+	@import 'calendar/_reset';
+	@import 'calendar/_styles';
+	@import 'calendar/_time-column';
+	@import 'calendar/_toolbar';
+	@import 'calendar/_time-grid';
+	@import 'calendar/_variables';
+	@import 'calendar/agenda';
+	@import 'calendar/event';
+	@import 'calendar/month';
+	@import 'calendar/monthevent';
+	@import 'calendar/reset';
+	@import 'calendar/styles';
+	@import 'calendar/time-column';
+	@import 'calendar/toolbar';
+	@import 'calendar/time-grid';
+	@import 'calendar/variables';
+
 
 // Layout.
 

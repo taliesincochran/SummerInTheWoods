@@ -14,9 +14,9 @@ class HomePageBase extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      users: null,
-    };
+    // this.state = {
+    //   users: null,
+    // };
   }
 
   firebaseInit = () => {
@@ -26,21 +26,28 @@ class HomePageBase extends Component {
       this.props.firebase.users().on('value', snapshot => {
         this.setState({
           users: snapshot.val(),
-        });
+        }, () => {console.log('home init', this.props, this.state)});
       });
+    } else {
+      console.log('home init 2', this.props, this.state);
     }
   };
 
   componentDidMount() {
-    // this.firebaseInit();
+    // this.props.firebase.set(this.props);
+    this.firebaseInit();
+    console.log('home mount', this.props, this.state);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    // if(prevProps !== this.props) {
+    //   this.props.firebase.set(this.props);
+    // }
     // this.firebaseInit();
   }
 
   componentWillUnmount() {
-    // this.props.firebase.users().off();
+    this.props.firebase.users().off();
   }
 
   render() {

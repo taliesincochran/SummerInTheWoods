@@ -17,7 +17,11 @@ class ContactBase extends React.Component {
             let location = window.location;
             this.setState({location})
         }
+        console.log('contact', this.props)
 
+    }
+    componentDidUpdate() {
+        console.log('contact update', this.props)
     }
     handleChange = e => {
         let { name, value } = e.target;

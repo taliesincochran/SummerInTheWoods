@@ -7,8 +7,8 @@ import Footer from '../components/Footer';
 import Menu from '../components/Menu';
 import App from '../components/App';
 import Navigation from '../components/Navigation';
-import getFirebase, { FirebaseContext } from '../components/Firebase';
-import withAuthentication from '../components/Session/withAuthentication';
+import getFirebase, { FirebaseProvider } from '../components/Firebase';
+// import withAuthentication from '../components/Session/withAuthentication';
 class Layout extends React.Component {
   constructor(props) {
     super(props);
@@ -26,18 +26,31 @@ class Layout extends React.Component {
       campTimes: [],
       localTimezoneOffset: 4,
       userAccount: '',
-      firebase: null
+      firebase: null,
+      views: [],
+      views2:[]
     };
+    this.setData = () => {
+      let { firebase } = this.props;
+      if(firebase && firebase.setData) {
+        this.props.firebase.set(this.state);
+      } else {
+        console.log('haa haa', this.props)
+      }
+    }
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
   }
   componentDidUpdate() {
     this.firebaseInit();
+    console.log('layout update props', this.props)
+    // let updateCount = this.state.updateCount +=1;
+    // if(this.state.campTimes === []) {}
+    // this.getCalendar(this.state.rawCampTimes);
   }
   componentDidMount() {
     this._count += 1;
     this.firebaseInit();
-    console.log('layout mounted', this._count)
     const date = new Date();
     const app = import('firebase/app');
     const auth = import('firebase/auth');
@@ -47,7 +60,9 @@ class Layout extends React.Component {
     }, 100);
     Promise.all([app, auth, database]).then(values => {
       const firebase = getFirebase(values[0]);
-      this.setState({ firebase }, () => this.getCalendar(firebase));
+      firebase.getCalendar().then(rawCampTimes => {
+        this.setState({ firebase, rawCampTimes }, () => {console.log('layout state mount', this.state)});
+      });
     });
   }
   componentWillUnmount() {
@@ -68,44 +83,57 @@ class Layout extends React.Component {
       this.getCalendar(this.props.firebase);
     }
   };
-  getCalendar = (firebase) => {
-    if(firebase) {
-      console.log('start get calendar')
-      firebase.getValue('campTimes/year').then(rawCampTimes => {
-        // get current date, month, year
-        let dateObject = new Date();
-        let date = dateObject.getDate();
-        let month = dateObject.getMonth();
-        let year = dateObject.getFullYear();
-        // get the timezone of the applicant for security purposes
-        let localTimezoneOffset = dateObject.getTimezoneOffset()
-        // data from firebase to be processed into the year or years to be displayed
-        let rawYearsArray = Object.keys(rawCampTimes);
-        rawYearsArray.sort((a, b) => a - b);
-        let yearIndex = 0;
-        let chosenYear = year.toString();
-        //if the date is already past the last week start date, don't display current year
-        if (month > 7 && date > 8) {
-          yearIndex = rawYearsArray.indexOf((year + 1).toString());
-          chosenYear = (year + 1).toString();
-        } else {
-          yearIndex = rawYearsArray.indexOf(year.toString())
-        }
-        //Get rid of any data that is outdated
-        let yearsArray = rawYearsArray.slice(yearIndex)
-        //Make an array of relavent camptimes
-        let campTimes = yearsArray.map(year => rawCampTimes[year])
-        this.setState({
-          campTimes,
-          rawCampTimes,
-          date,
-          month,
-          year,
-          localTimezoneOffset,
-          yearsArray,
-          chosenYear
-        }, ()=> {console.log('got calendar')});
-      })
+
+  getCalendar = (rawCampTimes) => {
+    let length = 0;
+    if(rawCampTimes) {
+      let keys = Object.keys(rawCampTimes);
+      length = keys.length;
+    }
+    if(length > 0) {
+      // get current date, month, year
+      let dateObject = new Date();
+      let date = dateObject.getDate();
+      let month = dateObject.getMonth();
+      let year = dateObject.getFullYear();
+      // get the timezone of the applicant for security purposes
+      let localTimezoneOffset = dateObject.getTimezoneOffset()
+      // data from firebase to be processed into the year or years to be displayed
+      let rawYearsArray = Object.keys(rawCampTimes['year']);
+      rawYearsArray.sort((a, b) => a - b);
+      console.log('raw 444444444444444', rawYearsArray);
+      let yearIndex = 0;
+      let chosenYear = year.toString();
+      //if the date is already past the last week start date, don't display current year
+      if (month > 7 && date > 8) {
+        yearIndex = rawYearsArray.indexOf((year + 1).toString());
+        chosenYear = (year + 1).toString();
+      } else {
+        yearIndex = rawYearsArray.indexOf(year.toString())
+      }
+      //Get rid of any data that is outdated
+      let yearsArray = rawYearsArray.slice(yearIndex)
+      //Make an array of relavent camptimes
+      let campTimes = yearsArray.map(thisYear => {
+        let campTime = rawCampTimes['year'][thisYear];
+        return campTime;
+      });
+      const views = this.getViews(parseInt(chosenYear));
+      const views2 = this.getViews((parseInt(chosenYear) + 1));
+      const weekArray = this.getWeeks(rawCampTimes['year'][chosenYear], parseInt(chosenYear));
+      this.setState({
+        campTimes,
+        rawCampTimes,
+        date,
+        month,
+        year,
+        localTimezoneOffset,
+        yearsArray,
+        chosenYear,
+        views,
+        views2,
+        weekArray
+      });
 
     } else {
       console.log('Get Calendar failed' , this.props, this.state)
@@ -116,19 +144,47 @@ class Layout extends React.Component {
       isMenuVisible: !this.state.isMenuVisible
     })
   }
-  handleChange(event) {
-    let { name, value } = event.target;
-    this.setState({ [name]: value });
+  getWeeks(yearChosen, yearString) {
+    let weekArray = [];
+    let year = yearString;
+    for (let weekChosen in yearChosen) {
+      let week = weekChosen;
+      let { start, end, available, pending, noCamp } = yearChosen[week]
+      start = new Date(start);
+      start = start.getMonth() + "/" + start.getDate();
+      end = new Date(end);
+      end = end.getMonth() + "/" + end.getDate();
+      weekArray.push({ week, year, start, end, available, pending, noCamp })
+    }
+    return weekArray
   }
+  getViews = (year) => {
+    let months = ["June", "July", "August"];
+    let dates = months.map((month, i) => {
+      let monthInt = i + 5;
+      return new Date(year, monthInt, 1);
+    });
+    let views = [];
+    for (var i = 0; i < months.length; i++) {
+      let month = months[i];
+      let date = dates[i];
+      views.push({ month, date, i })
+    }
+    return views;
+  }
+  // handleChange(event) {
+  //   let { name, value } = event.target;
+  //   this.setState({ [name]: value });
+  // }
   render() {
-    const {
+    let {
       firebase,
       loading,
       isMenuVisible,
       auth
     } = this.state;
     return (
-      <FirebaseContext.Provider value={firebase}>
+      <FirebaseProvider>
         <div className={`body ${loading} ${isMenuVisible ? 'is-menu-visible' : ''}`}>
           <Helmet
             title='Summer in the Woods Camp'
@@ -160,10 +216,10 @@ class Layout extends React.Component {
               button={false}
               onToggleMenu={this.handleToggleMenu}
               auth={this.state.auth}
-              state={this.state} />
+              {...this.state} />
           </Menu>
         </div>
-      </FirebaseContext.Provider>
+      </FirebaseProvider>
     );
   }
 }

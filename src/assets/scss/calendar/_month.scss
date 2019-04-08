@@ -4,6 +4,7 @@
 .rbc-row {
   display: flex;
   flex-direction: row;
+  height: 50px;
 }
 
 .rbc-row-segment {
@@ -67,7 +68,6 @@
   flex: 1 0 0; // postcss will remove the 0px here hence the duplication below
   flex-basis: 0px;
   overflow: hidden;
-
   height: 100%; // ie-fix
 
   & + & {

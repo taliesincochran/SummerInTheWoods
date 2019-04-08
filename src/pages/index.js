@@ -17,29 +17,31 @@ class LandingPageBase extends React.Component {
   }
   _initFirebase = false;
 
-  firebaseInit = () => {
-    if (this.props.firebase && !this._initFirebase) {
-      this._initFirebase = true;
-      console.log(this.props);
-      this.props.firebase.users().on('value', snapshot => {
-        this.setState({
-          users: snapshot.val(),
-        });
-      });
-    }
-  };
+  // firebaseInit = () => {
+  //   if (this.props.firebase && !this._initFirebase) {
+  //     this._initFirebase = true;
+  //     console.log(this.props);
+  //     this.props.firebase.users().on('value', snapshot => {
+  //       this.setState({
+  //         users: snapshot.val(),
+  //       });
+  //     });
+  //   }
+  // };
 
   componentDidMount() {
-    this.firebaseInit();
+    console.log('index mounted', this.props, this.state);
   }
-
   componentDidUpdate() {
-    this.firebaseInit();
+    console.log('index updated', this.props, this.state);
   }
+  // componentDidUpdate() {
+  //   this.firebaseInit();
+  // }
 
-  componentWillUnmount() {
-    this.props.firebase.users().off();
-  }
+  // componentWillUnmount() {
+  //   this.props.firebase.users().off();
+  // }
   render() {
     const siteTitle = "Summer In The Woods";
     const siteDescription = "A forest school summer camp inspired by Montessori and Reggio Emilia philosophies in Carrboro, NC.  Located close to Chapel Hill, Hillsborough, and Durham in Orange County, North Carolina."

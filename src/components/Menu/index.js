@@ -9,7 +9,7 @@ const Menu = (props) => {
 	            <ul className="actions vertical">
 	            </ul>
 	        </div>
-	        <a className="close" onClick={props.onToggleMenu} href="javascript:;">Close</a>
+	        <a className="close" onClick={props.onToggleMenu} href="javascript:void('open menu');">Close</a>
 	    </nav>
 	)
 }

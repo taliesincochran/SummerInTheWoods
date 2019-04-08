@@ -39,13 +39,8 @@ const NavigationAuth = (props) =>  {
           <LinkItem
             key={listItem.path}
             path={listItem.path}
-            button={props.button}
             text={listItem.text}
-            state={props.state}
-            handleChange={props.handleChange}
-            handleYearChange={props.handleYearChange}
-            onToggleMenu={props.onToggleMenu}
-            firebase={props.firebase}
+            {...props}
           />
           : '')}
       {props.authUser.roles.includes(ROLES.ADMIN) && (
@@ -54,13 +49,8 @@ const NavigationAuth = (props) =>  {
               <LinkItem
                 key={listItem.path}
                 path={listItem.path}
-                button={props.button}
                 text={listItem.text}
-                state={props.state}
-                handleChange={props.handleChange}
-                handleYearChange={props.handleYearChange}
-                onToggleMenu={props.onToggleMenu}
-                firebase={props.firebase}
+                {...props}
               />
               : '')
         )}
@@ -68,14 +58,14 @@ const NavigationAuth = (props) =>  {
           <li>
             {props.button ?
               <button type="button" key={item.href}>
-                <a href={item.href} target="_blank">
+                <a href={item.href} target="_blank" rel="noopener noreferrer">
                   <span className="label">
                     {item.text}
                   </span>
                 </a>
               </button>
             :
-              <a href={item.href} target="_blank" key={item.href}>
+              <a href={item.href} target="_blank" rel="noopener noreferrer" key={item.href}>
                 <span className="label">
                   {item.text}
                 </span>
@@ -97,13 +87,8 @@ const NavigationNonAuth = (props) => {
 			<LinkItem
         key={listItem.path}
         path={listItem.path}
-        button={props.button}
         text={listItem.text}
-        state={props.state}
-        handleChange={props.handleChange}
-        handleYearChange={props.handleeYearChange}
-        onToggleMenu={props.onToggleMenu}
-        firebase={props.firebase} firebase={props.firebase}
+        {...props}
       />
       :null
     )}
@@ -115,7 +100,7 @@ const NavigationNonAuth = (props) => {
             >
             <a
               href={item.href}
-              target="_blank"
+              target="_blank" rel="noopener noreferrer"
             >
               <span className="label">
                 {item.text}
@@ -125,7 +110,7 @@ const NavigationNonAuth = (props) => {
           :
           <a
             href={item.href}
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
           >
             <span className="label">
               {item.text}

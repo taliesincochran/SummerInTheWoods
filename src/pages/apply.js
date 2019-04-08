@@ -96,7 +96,7 @@ class ApplicationBase extends React.Component {
             chosenYear,
             rawCampTimes,
             localTimezoneOffset
-        } = this.props.state;
+        } = this.props;
         let weekArray = this.getWeekArray(chosenYear);
         let location;
         if(typeof window !== undefined) {
@@ -150,7 +150,7 @@ class ApplicationBase extends React.Component {
 
 
     getWeekArray = (yearString) => {
-        let yearChosen = this.props.state.rawCampTimes[this.props.state.chosenYear]
+        let yearChosen = this.props.rawCampTimes[this.props.chosenYear]
         let weekArray = [];
         let year = yearString;
         for (let weekChosen in yearChosen) {
@@ -481,7 +481,7 @@ class ApplicationBase extends React.Component {
     }
     render() {
         return (
-            !this.props.state ?
+            !this.props ?
                 // <Redirect to="/" />
                 null
                 :
@@ -512,37 +512,37 @@ class ApplicationBase extends React.Component {
                                                     <p className='errorMessage'>{this.state.error0}</p>
                                                     <h2>Year</h2>
                                                     <div className="yearBox">
-                                                        {this.props.state.yearsArray.length > 1 ?
+                                                        {this.props.yearsArray.length > 1 ?
                                                             <div>
                                                                 <Checkbox
                                                                     name="year1"
-                                                                    value={this.props.state.yearsArray[0]}
+                                                                    value={this.props.yearsArray[0]}
                                                                     onChange={this.handleYearSelect}
-                                                                    checked={this.state.chosenYear == this.props.state.yearsArray[0]}
+                                                                    checked={this.state.chosenYear == this.props.yearsArray[0]}
                                                                     className='float-left'
-                                                                    onClick={() => this.handleYearSelect(this.props.state.yearsArray[0])}
-                                                                    text={this.props.state.yearsArray[0]}
+                                                                    onClick={() => this.handleYearSelect(this.props.yearsArray[0])}
+                                                                    text={this.props.yearsArray[0]}
                                                                     />
                                                                 <Checkbox
                                                                     type="checkbox"
                                                                     name="year2"
-                                                                    value={this.props.state.yearsArray[1]}
+                                                                    value={this.props.yearsArray[1]}
                                                                     onChange={this.handleYearSelect}
-                                                                    checked={this.state.chosenYear == this.props.state.yearsArray[1]}
-                                                                    className='float-left' value={this.props.state.yearsArray[0]}
-                                                                    onClick={() => this.handleYearSelect(this.props.state.yearsArray[1])}
-                                                                    text={this.props.state.yearsArray[1]}
+                                                                    checked={this.state.chosenYear == this.props.yearsArray[1]}
+                                                                    className='float-left' value={this.props.yearsArray[0]}
+                                                                    onClick={() => this.handleYearSelect(this.props.yearsArray[1])}
+                                                                    text={this.props.yearsArray[1]}
                                                                     />
                                                             </div>
                                                             :
                                                             <div>
                                                                 <Checkbox
                                                                     name="year1"
-                                                                    value={this.props.state.yearsArray[0]}
+                                                                    value={this.props.yearsArray[0]}
                                                                     onChange={this.handleYearSelect} checked={true}
                                                                     className='float-left'
-                                                                    onClick={() => this.handleYearSelect(this.props.state.yearsArray[0])}
-                                                                    text={this.props.state.yearsArray[0]}
+                                                                    onClick={() => this.handleYearSelect(this.props.yearsArray[0])}
+                                                                    text={this.props.yearsArray[0]}
                                                                     />
                                                             </div>
                                                         }
@@ -691,7 +691,7 @@ class ApplicationBase extends React.Component {
                                                     :
                                                     this.state[`childArray${this.state.numberOfChildren}`].map(child => {
                                                         return (
-                                                            <div>
+                                                            <div key={child}>
                                                                 <h2>{child === '1'?"First ":child ==='2'?"Second ":child==='3'?"Third ": child==='4'?"Fourth":""} Child's Information</h2>
                                                                 <p className='errorMessage'>{this.state.error1}</p>
                                                                 <div className="infoBox">
@@ -1027,7 +1027,7 @@ class ApplicationBase extends React.Component {
                                                 <h2>{paymentMethodMessage}</h2>
                                                 <h4>Payment Method</h4>
                                                 <div className="infoBox">
-                                                    <label forHtml="howDidYouHear">How did you hear about us?</label>
+                                                    <label>How did you hear about us?</label>
                                                     <select 
                                                         name="howDidYouHear" 
                                                         className='select-wrapper wideOption' 

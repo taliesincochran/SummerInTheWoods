@@ -4,10 +4,13 @@ import { getFirebase } from './index';
 const defaultContextValue = {
   data: {
   },
-  set: () => { },
+  firebase: {
+  },
+  setData: () => {
+  },
 };
 
-const FirebaseContext = React.createContext(defaultContextValue);
+const firebase = React.createContext(defaultContextValue);
 
 export class FirebaseProvider extends React.Component {
   constructor(props) {
@@ -16,9 +19,12 @@ export class FirebaseProvider extends React.Component {
     this.setData = this.setData.bind(this);
     this.state = {
       set: this.setData,
+      data: {},
+      firebase: {}
     };
-    this.calendarData = {};
-    this.fb = null;
+    // this.data = {}
+    // this.calendarData = {};
+    // this.firebase = {};
 
     // this.firebaseInit = this.firebaseInit.bind(this);
   }
@@ -32,20 +38,20 @@ export class FirebaseProvider extends React.Component {
       this.setState({ loading: '', });
     }, 100);
     Promise.all([app, auth, database]).then(values => {
-      const fb = getFirebase(values[0]);
-      this.fb = fb;
-      fb.getCalendar().then(data => {
-        this.data = data;
-        this.calendarData = data;
-        this.fb = fb;
-        this.setData({fb})
-        this.setData({data})
-        console.log('fb setData', )
+      const firebase = getFirebase(values[0]);
+      // this.firebase = firebase;
+      firebase.getCalendar().then(data => {
+        this.setState({firebase, data}) 
+        // this.setData(firebase);
+        // this.data = data;
+        // this.calendarData = data;
+        console.log('firebase context this', this)
+        console.log('firebase setData', )
       })
       // this.setState({ firebase, campTimes });
       // this.data = campTimes;
-
     });
+    console.log('after firebase promise', this)
   }
   componentDidUpdate() {
     console.log('firebase context updated', this.state);
@@ -150,6 +156,7 @@ export class FirebaseProvider extends React.Component {
   //   return views;
   // }
   setData (newData) {
+    console.log('set data called', newData)
     this.setState(state => ({
       data: {
         ...state.data,
@@ -159,28 +166,28 @@ export class FirebaseProvider extends React.Component {
   }
   render() {
     return (
-    <FirebaseContext.Provider
+    <firebase.Provider
       value={{
         state: this.state,
         setData: this.setData,
-        fb: this.firebase,
+        firebase: this.firebase,
         calendarData: this.calendarData
       }}
     >
       {this.props.children}
-    </FirebaseContext.Provider>
+    </firebase.Provider>
     )}
 };
 export const withFirebase = Component => props => {
   console.log('withFirebase', props);
   return (
-  <FirebaseContext.Consumer>
-    {fb => {
-      console.log('inside firebase', fb, props);
+  <firebase.Consumer>
+    {firebase => {
+      console.log('inside firebase', firebase, props);
       return (
-        <Component {...props} fb={fb} />
+        <Component {...props} firebase={firebase} />
       )}}
-  </FirebaseContext.Consumer>
+  </firebase.Consumer>
 )};
 
-export default FirebaseContext;
+export default firebase;

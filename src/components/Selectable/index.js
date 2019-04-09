@@ -26,42 +26,54 @@ const EventWithCheckbox = ({event}) => {
 }
 let eventPopulate = (props)=>{
     console.log('event fired', props)
-    const { index, campTimes } = props;
+    const { index } = props;
+    const { campTimes } = props.firebase.state.data;
     console.log('index', index, campTimes)
     let year = props.year;
     //let propsToPass = [];
-    let thisYearCampTimes = campTimes[index]
-    let events = Object.keys(campTimes).map(week=> {
-        console.log('event week', week)
-        let campWeek = campTimes[week];
-        let idNumber = parseInt(week.slice(4), 16);
-        campWeek.id = 'week' + idNumber + year;
-        let available = campWeek.available - campWeek.approved;
-        if(!campWeek.noCamp){
-            switch(available) {
-                case 0:
-                    campWeek.title = `Week ${idNumber}: No spaces available.                                   `
-                    break;
-                case 1:
-                    campWeek.title = `Week ${idNumber}: 1 space available.                                     `
-                    break;
-                default:
-                    campWeek.title = `Week ${idNumber}: Limited spaces available.                         `
-                    break;
-            }
-        } else if (campWeek.noCamp && campWeek.noCampDescription) {
-            campWeek.title = campWeek.noCampDescription
-        } else {
-            campWeek.title = "No camp this week.                                                                          "
-        }
-        available > 0
-            ?
-            campWeek.className = "available"
-            :
-            campWeek.className = "no-vacancy";
+    // let thisYearCampTimes;
+    // if(campTimes) {
+    //     thisYearCampTimes = campTimes[index]
+    // } 
+    // else {
+    //     thisYearCampTimes = [];
+    // }
+    let events = Object.keys(campTimes[index]).map(week=> {
+        if(campTimes[index].hasOwnProperty(week)) {
 
-        return campWeek;
+            console.log('event week', week)
+            let campWeek = campTimes[index][week];
+            console.log('campWeek', campWeek)
+            let idNumber = parseInt(week.slice(4), 16);
+            campWeek.id = 'week' + idNumber + year;
+            let available = campWeek.available - campWeek.approved;
+            if(!campWeek.noCamp){
+                switch(available) {
+                    case 0:
+                        campWeek.title = `Week ${idNumber}: No spaces available.                                   `
+                        break;
+                    case 1:
+                        campWeek.title = `Week ${idNumber}: 1 space available.                                     `
+                        break;
+                    default:
+                        campWeek.title = `Week ${idNumber}: Limited spaces available.                         `
+                        break;
+                }
+            } else if (campWeek.noCamp && campWeek.noCampDescription) {
+                campWeek.title = campWeek.noCampDescription
+            } else {
+                campWeek.title = "No camp this week.                                                                          "
+            }
+            available > 0
+                ?
+                campWeek.className = "available"
+                :
+                campWeek.className = "no-vacancy";
+    
+            return campWeek;
+        }
     });
+    console.log(events)
     return events;
 }
 

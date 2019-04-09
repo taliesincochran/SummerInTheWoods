@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Redirect } from '@reach/router';
+import ReactDOM from 'react-dom';
 // import Navigation from '../Navigation';
 // import SignUpPage from '../../pages/signUp';
 import SignInPage from '../../pages/signIn';
@@ -19,6 +20,7 @@ import NotFoundPage from '../../pages/404';
 import ViewApplications from '../../pages/viewApplications';
 import getFirebase, { withFirebase, FirebaseContext } from '../../components/Firebase';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -26,62 +28,36 @@ class App extends React.Component {
     this.firebase = null
   }
   componentDidMount() {
-    const app = import('firebase/app');
-    const auth = import('firebase/auth');
-    const database = import('firebase/database');
     this.timeoutId = setTimeout(() => {
-      this.setState({ loading: '', });
-    }, 100);
-    Promise.all([app, auth, database]).then(values => {
-      const firebase = getFirebase(values[0]);
-      firebase.getCalendar().then(data => {
-        const { 
-          campTimes,
-          rawCampTimes,
-          date,
-          month,
-          year,
-          localTimezoneOffset,
-          yearsArray,
-          chosenYear,
-          views,
-          views2,
-          weekArray
-        } = data;
-        this.setState({
-          firebase,
-          // campTimes,
-          // rawCampTimes,
-          // date,
-          // month,
-          // year,
-          // localTimezoneOffset,
-          // yearsArray,
-          // chosenYear,
-          // views,
-          // views2,
-          // weekArray
-          }, () => { console.log('app state mount', this.state) });
-      });
-    });
+      this.setState({ loading: ''});
+    }, 500);
+  
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.firebase === undefined) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
   render() {
     return(
       <Router>
-        <Calendar path='calendar' {...this.state} />
-        <Contact path='contact' {...this.state} />
-        <ThankYou path='thankyou' {...this.state} />
-        <Prices path='prices' {...this.state} />
-        <PasswordForgetPage path='pw-forget' {...this.state} />
-        <SignInPage path='signin' {...this.state} />
-        <ContactRecieved path='contactRecieved' {...this.state} />
-        <Apply path='apply' {...this.state} />
-        <Paypal path='paypal/:query' {...this.state} />
-        <Failure path='failure' {...this.state} />
-        <AdminPage exact path='admin' {...this.state} >
-          <ViewApplications path='/admin/viewApplicaitons' {...this.state} />
+        <Calendar path='calendar' {...this.props} />
+        <Contact path='contact' {...this.props} />
+        <ThankYou path='thankyou' {...this.props} />
+        <Prices path='prices' {...this.props} />
+        <PasswordForgetPage path='pw-forget' {...this.props} />
+        <SignInPage path='signin' {...this.props} />
+        <ContactRecieved path='contactRecieved' {...this.props} />
+        <Apply path='apply' {...this.props} />
+        <Paypal path='paypal/:query' {...this.props} />
+        <Failure path='failure' {...this.props} />
+        <AdminPage exact path='admin' {...this.props} >
+          <ViewApplications path='/admin/viewApplicaitons' {...this.props} />
         </AdminPage>
-        <HomePage exact path='/' {...this.state} />
+        <HomePage exact path='/' {...this.props} />
         <NotFoundPage default />
       </Router>
     );

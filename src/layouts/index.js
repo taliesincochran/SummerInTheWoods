@@ -30,40 +30,14 @@ class Layout extends React.Component {
       views: [],
       views2:[]
     };
-    this.setData = () => {
-      let { firebase } = this.props;
-      if(firebase && firebase.setData) {
-        this.props.firebase.set(this.state);
-      } else {
-        console.log('haa haa', this.props)
-      }
-    }
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
   }
   componentDidUpdate() {
     this.firebaseInit();
     console.log('layout update props', this.props)
-    // let updateCount = this.state.updateCount +=1;
-    // if(this.state.campTimes === []) {}
-    // this.getCalendar(this.state.rawCampTimes);
   }
   componentDidMount() {
-    this._count += 1;
     this.firebaseInit();
-    const date = new Date();
-    const app = import('firebase/app');
-    const auth = import('firebase/auth');
-    const database = import('firebase/database');
-    this.timeoutId = setTimeout(() => {
-      this.setState({ loading: '', });
-    }, 100);
-    Promise.all([app, auth, database]).then(values => {
-      const firebase = getFirebase(values[0]);
-      firebase.getCalendar().then(rawCampTimes => {
-        this.setState({ firebase, rawCampTimes }, () => {console.log('layout state mount', this.state)});
-      });
-    });
   }
   componentWillUnmount() {
     if (this.timeoutId) {

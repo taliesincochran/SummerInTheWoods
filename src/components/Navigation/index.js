@@ -21,9 +21,9 @@ const Navigation = (props) => {
       (<AuthUserContext.Consumer>
         {authUser =>
           authUser ? (
-            <NavigationAuth authUser={authUser} {...props}/>
+            <NavigationAuth authUser={authUser} button={props.button} {...props}/>
           ) : (
-            <NavigationNonAuth {...props}/>
+            <NavigationNonAuth button={props.button} {...props}/>
           )
         }
       </AuthUserContext.Consumer>)
@@ -40,6 +40,7 @@ const NavigationAuth = (props) =>  {
             key={listItem.path}
             path={listItem.path}
             text={listItem.text}
+            button={props.button}
             {...props}
           />
           : '')}
@@ -50,6 +51,7 @@ const NavigationAuth = (props) =>  {
                 key={listItem.path}
                 path={listItem.path}
                 text={listItem.text}
+                button={props.button}
                 {...props}
               />
               : '')
@@ -65,11 +67,13 @@ const NavigationAuth = (props) =>  {
                 </a>
               </button>
             :
-              <a href={item.href} target="_blank" rel="noopener noreferrer" key={item.href}>
-                <span className="label">
-                  {item.text}
-                </span>
-              </a>
+              <button className="notButton">
+                <a href={item.href} target="_blank" rel="noopener noreferrer" key={item.href}>
+                  <span className="label">
+                    {item.text}
+                  </span>
+                </a>
+              </button>
             }
           </li>
         )}
@@ -108,15 +112,17 @@ const NavigationNonAuth = (props) => {
             </a>
           </button>
           :
-          <a
-            href={item.href}
-            target="_blank" rel="noopener noreferrer"
-          >
-            <span className="label">
-              {item.text}
-            </span>
-          </a>
-        }
+          <button className="notButton">
+            <a
+              href={item.href}
+              target="_blank" rel="noopener noreferrer"
+            >
+              <span className="label">
+                {item.text}
+              </span>
+            </a>
+          </button>
+          }
       </li>
     )}
   </ul>

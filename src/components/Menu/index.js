@@ -7,13 +7,13 @@ const Menu = (props) => {
 	        <div className="inner">
 				<Navigation
 					button={false}
-					handleToggleMenu={props.handleToggleMenu}
+					onToggleMenu={props.onToggleMenu}
 					{...props} 
 				/>
 	            <ul className="actions vertical">
 	            </ul>
 	        </div>
-	        <a className="close" onClick={props.onToggleMenu} href="javascript:void('open menu');">Close</a>
+	        <button className="close" onClick={props.onToggleMenu}>Close</button>
 	    </nav>
 	)
 }

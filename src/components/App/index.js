@@ -9,6 +9,7 @@ import HomePage from '../../pages/index';
 // import AccountPage from '../../pages/account';
 import AdminPage from '../../pages/admin';
 import Calendar from '../../pages/calendar';
+import Mail from '../../pages/mail';
 import Apply from '../../pages/apply';
 import Contact from '../../pages/contact';
 import Failure from '../../pages/failure';
@@ -35,8 +36,9 @@ const AppRouter = props => {
         <SignInPage path='signin' {...props} />
         <ContactRecieved path='contactRecieved' {...props} />
         <Apply path='apply' {...props} />
-        <Paypal path='paypal/:query' {...props} />
-        <Failure path='failure' {...props} />
+        <Paypal path='/paypal/*' {...props} />
+        <Mail path='/mail/*' {...props} />
+        <Failure path='/failure/*' {...props} />
         <AdminPage exact path='admin' {...props} >
           <ViewApplications path='/admin/viewApplicaitons' {...props} />
         </AdminPage>
@@ -46,14 +48,7 @@ const AppRouter = props => {
     ):
     (
       <Router>
-        <Contact path='contact' {...props} />
-        <ThankYou path='thankyou' {...props} />
         <Prices path='prices' {...props} />
-        <PasswordForgetPage path='pw-forget' {...props} />
-        <SignInPage path='signin' {...props} />
-        <ContactRecieved path='contactRecieved' {...props} />
-        <Paypal path='paypal/:query' {...props} />
-        <Failure path='failure' {...props} />
         <HomePage exact path='/' {...props} />
         <NotFoundPage default />
       </Router>

@@ -132,4 +132,7 @@
 			cursor: default;
 			opacity: 0.25;
 		}
+		&.notButton, &.close {
+			box-shadow: none;
+		}
 	}

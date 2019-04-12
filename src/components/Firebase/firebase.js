@@ -55,23 +55,34 @@ class Firebase {
     return this.data;
   }
   getCalendar = () => {
-    const dateObject = new Date();
-    const date = dateObject.getDate();
-    const year = parseInt(dateObject.getFullYear());
-    const month = dateObject.getMonth();
-    let getViews = (year) => {
-      //  months = ["June", "July", "August"];
+    const getWeekArray = (rawCampTimes, yearString) => {
+      let yearChosen = '';
+      yearChosen = rawCampTimes[yearString]
+      let weekArray = [];
+      let year = yearString;
+      for (let weekChosen in yearChosen) {
+        let week = weekChosen.toString();
+        let { start, end, available, pending, noCamp, approved } = yearChosen[week];
+        start = new Date(start);
+        start = (parseInt(start.getMonth()) + 1) + "/" + start.getDate();
+        end = new Date(end);
+        end = (parseInt(end.getMonth()) + 1) + "/" + end.getDate();
+        weekArray.push({ week, year, start, end, available, approved, pending, noCamp })
+      }
+      console.log('weekArray', weekArray);
+      return weekArray
+    }
+    const getViews = (year) => {
       const juneDate = new Date(year, 5, 1);
       const julyDate = new Date(year, 6, 1);
       const augustDate = new Date(year, 7, 1);
       const views = [{month:"June", date: juneDate, i: 0}, {month: "July", date: julyDate, i:1}, {month:"August", date: augustDate, i: 2}]
-      // let views = [];
-      // months.forEach(month => {
-      //   let date = dates[i];
-      //   views.push({ month, date, i })
-      // });
       return views;
     }
+    const dateObject = new Date();
+    const date = dateObject.getDate();
+    const year = parseInt(dateObject.getFullYear());
+    const month = dateObject.getMonth();
     return (this.getValue('/campTimes/year/').then(rawCampTimes => {
       console.log('rawCampTimes',rawCampTimes)
       // get current date, month, year
@@ -91,6 +102,9 @@ class Firebase {
         } else {
           yearIndex = rawYearsArray.indexOf(year.toString())
         }
+        const weekArray = getWeekArray(rawCampTimes, chosenYear.toString());
+        const views = getViews(parseInt(chosenYear));
+        const views2 = getViews((parseInt(chosenYear) + 1));
         //Get rid of any data that is outdated
         let yearsArray = rawYearsArray.slice(yearIndex)
         //Make an array of relavent camptimes
@@ -98,9 +112,6 @@ class Firebase {
           let campTime = rawCampTimes[thisYear];
           return campTime;
         });
-        const views = getViews(parseInt(chosenYear));
-        const views2 = getViews((parseInt(chosenYear) + 1));
-        const weekArray = Object.values(rawCampTimes[chosenYear]);
         const data = ({
           campTimes,
           rawCampTimes,

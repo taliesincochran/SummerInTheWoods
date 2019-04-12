@@ -24,6 +24,7 @@ const LinkItem = props => {
                 </button>
             ):(
                 <button
+                    className="notButton"
                     onClick={handleClick}
                     value={props.path}
                 >

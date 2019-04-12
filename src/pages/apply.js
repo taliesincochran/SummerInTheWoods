@@ -1,19 +1,22 @@
 import * as React from "react";
 import Helmet from 'react-helmet';
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "@reach/router";
 import Checkbox from '../components/Checkbox';
 import Input from '../components/Input';
 import Moment from 'moment';
 import { paymentMethodMessage } from '../constants/variables';
-import { withFirebase } from '../components/Firebase'
+import { withFirebase } from '../components/Firebase';
+
 
 
 class ApplicationBase extends React.Component {
     constructor(props) {
         super(props);
+        this.loaded = false;
         this.state = {
+            loaded: false,
             yearsArray: '',
-            chosenYear: '',
+            chosenYear: (new Date()).getFullYear(),
             totalCost: 0,
             amountDue: 0,
             campTimezoneOffset: 4,
@@ -89,29 +92,64 @@ class ApplicationBase extends React.Component {
             website: ''
         }
     }
-
+    
     componentDidMount() {
-        console.log(this.props)
-        let {
-            chosenYear,
-            rawCampTimes,
-            localTimezoneOffset
-        } = this.props;
-        let weekArray = this.getWeekArray(chosenYear);
-        let location;
-        if(typeof window !== undefined) {
-            location = window.location.href;
-        } else {
-            location = process.env.NODE_ENV === 'production'? "https://www.summerinthewoodscamp.com/apply":"https://localhost:8000/apply";
+        // console.log(this.props)
+        // let {
+        //     chosenYear,
+        //     rawCampTimes,
+        //     localTimezoneOffset
+        // } = this.props.firebase.state.data;
+        // let weekArray = this.getWeekArray(chosenYear);
+        // let location;
+        // if(typeof window !== undefined) {
+        //     location = window.location.href;
+        // } else {
+        //     location = process.env.NODE_ENV === 'production'? "https://www.summerinthewoodscamp.com/apply":"https://localhost:8000/apply";
+        // }
+        // this.setState({
+            //     chosenYear,
+        //     rawCampTimes,
+        //     localTimezoneOffset,
+        //     weekArray,
+        //     location
+        // });
+        if(!this.state.loaded) {
+            // this.updateOnInitialLoad();
         }
-        this.setState({
-            chosenYear,
-            rawCampTimes,
-            localTimezoneOffset,
-            weekArray,
-            location
-        });
     }
+    componentDidUpdate(prevProps, prevState) {
+    }
+
+    // updateOnInitialLoad = () => {
+    //     if (this.props.firebase) {
+    //         if (this.props.firebase.state) {
+    //             if (this.props.firebase.state.data) {
+    //                 if (this.props.firebase.state.data.campTimes) {
+    //                     if (this.props.firebase.state.data.campTimes.length > 0) {
+    //                         let data = this.props.firebase.state.data;
+    //                         let firebase = data.firebase;
+    //                         let chosenYear = data.chosenYear;
+    //                         let localTimezoneOffset = data.localTimezoneOffset;
+    //                         let rawCampTimes = data.rawCampTimes;
+    //                         let weekArray = this.getWeekArray(chosenYear);
+    //                         console.log('weekArray, render', weekArray)
+    //                         let location;
+    //                         if (typeof window !== undefined) {
+    //                             location = window.location.href;
+    //                         } else {
+    //                             location = process.env.NODE_ENV === 'production' ? "https://www.summerinthewoodscamp.com/apply" : "https://localhost:8000/apply";
+    //                         }
+    //                         this.loaded = true;
+    //                         this.updateOnInitialLoad(firebase, chosenYear, localTimezoneOffset, rawCampTimes, location, weekArray);
+    //                         this.setState({ firebase, chosenYear, localTimezoneOffset, rawCampTimes, location, weekArray }, () => {console.log("State on apply loading", this.state);});
+    //                         console.log('apply props has data', chosenYear, rawCampTimes, localTimezoneOffset);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
     getHash = () => {
         let hash;
         if (this.state.totalWeeksSelected < 4 && this.state.totalWeeksSelected > 0) {
@@ -126,8 +164,8 @@ class ApplicationBase extends React.Component {
     makeRedirectString = (paymentMethod, window) => {
         let redirectString = '';
         if (this.props.location.pathname !== undefined) {
-            redirectString = this.state.location.slice(0, (this.state.location.indexOf('/apply') + 1));
-            console.log('pathname base', redirectString, this.props.location, window)
+            redirectString = this.props.location.pathname.slice(0, (this.state.location.indexOf('/apply') + 1));
+            console.log('pathname base', redirectString, this.props.location)
         } else {
             redirectString = 'www.summerinthewoodscamp.com/'
         }
@@ -138,7 +176,6 @@ class ApplicationBase extends React.Component {
         // let numberOfChildren = this.state.numberOfChildern;
         if (paymentMethod === "paypal") {
             let hash = this.getHash();
-            let hash2 = parseInt(hash) + 2;
             redirectString += "paypal/?t=" + (hash === 1 ? 3 : hash === 2 ? 4 : 0) + "+a=" + hash + "+";
         } else {
             redirectString += "mail/?";
@@ -149,8 +186,9 @@ class ApplicationBase extends React.Component {
     }
 
 
-    getWeekArray = (yearString) => {
-        let yearChosen = this.props.rawCampTimes[this.props.chosenYear]
+    getWeekArray = (rawCampTimes, yearString) => {
+        let yearChosen = '';
+        yearChosen = rawCampTimes[yearString]
         let weekArray = [];
         let year = yearString;
         for (let weekChosen in yearChosen) {
@@ -162,7 +200,7 @@ class ApplicationBase extends React.Component {
             end = (parseInt(end.getMonth()) + 1) + "/" + end.getDate();
             weekArray.push({ week, year, start, end, available, approved, pending, noCamp })
         }
-        console.log(weekArray)
+        console.log('weekArray', weekArray)
         return weekArray
     }
 
@@ -191,12 +229,12 @@ class ApplicationBase extends React.Component {
 
     handleTelephoneNumber = e => {
         let { name, value } = e.target;
-        let temp = ''
+        let temp = '';
         let string = value.replace(/[^0-9]+/g, '').toString();
-        let firstPart = string.slice(0, 3)
-        let secondPart = string.slice(3, 6)
+        let firstPart = string.slice(0, 3);
+        let secondPart = string.slice(3, 6);
+        let length = string.length;
         let thirdPart = string.slice(6, length)
-        let length = string.length
         if (length > 0 && length < 4) {
             temp = "(" + string
         } else if (length > 3 && string.length < 7) {
@@ -209,7 +247,7 @@ class ApplicationBase extends React.Component {
     }
 
     handleYearSelect = year => {
-        this.setState({ chosenYear: year, weekArray: this.getWeekArray(this.state.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2: 0, Week3: 0, Week4: 0, Week5: 0, Week6: 0, Week7: 0, Week8: 0, Week9: 0, WeekA: 0, WeekB: 0, firstWeek: 0, totalCost: 0, amountDue: 0 })
+        this.setState({ chosenYear: year, weekArray: this.getWeekArray(this.props.firebase.state.data.rawCampTimes[year], year), Week0: 0, Week1: 0, Week2: 0, Week3: 0, Week4: 0, Week5: 0, Week6: 0, Week7: 0, Week8: 0, Week9: 0, WeekA: 0, WeekB: 0, firstWeek: 0, totalCost: 0, amountDue: 0 })
     }
 
     handleSubmit = event => {
@@ -330,7 +368,7 @@ class ApplicationBase extends React.Component {
                 website
             }
             let weeksAttending = [];
-            this.props.firebase.getValue('test').then(test => {
+            this.props.firebase.state.firebase.getValue('test').then(test => {
                 for (let item in application) {
                     if (item.slice(0, 4) === "Week" && application[item] !== 0) {
                         weeksAttending.push(item);
@@ -338,14 +376,14 @@ class ApplicationBase extends React.Component {
                 }
                 return weeksAttending;
             }).then(weeks => {
-                this.props.firbase.changeTargetChild('applications', key, application)
+                this.props.firebase.state.firebase.changeTargetChild('applications', key, application)
                     .then(() => {
                         weeks.forEach(week => {
                             let pendingPath = `campTimes/year/${chosenYear}/${week}/pending`;
-                            let pendingRef = this.props.firebase.getRef(pendingPath);
-                            this.props.firebase.getValue(pendingRef).then(pending => {
+                            let pendingRef = this.props.firebase.state.firebase.getRef(pendingPath);
+                            this.props.firebase.state.firebase.getValue(pendingRef).then(pending => {
                                 pending = parseInt(pending);
-                                this.props.firebase.changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + parseInt(this.state.numberOfChildren));
+                                this.props.firebase.state.firebase.changeTarget(`campTimes/year/${key.slice(0, 4)}/${week}/pending`, parseInt(pending) + parseInt(this.state.numberOfChildren));
                                 this.setState({ submitted: true, page: 5 });
                             })
                         })
@@ -356,7 +394,6 @@ class ApplicationBase extends React.Component {
             this.setState({ error4: "Please fill out all required fields." })
         }
     }
-
     handleNext = event => {
         event.preventDefault();
         if(typeof window !== undefined) {
@@ -383,10 +420,10 @@ class ApplicationBase extends React.Component {
                 this.setState({ page: 2 , error1: ''});
                 break;
             case 'submitPage2':
-                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email == this.state.parent1EmailVerify && this.validateEmail(this.state.parent1Email) && this.validatePhone(this.state.parent1Phone)) ?
+                (this.state.parent1Phone && this.state.parent1Name && this.state.address && this.state.parent1Email === this.state.parent1EmailVerify && this.validateEmail(this.state.parent1Email) && this.validatePhone(this.state.parent1Phone)) ?
                     this.setState({ page: 3, error2: '' }) 
                 :
-                    console.log(!!this.state.parent1Phone, !!this.state.parent1Name, !!this.state.address,this.state.parent1Email == this.state.parent1EmailVerify, this.validateEmail(this.state.parent1Email), this.validatePhone(this.state.parent1Phone));
+                    console.log(!!this.state.parent1Phone, !!this.state.parent1Name, !!this.state.address,this.state.parent1Email === this.state.parent1EmailVerify, this.validateEmail(this.state.parent1Email), this.validatePhone(this.state.parent1Phone));
                     this.setState({ error2: "Please fill out all required fields and make sure the email fields are filled in properly.  Emails must be in the format abc@domain.xyc" });
                 break;
             case 'previousPage3':
@@ -409,10 +446,11 @@ class ApplicationBase extends React.Component {
         }
     }
     handleWeekSelect = (week, value) => {
-        if (this.state[week] == value) {
-            this.setState({ [week]: 0 }, () => this.getCost())
-        }
-        else if(this.state[week] === 1) {
+        // if (this.state[week] === value) {
+        //     this.setState({ [week]: 0 }, () => this.getCost())
+        // }
+        // else 
+        if(this.state[week] === 1) {
             this.setState({ [week]: 0 }, () => this.getCost());
         } else {
             if(this.state[week] === 0) {
@@ -480,9 +518,35 @@ class ApplicationBase extends React.Component {
         }
     }
     render() {
+        console.log('apply render props', this.props)
+        let firebase, rawCampTimes = {};
+        let chosenYear, localTimezoneOffset, location = '';
+        let weekArray = [];
+        if (this.props.firebase) {
+            if (this.props.firebase.state) {
+                if (this.props.firebase.state.data) {
+                    if (this.props.firebase.state.data.campTimes) {
+                        if (this.props.firebase.state.data.campTimes.length > 0) {
+                            let data = this.props.firebase.state.data;
+                            firebase = data.firebase;
+                            chosenYear = data.chosenYear || this.state.chosenYear;
+                            localTimezoneOffset = data.localTimezoneOffset;
+                            rawCampTimes = data.rawCampTimes;
+                            weekArray = this.getWeekArray(rawCampTimes, chosenYear);
+                            if (this.props.location.pathname) {
+                                location = this.props.location.pathname;
+                            } else {
+                                location = process.env.NODE_ENV === 'production' ? "https://www.summerinthewoodscamp.com/apply" : "https://localhost:8000/apply";
+                            }
+                            this.loaded = true;
+                            console.log('apply props has data', chosenYear, rawCampTimes, localTimezoneOffset, this.loaded);
+                        }
+                    }
+                }
+            }
+        }
         return (
-            !this.props ?
-                // <Redirect to="/" />
+            !this.loaded?
                 null
                 :
                 (
@@ -518,7 +582,7 @@ class ApplicationBase extends React.Component {
                                                                     name="year1"
                                                                     value={this.props.yearsArray[0]}
                                                                     onChange={this.handleYearSelect}
-                                                                    checked={this.state.chosenYear == this.props.yearsArray[0]}
+                                                                    checked={this.state.chosenYear === this.props.yearsArray[0]}
                                                                     className='float-left'
                                                                     onClick={() => this.handleYearSelect(this.props.yearsArray[0])}
                                                                     text={this.props.yearsArray[0]}
@@ -528,7 +592,7 @@ class ApplicationBase extends React.Component {
                                                                     name="year2"
                                                                     value={this.props.yearsArray[1]}
                                                                     onChange={this.handleYearSelect}
-                                                                    checked={this.state.chosenYear == this.props.yearsArray[1]}
+                                                                    checked={this.state.chosenYear === this.props.yearsArray[1]}
                                                                     className='float-left' value={this.props.yearsArray[0]}
                                                                     onClick={() => this.handleYearSelect(this.props.yearsArray[1])}
                                                                     text={this.props.yearsArray[1]}
@@ -539,7 +603,8 @@ class ApplicationBase extends React.Component {
                                                                 <Checkbox
                                                                     name="year1"
                                                                     value={this.props.yearsArray[0]}
-                                                                    onChange={this.handleYearSelect} checked={true}
+                                                                    onChange={this.handleYearSelect} 
+                                                                    checked={true}
                                                                     className='float-left'
                                                                     onClick={() => this.handleYearSelect(this.props.yearsArray[0])}
                                                                     text={this.props.yearsArray[0]}
@@ -558,7 +623,7 @@ class ApplicationBase extends React.Component {
                                                     </div>
                                                     <h2>Select the weeks you would your {this.state.numberOfChildren > 1?'children':'child'} to attend.</h2>
                                                     <div className="infoBox">
-                                                        {this.state.weekArray.map((week, i) =>
+                                                        {weekArray.map((week, i) =>
                                                             week.noCamp ?
                                                                 <div key={week.week} className='smallBox'>
                                                                     <p style={{ fontSize: "1.5em" }}>{week.start}-{week.end}<br /> No Camp This Week</p>
@@ -569,10 +634,10 @@ class ApplicationBase extends React.Component {
                                                                         <div key={i}>
                                                                             <Checkbox
                                                                                 name={week.week}
-                                                                                value={true}
-                                                                                onChange={() => this.handleWeekSelect(week.week, true)}
-                                                                                checked={this.state[week.week] == true}
-                                                                                onClick={() => this.handleWeekSelect(week.week, true)}
+                                                                                value={0}
+                                                                                onChange={() => this.handleWeekSelect(week.week, 1)}
+                                                                                checked={this.state[week.week] === 1}
+                                                                                onClick={() => this.handleWeekSelect(week.week, 1)}
                                                                                 text={`Sign up for the week of ${week.start}`}
                                                                             />
                                                                         </div>
@@ -582,8 +647,9 @@ class ApplicationBase extends React.Component {
                                                                                 labelStyle={{ textDecoration: 'bold' }}
                                                                                 disabled={true}
                                                                                 name={`${week.week}`}
-                                                                                value={true} onChange={() => this.handleWeekSelect(week.week, true)}
-                                                                                checked={false} value={true}
+                                                                                value={true} 
+                                                                                onChange={() => this.handleWeekSelect(week.week, true)}
+                                                                                checked={false}
                                                                                 onClick={() => this.handleWeekSelect(week.week, true)}
                                                                                 text="Not enough spaces for the number of children selected"
                                                                             />
@@ -594,8 +660,9 @@ class ApplicationBase extends React.Component {
                                                                                 labelStyle={{ textDecoration: 'bold' }}
                                                                                 disabled={true}
                                                                                 name={`${week.week}`}
-                                                                                value={true} onChange={() => this.handleWeekSelect(week.week, true)}
-                                                                                checked={false} value={true}
+                                                                                value={true} 
+                                                                                onChange={() => this.handleWeekSelect(week.week, true)}
+                                                                                checked={false}
                                                                                 onClick={() => this.handleWeekSelect(week.week, true)}
                                                                                 text="No Camp This Week"
                                                                             />
@@ -606,8 +673,9 @@ class ApplicationBase extends React.Component {
                                                                                 labelStyle={{ textDecoration: 'bold' }}
                                                                                 disabled={true}
                                                                                 name={`${week.week}`}
-                                                                                value={true} onChange={() => this.handleWeekSelect(week.week, true)}
-                                                                                checked={false} value={true}
+                                                                                value={true} 
+                                                                                onChange={() => this.handleWeekSelect(week.week, true)}
+                                                                                checked={false}
                                                                                 onClick={() => this.handleWeekSelect(week.week, true)}
                                                                                 text="Camp is full for this week"
                                                                             />

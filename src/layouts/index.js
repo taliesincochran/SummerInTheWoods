@@ -32,11 +32,13 @@ class Layout extends React.Component {
     };
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
   }
-  componentDidUpdate() {
-    this.firebaseInit();
-    console.log('layout update props', this.props)
-  }
   componentDidMount() {
+    this.firebaseInit();
+    this.timeoutId = setTimeout(() => {
+      this.setState({ loading: '' });
+    }, 500);
+  }
+  componentDidUpdate() {
     this.firebaseInit();
   }
   componentWillUnmount() {
@@ -75,7 +77,6 @@ class Layout extends React.Component {
       // data from firebase to be processed into the year or years to be displayed
       let rawYearsArray = Object.keys(rawCampTimes['year']);
       rawYearsArray.sort((a, b) => a - b);
-      console.log('raw 444444444444444', rawYearsArray);
       let yearIndex = 0;
       let chosenYear = year.toString();
       //if the date is already past the last week start date, don't display current year
@@ -108,9 +109,6 @@ class Layout extends React.Component {
         views2,
         weekArray
       });
-
-    } else {
-      console.log('Get Calendar failed' , this.props, this.state)
     }
   }
   handleToggleMenu() {
@@ -172,8 +170,8 @@ class Layout extends React.Component {
           </Helmet>
           <div id="wrapper">
             <Header onToggleMenu={this.handleToggleMenu} />
-            <App {...this.state} />
-            <hr />
+            <App onToggleMenu={this.handleToggleMenu} {...this.state} />
+            {/* <hr /> */}
             <Footer
               pathname={this.props.pathname}
               auth={auth}
@@ -182,16 +180,47 @@ class Layout extends React.Component {
               firebase={firebase}
             />
           </div>
-          <Menu onToggleMenu={this.handleToggleMenu}>
-            <Navigation
-              firebase={firebase}
-              pathname={this.props.pathname}
-              handleChange={this.handleChange}
-              button={false}
-              onToggleMenu={this.handleToggleMenu}
-              auth={this.state.auth}
-              {...this.state} />
-          </Menu>
+          {(this.props.firebase && this.props.firebase.state && this.props.firebase.state.data) ?
+            <React.Fragment>
+              <Footer
+                pathname={this.props.pathname}
+                auth={this.state.auth}
+                state={this.state}
+                handleChange={this.handleChange}
+                firebase={this.props.firebase.state.data}
+              />
+              <Menu onToggleMenu={this.handleToggleMenu}>
+                <Navigation
+                  firebase={this.props.firebase.state.data}
+                  pathname={this.props.pathname}
+                  handleChange={this.handleChange}
+                  button={false}
+                  onToggleMenu={this.handleToggleMenu}
+                  auth={this.state.auth}
+                  {...this.props} />
+              </Menu>
+            </React.Fragment>
+            :
+            <React.Fragment>
+              <Footer
+                pathname={this.props.pathname}
+                auth={this.state.auth}
+                state={this.state}
+                handleChange={this.handleChange}
+                firebase={{}}
+              />
+              <Menu onToggleMenu={this.handleToggleMenu}>
+                <Navigation
+                  firebase={{}}
+                  pathname={this.props.pathname}
+                  handleChange={this.handleChange}
+                  button={false}
+                  onToggleMenu={this.handleToggleMenu}
+                  auth={this.state.auth}
+                  {...this.state} />
+              </Menu>
+            </React.Fragment>
+          }}
         </div>
       </FirebaseProvider>
     );

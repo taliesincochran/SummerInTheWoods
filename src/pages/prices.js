@@ -30,9 +30,9 @@ class PriceTable extends React.Component {
                                 data={['3 Weeks', '$230', '$540', '$180']}
                             />
                             <TableRow
-                                data={['4 Weeks', '$230', '$620', '$155']}
+                                data={['4 Weeks', '$230', '$640', '$160']}
                             />
-                            <TableRow
+                            {/*<TableRow
                                 data={['5 Weeks', '$255', '$755', '$155']}
                             />
                             <TableRow
@@ -49,7 +49,7 @@ class PriceTable extends React.Component {
                             />
                             <TableRow
                                 data={['10 Weeks', '$380', '$1550', '$155']}
-                            />
+                            />*/}
                         </tbody>
                     </table>                        
                 </div>

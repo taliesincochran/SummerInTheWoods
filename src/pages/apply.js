@@ -444,8 +444,8 @@ class Application extends React.Component {
         let amountDue = 0;
         let numberOfChildren = this.state.numberOfChildren;
         if (totalWeeksSelected > 3) {
-            totalCost = 155 * totalWeeksSelected * numberOfChildren;
-            initialCost = 155;
+            totalCost = 160 * totalWeeksSelected * numberOfChildren;
+            initialCost = 160;
         } else if (totalWeeksSelected) {
             totalCost = 180 * totalWeeksSelected * numberOfChildren;
             initialCost = 180;

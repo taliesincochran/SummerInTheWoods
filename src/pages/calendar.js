@@ -32,7 +32,10 @@ class Calendar extends React.Component {
         this.setState({month})
     }
     getViews = (year) => {
-        let months = ["June", "July", "August"];
+        let months = [
+            "June", 
+            "July"
+        ];
         let dates = months.map((month, i)=> new Date(year, i + 5, 1))
         let views = [];
         for(var i = 0; i<months.length; i++) {
@@ -108,16 +111,7 @@ class Calendar extends React.Component {
                             onClick={() => this.handleMonthSelect(6)} 
                             text="July"
                         />
-                        <Checkbox 
-                            name="August" 
-                            value={7} 
-                            onChange={()=> this.handleMonthSelect(7)} 
-                            checked={this.state.month == 7} 
-                            style={{display: "inline-block"}} 
-                            value={7} 
-                            onClick={() => this.handleMonthSelect(7)} 
-                            text="August"
-                        />
+                        
                     </div>
                     <div className="inner">
                         {this.state.views?

@@ -564,7 +564,7 @@ class Application extends React.Component {
                                                     <div className="infoBox">
                                                         {this.state.weekArray.map((week, i) =>
                                                             week.noCamp ?
-                                                                <div key={week.week} className='smallBox'>
+                                                                <div key={week.week} className='smallBox displayNone'>
                                                                     <p style={{ fontSize: "1.5em" }}>{week.start}-{week.end}<br /> No Camp This Week</p>
                                                                 </div> :
                                                                 <div key={week.week} className='smallBox'>
